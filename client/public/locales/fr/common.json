@@ -1,0 +1,12 @@
+{
+  "nav": {
+    "list": {
+      "about": "À propos",
+      "programs": "Nos programmes",
+      "contact": "Contact"
+    },
+    "button": {
+      "inscription": "Inscription"
+    }
+  }
+}
