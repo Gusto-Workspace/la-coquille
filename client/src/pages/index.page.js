@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import Head from "next/head";
 
 // I18N
@@ -7,6 +5,7 @@ import { i18n } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 // COMPONENTS
+import MainMaintenanceComponent from "@/components/maintenance/main.maintenance.component";
 
 export default function HomePage(props) {
   let title;
@@ -53,65 +52,7 @@ export default function HomePage(props) {
         </>
       </Head>
       <div>
-        <div
-          className="relative h-screen flex bg-black bg-opacity-95  items-center justify-center gap-12 p-4"
-          style={{
-            backgroundImage: 'url("/img/image.png")',
-            backgroundPosition: "center",
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-          }}
-        >
-          <img
-            src="/img/00.png"
-            alt="Maintenance Icon"
-            className="absolute top-8 left-[6vw]"
-          />
-
-          <div className="w-1/3 pl-[6vw] pr-12 flex flex-col gap-8">
-            <div className=" text-white flex flex-col">
-              <h1
-                className="text-[5vw] leading-[4.5vw] max-w-[280px]"
-                style={{ fontFamily: "'Dancing Script', cursive" }}
-              >
-                Site en maintenance
-              </h1>
-            </div>
-
-            <div className="text-white text-xl">
-              <p style={{ fontFamily: "'Abel', sans-serif" }}>
-                Merci de nous contacter par mail
-              </p>
-
-              <p
-                className="italic text-base"
-                style={{ fontFamily: "'Abel', sans-serif" }}
-              >
-                restaurant-la-coquille@orange.fr
-              </p>
-            </div>
-
-            <div className="text-white text-xl">
-              <p style={{ fontFamily: "'Abel', sans-serif" }}>Adresse</p>
-
-              <p
-                className=" text-base"
-                style={{ fontFamily: "'Abel', sans-serif" }}
-              >
-                Rue du Moros, 29900 Concarneau
-              </p>
-            </div>
-          </div>
-
-          <div
-            style={{
-              backgroundImage: 'url("/img/1.jpg")',
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-            className="rounded-xl w-2/3 h-full"
-          />
-        </div>
+        <MainMaintenanceComponent />
       </div>
     </>
   );
@@ -120,7 +61,7 @@ export default function HomePage(props) {
 export async function getStaticProps({ locale }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["common", "index"])),
+      ...(await serverSideTranslations(locale, ["common", "index", "maintenance"])),
     },
   };
 }
