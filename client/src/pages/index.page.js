@@ -14,11 +14,13 @@ export default function HomePage(props) {
   switch (i18n.language) {
     case "en":
       title = "La Coquille - Restaurant";
-      description = "";
+      description =
+        "La Coquille is a gourmet restaurant in Concarneau, Brittany, in the Finistère region. The restaurant is located on the quayside, opposite the Ville Close.";
       break;
     default:
       title = "La Coquille - Restaurant";
-      description = "";
+      description =
+        "La Coquille est un restaurant gastronomique à Concarneau en Bretagne dans le Finistère. Le restaurant est situé sur les quais en face de la Ville Close.";
   }
 
   return (
@@ -61,7 +63,11 @@ export default function HomePage(props) {
 export async function getStaticProps({ locale }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["common", "index", "maintenance"])),
+      ...(await serverSideTranslations(locale, [
+        "common",
+        "index",
+        "maintenance",
+      ])),
     },
   };
 }
