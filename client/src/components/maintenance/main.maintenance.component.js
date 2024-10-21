@@ -43,7 +43,7 @@ export default function MainMaintenanceComponent() {
         </div>
 
         <div className="text-white text-xl">
-          <p style={{ fontFamily: "'Abel', sans-serif" }}>{t('adress')}</p>
+          <p style={{ fontFamily: "'Abel', sans-serif" }}>{t('address')}</p>
 
           <p
             className=" text-base"
