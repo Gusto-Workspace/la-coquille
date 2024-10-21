@@ -5,7 +5,7 @@ export default function MainMaintenanceComponent() {
   const { t } = useTranslation("maintenance");
   return (
     <section
-      className="relative h-screen flex bg-black bg-opacity-95  items-center justify-center gap-12 p-4"
+      className="relative h-screen flex desktop:flex-row flex-col bg-black bg-opacity-95  items-center justify-center gap-12 p-4"
       style={{
         backgroundImage: 'url("/img/image.png")',
         backgroundPosition: "center",
@@ -16,13 +16,13 @@ export default function MainMaintenanceComponent() {
       <img
         src="/img/00.png"
         alt="Maintenance Icon"
-        className="absolute top-8 left-[6vw]"
+        className="desktop:absolute top-8 left-[6vw]"
       />
 
-      <div className="w-1/3 pl-[6vw] pr-12 flex flex-col gap-8">
+      <div className="text-center desktop:text-left desktop:w-1/3 desktop:pl-[6vw] desktop:pr-12 flex flex-col gap-8">
         <div className=" text-white flex flex-col">
           <h1
-            className="text-[5vw] leading-[4.5vw] max-w-[280px]"
+            className="text-5xl desktop:text-[5vw] desktop:leading-[4.5vw] desktop:max-w-[280px]"
             style={{ fontFamily: "'Dancing Script', cursive" }}
           >
            {t('title')}
@@ -60,7 +60,7 @@ export default function MainMaintenanceComponent() {
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
-        className="rounded-xl w-2/3 h-full"
+        className="rounded-xl w-full desktop:w-2/3 h-full"
       />
     </section>
   );
