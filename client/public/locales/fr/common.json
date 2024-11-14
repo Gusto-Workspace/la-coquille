@@ -1,12 +1,10 @@
 {
   "nav": {
-    "list": {
-      "about": "À propos",
-      "programs": "Nos programmes",
-      "contact": "Contact"
-    },
-    "button": {
-      "inscription": "Inscription"
-    }
+    "about": "À propos",
+    "menus": "Les menus",
+    "dishes": "La carte",
+    "drinks": "Les vins & boissons",
+    "gifts": "Les cartes cadeaux",
+    "contact": "Contact"
   }
 }

@@ -1,11 +1,13 @@
 import Head from "next/head";
+import { useState } from "react";
 
 // I18N
 import { i18n } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 // COMPONENTS
-import MainMaintenanceComponent from "@/components/maintenance/main.maintenance.component";
+import HeroSectionHomeComponent from "@/components/home/hero-section.home.component";
+import NavComponent from "@/components/_shared/nav/nav.component";
 
 export default function HomePage(props) {
   let title;
@@ -22,6 +24,8 @@ export default function HomePage(props) {
       description =
         "La Coquille est un restaurant gastronomique à Concarneau en Bretagne dans le Finistère. Le restaurant est situé sur les quais en face de la Ville Close.";
   }
+
+  const [isNavVisible, setIsNavVisible] = useState(false);
 
   return (
     <>
@@ -53,8 +57,23 @@ export default function HomePage(props) {
           <meta property="og:image:height" content="1080" />
         </>
       </Head>
-      <div>
-        <MainMaintenanceComponent />
+
+      <div className="relative">
+        <NavComponent isVisible={isNavVisible} />
+
+        <div>
+          <HeroSectionHomeComponent setIsNavVisible={setIsNavVisible} />
+
+          <div className="my-12">test</div>
+          <div className="my-12">test</div>
+          <div className="my-12">test</div>
+          <div className="my-12">test</div>
+          <div className="my-12">test</div>
+          <div className="my-12">test</div>
+          <div className="my-12">test</div>
+          <div className="my-12">test</div>
+          <div className="my-12">test</div>
+        </div>
       </div>
     </>
   );
@@ -63,11 +82,7 @@ export default function HomePage(props) {
 export async function getStaticProps({ locale }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, [
-        "common",
-        "index",
-        "maintenance",
-      ])),
+      ...(await serverSideTranslations(locale, ["common", "index"])),
     },
   };
 }
