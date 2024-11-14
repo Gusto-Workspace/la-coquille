@@ -1,0 +1,15 @@
+{
+  "story": {
+    "subtitle": "Authenticité & passion",
+    "title": "Notre histoire",
+    "description": "Situé au cœur de Concarneau, le restaurant La Coquille incarne l'élégance et la passion de la cuisine bretonne. Depuis sa création, le restaurant s'est donné pour mission de faire découvrir le meilleur des produits locaux, sublimés par une approche moderne et créative."
+  },
+  "ingredients": {
+    "subtitle": "Excellence & Fraîcheur",
+    "title": "Ingrédients",
+    "description": "À La Coquille, nous croyons en l'excellence et en la fraîcheur de chaque ingrédient. Chaque plat que nous préparons est une célébration des produits locaux et de saison, soigneusement sélectionnés pour offrir des saveurs authentiques et inoubliables.",
+    "buttons": {
+      "seeMenu": "Voir le menu"
+    }
+  }
+}

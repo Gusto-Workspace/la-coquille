@@ -1,17 +1,13 @@
 import Head from "next/head";
-import { useState } from "react";
 
 // I18N
 import { i18n } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 // COMPONENTS
-import HeroSectionHomeComponent from "@/components/home/hero-section.home.component";
 import NavComponent from "@/components/_shared/nav/nav.component";
-import StoryHomeComponent from "@/components/home/story.home.component";
-import IngredientsHomeComponent from "@/components/home/ingredients.home.component";
 
-export default function HomePage(props) {
+export default function DishesPage(props) {
   let title;
   let description;
 
@@ -26,8 +22,6 @@ export default function HomePage(props) {
       description =
         "La Coquille est un restaurant gastronomique à Concarneau en Bretagne dans le Finistère. Le restaurant est situé sur les quais en face de la Ville Close.";
   }
-
-  const [isNavVisible, setIsNavVisible] = useState(false);
 
   return (
     <>
@@ -52,14 +46,18 @@ export default function HomePage(props) {
       </Head>
 
       <div className="relative">
-        <NavComponent isVisible={isNavVisible} />
+        <NavComponent />
 
-        <div>
-          <HeroSectionHomeComponent setIsNavVisible={setIsNavVisible} />
-
-          <StoryHomeComponent />
-
-          <IngredientsHomeComponent />
+        <div className="mt-[62px]">
+          <div className="my-12">test</div>
+          <div className="my-12">test</div>
+          <div className="my-12">test</div>
+          <div className="my-12">test</div>
+          <div className="my-12">test</div>
+          <div className="my-12">test</div>
+          <div className="my-12">test</div>
+          <div className="my-12">test</div>
+          <div className="my-12">test</div>
         </div>
       </div>
     </>
@@ -69,7 +67,7 @@ export default function HomePage(props) {
 export async function getStaticProps({ locale }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["common", "index"])),
+      ...(await serverSideTranslations(locale, ["common", "dishes"])),
     },
   };
 }

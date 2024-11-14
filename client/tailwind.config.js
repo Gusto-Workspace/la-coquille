@@ -3,14 +3,13 @@ module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}", "./pages/**/*.{js,ts,jsx,tsx}"],
   theme: {
     colors: {
-      white: "#FFFFFF",
-      black: "#000000",
-      red: "#FF7664",
-      blue: "#4583FF",
-      green: "#D5F346",
-      darkBlue: "#131E36",
-      ocre: "#EFE7D2",
-      brown: "#181818",
+      white: "#F3ECE2",
+      black: "#070303",
+      grey: "#3F3A36",
+      lightGrey: "#EFF1F2",
+      brown: "#56260F",
+      darkBrown: "#22140C",
+      khaki: "#554313",
     },
     screens: {
       ultraWild: "1400px",

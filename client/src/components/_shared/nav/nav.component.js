@@ -20,7 +20,7 @@ export default function NavComponent({ isVisible = true }) {
 
   return (
     <nav
-      className={`fixed top-0 flex justify-between items-center w-full bg-white drop-shadow-md py-2 px-12 z-10 transition-transform duration-500 ${
+      className={`fixed top-0 flex justify-between items-center w-full bg-white drop-shadow-md py-4 px-12 z-10 transition-transform duration-500 ${
         isVisible ? "transform translate-y-0" : "transform -translate-y-full"
       }`}
     >
@@ -30,21 +30,25 @@ export default function NavComponent({ isVisible = true }) {
             src="/img/logo-noir.png"
             draggable={false}
             alt="logo"
-            className="max-h-[40px]"
+            className="max-h-[30px]"
           />
         </Link>
       </div>
 
-      <ul className="flex gap-8 text-black uppercase text-sm">
+      <ul className="flex items-center gap-8 text-black uppercase text-sm">
         {navItemsData.map((item) => {
           const active = isActive(item.href);
 
           return (
             <li
               key={item.href}
-              className={`${router.pathname === "/" || active ? "opacity-100" : "opacity-70"}`}
+              className={`relative font-bold text-base ${router.pathname === "/" || active ? "opacity-100" : "opacity-70"}`}
+              style={{ fontFamily: "'Abel', sans-serif" }}
             >
               <Link href={item.href}>{t(item.label)}</Link>
+              <span
+                className={`absolute -bottom-1 left-1/2 -translate-x-1/2 h-1 w-1 rounded-full bg-black ${active && router.pathname !== "/" ? "block" : "hidden"}`}
+              />
             </li>
           );
         })}
