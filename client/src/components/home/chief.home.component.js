@@ -3,15 +3,23 @@ import Link from "next/link";
 // I18N
 import { useTranslation } from "next-i18next";
 
-export default function IngredientsHomeComponent() {
+export default function ChiefHomeComponent() {
   const { t } = useTranslation("index");
 
   return (
-    <section className="flex items-center justify-between py-24">
+    <section className="bg-white flex items-center justify-between py-24">
       <div className="flex items-center gap-24 max-w-[80%] mx-auto">
+        <div className="w-1/2 mx-auto">
+          <img
+            src="/img/chief.jpg"
+            alt="Image des ingrédients"
+            className="max-h-[500px] mx-auto"
+          />
+        </div>
+
         <div className="text-left w-1/2">
           <h3 className="text-sm tracking-wide opacity-70 uppercase">
-            {t("ingredients.subtitle")}
+            {t("chief.subtitle")}
           </h3>
 
           <div className="flex flex-col gap-6">
@@ -19,32 +27,16 @@ export default function IngredientsHomeComponent() {
               className="text-4xl mt-4 font-bold tracking-widest uppercase"
               style={{ fontFamily: "'Abel', sans-serif" }}
             >
-              {t("ingredients.title")}
+              {t("chief.title")}
             </h2>
 
             <p
               className="max-w-[620px] mx-auto font-extralight opacity-70 text-lg"
               style={{ fontFamily: "'Abel', sans-serif" }}
             >
-              {t("ingredients.description")}
+              {t("chief.description")}
             </p>
-
-            <Link
-              href="/menus"
-              style={{ fontFamily: "'Abel', sans-serif" }}
-              className="w-fit font-bold px-6 py-3 bg-white text-darkBrown"
-            >
-              {t("ingredients.buttons.seeMenus")}
-            </Link>
           </div>
-        </div>
-
-        <div className="w-1/2">
-          <img
-            src="/img/ingredient.jpg"
-            alt="Image des ingrédients"
-            className="max-h-[300px]"
-          />
         </div>
       </div>
     </section>

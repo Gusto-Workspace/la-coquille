@@ -31,14 +31,14 @@ export default function StoryHomeComponent() {
           <img
             src="/img/story-1.jpg"
             alt="restaurant"
-            className="w-full h-auto object-cover"
+            className="w-full h-auto object-cover rounded-md"
           />
         </div>
         <div className="md:w-1/2">
           <img
             src="/img/story-2.jpg"
             alt="dish"
-            className="w-full h-auto object-cover"
+            className="w-full h-auto object-cover rounded-md"
           />
         </div>
       </div>

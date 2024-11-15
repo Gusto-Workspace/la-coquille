@@ -20,7 +20,7 @@ export default function NavComponent({ isVisible = true }) {
 
   return (
     <nav
-      className={`fixed top-0 flex justify-between items-center w-full bg-white drop-shadow-md py-4 px-12 z-10 transition-transform duration-500 ${
+      className={`fixed top-0 flex justify-between items-center w-full bg-extraWhite drop-shadow-md py-4 px-12 z-10 transition-transform duration-500 ${
         isVisible ? "transform translate-y-0" : "transform -translate-y-full"
       }`}
     >

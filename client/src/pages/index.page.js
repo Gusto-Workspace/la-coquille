@@ -10,6 +10,8 @@ import HeroSectionHomeComponent from "@/components/home/hero-section.home.compon
 import NavComponent from "@/components/_shared/nav/nav.component";
 import StoryHomeComponent from "@/components/home/story.home.component";
 import IngredientsHomeComponent from "@/components/home/ingredients.home.component";
+import GalleryHomeComponent from "@/components/home/gallery.home.component";
+import ChiefHomeComponent from "@/components/home/chief.home.component";
 
 export default function HomePage(props) {
   let title;
@@ -60,6 +62,10 @@ export default function HomePage(props) {
           <StoryHomeComponent />
 
           <IngredientsHomeComponent />
+
+          <GalleryHomeComponent />
+
+          <ChiefHomeComponent />
         </div>
       </div>
     </>

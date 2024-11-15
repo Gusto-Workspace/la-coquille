@@ -9,7 +9,12 @@
     "title": "Ingrédients",
     "description": "À La Coquille, nous croyons en l'excellence et en la fraîcheur de chaque ingrédient. Chaque plat que nous préparons est une célébration des produits locaux et de saison, soigneusement sélectionnés pour offrir des saveurs authentiques et inoubliables.",
     "buttons": {
-      "seeMenu": "Voir le menu"
+      "seeMenus": "Voir les menus"
     }
+  },
+  "chief": {
+    "subtitle": "Savoir-faire & Créativité",
+    "title": "Notre chef",
+    "description": "Chef de La Coquille, Jean-François Sicallac allie savoir-faire et créativité pour proposer une cuisine authentique et raffinée. Chaque plat est pensé comme une expérience unique, mettant en valeur les produits de notre région et le respect des traditions culinaires bretonnes."
   }
 }
