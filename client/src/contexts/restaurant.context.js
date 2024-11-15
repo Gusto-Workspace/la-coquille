@@ -19,8 +19,7 @@ export default function RestaurantContext() {
       )
       .then((response) => {
         setRestaurantData(response.data.restaurant);
-        console.log(response.data.restaurant);
-        
+
         setDataLoading(false);
       })
       .catch((error) => {

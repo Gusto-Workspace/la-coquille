@@ -6,7 +6,7 @@
   },
   "ingredients": {
     "subtitle": "Excellence & Freshness",
-    "title": "Ingredients",
+    "title": "Ours ingredients",
     "description": "At La Coquille, we believe in the excellence and freshness of every ingredient. Each dish we prepare is a celebration of local and seasonal products, carefully selected to offer authentic and unforgettable flavors.",
     "buttons": {
       "seeMenus": "View Ours Menus"
@@ -16,5 +16,10 @@
     "subtitle": "Expertise & Creativity",
     "title": "Our Chef",
     "description": "Chef of La Coquille, Jean-François Sicallac combines expertise and creativity to offer an authentic and refined cuisine. Each dish is crafted as a unique experience, highlighting local ingredients and honoring the culinary traditions of Brittany."
-  }
+  },
+  "news": {
+    "subtitle": "News & Updates",
+    "title": "Our News",
+    "description": "Discover the latest from La Coquille: events, culinary creations, and seasonal inspirations. Follow our news to stay connected with everything happening at our restaurant and dive into the world of our cuisine throughout the seasons."
+}
 }

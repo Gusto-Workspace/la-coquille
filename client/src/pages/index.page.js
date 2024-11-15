@@ -12,22 +12,13 @@ import StoryHomeComponent from "@/components/home/story.home.component";
 import IngredientsHomeComponent from "@/components/home/ingredients.home.component";
 import GalleryHomeComponent from "@/components/home/gallery.home.component";
 import ChiefHomeComponent from "@/components/home/chief.home.component";
+import NewsHomeComponent from "@/components/home/news.home.component";
+import FooterComponent from "@/components/_shared/footer/footer.component";
 
 export default function HomePage(props) {
-  let title;
-  let description;
-
-  switch (i18n.language) {
-    case "en":
-      title = "La Coquille - Restaurant";
-      description =
-        "La Coquille is a gourmet restaurant in Concarneau, Brittany, in the Finistère region. The restaurant is located on the quayside, opposite the Ville Close.";
-      break;
-    default:
-      title = "La Coquille - Restaurant";
-      description =
-        "La Coquille est un restaurant gastronomique à Concarneau en Bretagne dans le Finistère. Le restaurant est situé sur les quais en face de la Ville Close.";
-  }
+  const title = "La Coquille - Restaurant";
+  const description =
+    "La Coquille est un restaurant gastronomique à Concarneau en Bretagne dans le Finistère. Le restaurant est situé sur les quais en face de la Ville Close.";
 
   const [isNavVisible, setIsNavVisible] = useState(false);
 
@@ -66,6 +57,10 @@ export default function HomePage(props) {
           <GalleryHomeComponent />
 
           <ChiefHomeComponent />
+
+          <NewsHomeComponent />
+
+          <FooterComponent />
         </div>
       </div>
     </>

@@ -13,7 +13,7 @@ export default function ChiefHomeComponent() {
           <img
             src="/img/chief.jpg"
             alt="Image des ingrédients"
-            className="max-h-[500px] mx-auto"
+            className="max-h-[500px] mx-auto rounded-md"
           />
         </div>
 
