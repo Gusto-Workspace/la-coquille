@@ -32,7 +32,7 @@ export default function IngredientsHomeComponent() {
             <Link
               href="/menus"
               style={{ fontFamily: "'Abel', sans-serif" }}
-              className="w-fit font-bold px-6 py-3 bg-white text-darkBrown"
+              className="w-fit px-6 py-3 bg-white text-darkBrown"
             >
               {t("ingredients.buttons.seeMenus")}
             </Link>
@@ -42,8 +42,9 @@ export default function IngredientsHomeComponent() {
         <div className="w-1/2">
           <img
             src="/img/ingredient.jpg"
-            alt="Image des ingrédients"
+            alt="lobster"
             className="max-h-[300px]"
+            draggable={false}
           />
         </div>
       </div>

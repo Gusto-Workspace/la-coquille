@@ -42,7 +42,7 @@ export default function NavComponent({ isVisible = true }) {
           return (
             <li
               key={item.href}
-              className={`relative font-bold text-base ${router.pathname === "/" || active ? "opacity-100" : "opacity-70"}`}
+              className={`relative text-base ${router.pathname === "/" || active ? "opacity-100" : "opacity-70"}`}
               style={{ fontFamily: "'Abel', sans-serif" }}
             >
               <Link href={item.href}>{t(item.label)}</Link>

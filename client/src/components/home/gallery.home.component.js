@@ -15,25 +15,39 @@ export default function GalleryHomeComponent() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-    
-      gsap.to(topRowRef.current, {
-        x: 100, 
-        scrollTrigger: {
-          trigger: topRowRef.current,
-          start: "top bottom",
-          end: "bottom top", 
-          scrub: 1, 
-        },
-      });
+      const topRowElement = topRowRef.current;
+      const bottomRowElement = bottomRowRef.current;
 
-     
-      gsap.to(bottomRowRef.current, {
-        x: -100, 
+      // Apply animations with `will-change` for smoother performance
+      gsap.to(topRowElement, {
+        x: 100,
         scrollTrigger: {
-          trigger: bottomRowRef.current,
+          trigger: topRowElement,
           start: "top bottom",
           end: "bottom top",
           scrub: 1,
+        },
+        onStart: () => {
+          topRowElement.style.willChange = "transform";
+        },
+        onComplete: () => {
+          topRowElement.style.willChange = "auto";
+        },
+      });
+
+      gsap.to(bottomRowElement, {
+        x: -100,
+        scrollTrigger: {
+          trigger: bottomRowElement,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1,
+        },
+        onStart: () => {
+          bottomRowElement.style.willChange = "transform";
+        },
+        onComplete: () => {
+          bottomRowElement.style.willChange = "auto";
         },
       });
     }
@@ -54,6 +68,7 @@ export default function GalleryHomeComponent() {
               alt={`Dish ${i + 1}`}
               style={{ width: "calc(100vw / 4 )", aspectRatio: "1/1" }}
               className="object-cover rounded-md"
+              draggable={false}
             />
           ))}
         </div>

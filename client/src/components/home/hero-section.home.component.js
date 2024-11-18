@@ -26,18 +26,27 @@ export default function HeroSectionHomeComponent(props) {
           pin: true,
           pinSpacing: false,
           onUpdate: (self) => {
-            props.setIsNavVisible(self.progress >= 1); 
+            props.setIsNavVisible(self.progress >= 1);
           },
         },
       });
 
+      // Animate the mask size
       animation.to(maskElement, {
-        WebkitMaskImage:
-          "radial-gradient(circle, black 100%, transparent 100%)",
+        ease: "power1.out",
+        WebkitMaskImage: "radial-gradient(circle, black 100%, transparent 100%)",
         maskImage: "radial-gradient(circle, black 100%, transparent 100%)",
-        ease: "none",
+        onUpdate: () => {
+          // Force browser optimization for Safari
+          maskElement.style.willChange = "transform, opacity";
+        },
+        onComplete: () => {
+          // Reset will-change for better performance after animation
+          maskElement.style.willChange = "auto";
+        },
       });
 
+      // Animate the logo scaling
       animation.to(
         logoElement,
         {
@@ -69,8 +78,10 @@ export default function HeroSectionHomeComponent(props) {
           WebkitMaskImage:
             "radial-gradient(circle, black 40%, transparent 40%)",
           maskImage: "radial-gradient(circle, black 40%, transparent 40%)",
+          transition: "transform 0.1s linear", // Smooth updates
         }}
       />
+
       <div className="absolute z-10">
         <div className="flex flex-col gap-2 text-white text-center">
           <img

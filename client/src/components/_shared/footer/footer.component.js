@@ -17,7 +17,6 @@ import { navItemsData } from "@/_assets/data/nav-items.data";
 export default function FooterComponent() {
   const { t } = useTranslation("");
   const { restaurantContext } = useContext(GlobalContext);
-  console.log(restaurantContext.restaurantData);
 
   return (
     <footer className="bg-grey pt-12 pb-8">
@@ -100,8 +99,7 @@ export default function FooterComponent() {
 
         <div className="flex justify-between text-sm text-extraWhite opacity-30">
           <div className="flex gap-4">
-            <Link href="/policy">Politique de confidentialité</Link>
-            •
+            <Link href="/policy">Politique de confidentialité</Link>•
             <Link href="/legales">Mentions légales</Link>
           </div>
 
