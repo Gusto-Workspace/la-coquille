@@ -11,6 +11,7 @@ module.exports = {
       brown: "#56260F",
       darkBrown: "#22140C",
       khaki: "#554313",
+      red: "#FF7664",
     },
     screens: {
       ultraWild: "1400px",

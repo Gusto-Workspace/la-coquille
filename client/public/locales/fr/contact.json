@@ -2,5 +2,18 @@
   "titles": {
     "main": "Contact"
   },
-  "description": "Contactez-nous pour toute question ou réservation et laissez-nous vous guider dans une expérience culinaire unique. Notre équipe est à votre disposition pour répondre à vos besoins et rendre votre visite à La Coquille inoubliable"
+  "description": "Contactez-nous pour toute question ou réservation et laissez-nous vous guider dans une expérience culinaire unique. Notre équipe est à votre disposition pour répondre à vos besoins et rendre votre visite à La Coquille inoubliable",
+  "form": {
+    "labels": {
+      "name": "Prénom & Nom",
+      "email": "Email",
+      "phone": "Numéro de téléphone",
+      "message": "Message ..."
+    },
+    "buttons": {
+      "send": "Envoyer",
+      "loading": "En cours ...",
+      "sent": "Envoyé !"
+    }
+  }
 }

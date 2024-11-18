@@ -66,7 +66,7 @@ export default function FooterComponent() {
               return (
                 <li
                   key={item.href}
-                  className="font-bold text-base"
+                  className="text-base"
                   style={{ fontFamily: "'Abel', sans-serif" }}
                 >
                   <Link href={item.href}>{t(`common:${item.label}`)}</Link>
@@ -103,7 +103,7 @@ export default function FooterComponent() {
             <Link href="/legales">Mentions légales</Link>
           </div>
 
-          <p>© 2023 WebDev, All Rights Reserved</p>
+          <p>© 2023 Restaurant La Coquille, Tous Droits Réservés</p>
         </div>
       </div>
     </footer>

@@ -8,3 +8,24 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+::-webkit-input-placeholder {
+  font-size: 14px;
+  font-style: italic;
+}
+
+:-moz-placeholder {
+  font-size: 14px;
+  font-style: italic;
+  opacity: 1;
+}
+
+::-moz-placeholder {
+  font-size: 14px;
+  font-style: italic;
+}
+
+:-ms-input-placeholder {
+  font-size: 14px;
+  font-style: italic;
+}
