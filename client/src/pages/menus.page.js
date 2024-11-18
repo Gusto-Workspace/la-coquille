@@ -6,6 +6,8 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 // COMPONENTS
 import NavComponent from "@/components/_shared/nav/nav.component";
+import FooterComponent from "@/components/_shared/footer/footer.component";
+import BannerContactComponent from "@/components/_shared/banner/banner.component";
 
 export default function MenusPage(props) {
   const title = "La Coquille - Restaurant";
@@ -38,15 +40,13 @@ export default function MenusPage(props) {
         <NavComponent />
 
         <div className="mt-[62px]">
-          <div className="my-12">test</div>
-          <div className="my-12">test</div>
-          <div className="my-12">test</div>
-          <div className="my-12">test</div>
-          <div className="my-12">test</div>
-          <div className="my-12">test</div>
-          <div className="my-12">test</div>
-          <div className="my-12">test</div>
-          <div className="my-12">test</div>
+          <BannerContactComponent
+            title="menus:titles.main"
+            description="menus:description"
+            imgUrl="menus.jpg"
+          />
+
+          <FooterComponent />
         </div>
       </div>
     </>

@@ -12,6 +12,10 @@ module.exports = {
       darkBrown: "#22140C",
       khaki: "#554313",
       red: "#FF7664",
+      blue: "#4583FF",
+      green: "#4EAD7A",
+      darkBlue: "#131E36",
+      violet: "#634FD2",
     },
     screens: {
       ultraWild: "1400px",

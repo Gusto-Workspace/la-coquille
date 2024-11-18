@@ -121,7 +121,7 @@ export default function NewsHomeComponent() {
                 {formatDate(data.published_at)}
               </p>
 
-              <h2 className="text-xl uppercase font-semibold">{data.title}</h2>
+              <h2 className="text-xl uppercase">{data.title}</h2>
 
               <p
                 className="opacity-50"
