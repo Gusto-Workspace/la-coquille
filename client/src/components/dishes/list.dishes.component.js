@@ -52,7 +52,7 @@ export default function ListDishesComponent() {
                   .map((dish, j) => (
                     <div key={j} className="flex gap-4 justify-between">
                       <div className="flex gap-4">
-                        <div className="text-lg flex flex-col">
+                        <div className="text-xl flex flex-col">
                           <h3 className="leading-6 bg-extraWhite flex gap-3 pr-2">
                            <span className="">{dish.name}</span> 
 
@@ -149,7 +149,7 @@ export default function ListDishesComponent() {
                             </span>
                           </h3>
 
-                          <p className="text-sm opacity-50">
+                          <p className="text-base opacity-50">
                             {dish.description.length > 50
                               ? dish.description.slice(0, 50) + "..."
                               : dish.description}

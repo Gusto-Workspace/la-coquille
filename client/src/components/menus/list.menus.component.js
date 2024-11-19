@@ -17,7 +17,7 @@ export default function ListMenusComponent() {
   }
 
   return (
-    <section className="">
+    <section className="py-24">
       <div
         className="flex flex-col gap-48 max-w-[80%] mx-auto"
         style={{
@@ -30,8 +30,7 @@ export default function ListMenusComponent() {
             return (
               <div
                 key={i}
-                className="flex gap-24 items-center sticky top-[62px] py-12 bg-extraWhite"
-                style={{ minHeight: "calc(100vh - 62px)" }}
+                className="flex gap-24 items-center -z-10 bg-extraWhite"
               >
                 <div className="w-1/2 flex flex-col">
                   <h2
