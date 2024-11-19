@@ -8,6 +8,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import NavComponent from "@/components/_shared/nav/nav.component";
 import FooterComponent from "@/components/_shared/footer/footer.component";
 import BannerContactComponent from "@/components/_shared/banner/banner.component";
+import ListMenusComponent from "@/components/menus/list.menus.component";
 
 export default function MenusPage(props) {
   const title = "La Coquille - Restaurant";
@@ -45,7 +46,7 @@ export default function MenusPage(props) {
             description="menus:description"
             imgUrl="menus.jpg"
           />
-
+          <ListMenusComponent />
           <FooterComponent />
         </div>
       </div>
