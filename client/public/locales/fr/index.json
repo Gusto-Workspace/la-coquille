@@ -9,6 +9,7 @@
     "title": "Nos ingrédients",
     "description": "À La Coquille, nous croyons en l'excellence et en la fraîcheur de chaque ingrédient. Chaque plat que nous préparons est une célébration des produits locaux et de saison, soigneusement sélectionnés pour offrir des saveurs authentiques et inoubliables.",
     "buttons": {
+      "seeDishes" : "Voir la carte",
       "seeMenus": "Voir les menus"
     }
   },

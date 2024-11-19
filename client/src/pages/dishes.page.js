@@ -6,7 +6,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 // COMPONENTS
 import NavComponent from "@/components/_shared/nav/nav.component";
-import BannerContactComponent from "@/components/_shared/banner/banner.component";
+import BannerComponent from "@/components/_shared/banner/banner.component";
 import FooterComponent from "@/components/_shared/footer/footer.component";
 import ListDishesComponent from "@/components/dishes/list.dishes.component";
 
@@ -41,7 +41,7 @@ export default function DishesPage(props) {
         <NavComponent />
 
         <div className="mt-[62px]">
-          <BannerContactComponent
+          <BannerComponent
             title="dishes:titles.main"
             description="dishes:description"
             imgUrl="la_carte.jpg"

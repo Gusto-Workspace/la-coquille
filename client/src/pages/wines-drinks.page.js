@@ -6,6 +6,9 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 // COMPONENTS
 import NavComponent from "@/components/_shared/nav/nav.component";
+import BannerComponent from "@/components/_shared/banner/banner.component";
+import FooterComponent from "@/components/_shared/footer/footer.component";
+import MainWinesDrinksComponent from "@/components/wines-drinks/main.wines-drinks.component";
 
 export default function WinesDrinksPage(props) {
   const title = "La Coquille - Restaurant";
@@ -38,15 +41,15 @@ export default function WinesDrinksPage(props) {
         <NavComponent />
 
         <div className="mt-[62px]">
-          <div className="my-12">test</div>
-          <div className="my-12">test</div>
-          <div className="my-12">test</div>
-          <div className="my-12">test</div>
-          <div className="my-12">test</div>
-          <div className="my-12">test</div>
-          <div className="my-12">test</div>
-          <div className="my-12">test</div>
-          <div className="my-12">test</div>
+          <BannerComponent
+            title="drinks:titles.main"
+            description="drinks:description"
+            imgUrl="drinks.jpg"
+          />
+
+          <MainWinesDrinksComponent/>
+
+          <FooterComponent />
         </div>
       </div>
     </>

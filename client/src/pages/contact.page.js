@@ -6,7 +6,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 // COMPONENTS
 import NavComponent from "@/components/_shared/nav/nav.component";
-import BannerContactComponent from "@/components/_shared/banner/banner.component";
+import BannerComponent from "@/components/_shared/banner/banner.component";
 import FormContactComponent from "@/components/contact/form.contact.component";
 import FooterComponent from "@/components/_shared/footer/footer.component";
 
@@ -41,7 +41,7 @@ export default function ContactPage(props) {
         <NavComponent />
 
         <div className="mt-[62px]">
-          <BannerContactComponent
+          <BannerComponent
             title="contact:titles.main"
             description="contact:description"
             imgUrl="contact.jpg"

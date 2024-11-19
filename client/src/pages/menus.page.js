@@ -7,7 +7,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 // COMPONENTS
 import NavComponent from "@/components/_shared/nav/nav.component";
 import FooterComponent from "@/components/_shared/footer/footer.component";
-import BannerContactComponent from "@/components/_shared/banner/banner.component";
+import BannerComponent from "@/components/_shared/banner/banner.component";
 import ListMenusComponent from "@/components/menus/list.menus.component";
 
 export default function MenusPage(props) {
@@ -41,7 +41,7 @@ export default function MenusPage(props) {
         <NavComponent />
 
         <div className="mt-[62px]">
-          <BannerContactComponent
+          <BannerComponent
             title="menus:titles.main"
             description="menus:description"
             imgUrl="menus.jpg"

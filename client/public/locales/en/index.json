@@ -9,6 +9,7 @@
     "title": "Ours ingredients",
     "description": "At La Coquille, we believe in the excellence and freshness of every ingredient. Each dish we prepare is a celebration of local and seasonal products, carefully selected to offer authentic and unforgettable flavors.",
     "buttons": {
+      "seeDishes": "View our La carte",
       "seeMenus": "View Ours Menus"
     }
   },
@@ -21,5 +22,5 @@
     "subtitle": "News & Updates",
     "title": "Our News",
     "description": "Discover the latest from La Coquille: events, culinary creations, and seasonal inspirations. Follow our news to stay connected with everything happening at our restaurant and dive into the world of our cuisine throughout the seasons."
-}
+  }
 }

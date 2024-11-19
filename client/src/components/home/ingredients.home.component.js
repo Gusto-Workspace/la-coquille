@@ -28,14 +28,23 @@ export default function IngredientsHomeComponent() {
             >
               {t("ingredients.description")}
             </p>
+            <div className="flex gap-2">
+              <Link
+                href="/dishes"
+                style={{ fontFamily: "'Abel', sans-serif" }}
+                className="w-fit rounded-md px-6 py-3 bg-white text-darkBrown"
+              >
+                {t("ingredients.buttons.seeDishes")}
+              </Link>
 
-            <Link
-              href="/menus"
-              style={{ fontFamily: "'Abel', sans-serif" }}
-              className="w-fit px-6 py-3 bg-white text-darkBrown"
-            >
-              {t("ingredients.buttons.seeMenus")}
-            </Link>
+              <Link
+                href="/menus"
+                style={{ fontFamily: "'Abel', sans-serif" }}
+                className="w-fit rounded-md px-6 py-3 bg-white text-darkBrown"
+              >
+                {t("ingredients.buttons.seeMenus")}
+              </Link>
+            </div>
           </div>
         </div>
 

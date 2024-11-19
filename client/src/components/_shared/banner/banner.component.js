@@ -9,7 +9,7 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function BannerContactComponent(props) {
+export default function BannerComponent(props) {
   const { t } = useTranslation("");
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
