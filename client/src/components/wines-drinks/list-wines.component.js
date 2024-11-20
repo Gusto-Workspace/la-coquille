@@ -24,6 +24,7 @@ export default function ListWinesComponent() {
 
   function getAllVolumes(categories) {
     const allVolumes = new Set();
+
     categories?.forEach((category) => {
       category.wines.forEach((wine) =>
         wine.volumes.forEach((v) => allVolumes.add(v.volume))
@@ -34,8 +35,18 @@ export default function ListWinesComponent() {
         );
       });
     });
-    return Array.from(allVolumes).sort();
+
+    return Array.from(allVolumes)
+      .map((volume) => {
+        const [value, unit] = volume.split(" ");
+        const volumeInLiters =
+          unit === "CL" ? parseFloat(value) / 100 : parseFloat(value); // Conversion en litres
+        return { originalVolume: volume, volumeInLiters };
+      })
+      .sort((a, b) => a.volumeInLiters - b.volumeInLiters)
+      .map((v) => v.originalVolume);
   }
+
   useEffect(() => {
     setVolumes(getAllVolumes(categories));
   }, [categories]);
@@ -55,8 +66,10 @@ export default function ListWinesComponent() {
         {t("wines.description")}
       </p>
 
-      <div className="bg-cover bg-center bg-no-repeat rounded-lg drop-shadow-sm p-12 max-w-[1200px] mx-auto w-full flex flex-col gap-6"
-       style={{ backgroundImage: "url('/img/assets/wine.jpg')" }}>
+      <div
+        className="bg-cover bg-center bg-no-repeat rounded-lg drop-shadow-sm p-12 max-w-[1200px] mx-auto w-full flex flex-col gap-6"
+        style={{ backgroundImage: "url('/img/assets/wine.jpg')" }}
+      >
         {categories
           ?.filter(
             (category) =>
