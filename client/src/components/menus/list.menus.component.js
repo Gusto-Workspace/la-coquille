@@ -17,9 +17,30 @@ export default function ListMenusComponent() {
   }
 
   return (
-    <section className="py-24">
+    <section className="relative">
+      <img
+        src="/img/assets/4.webp"
+        draggable={false}
+        alt="ingredient"
+        className="max-w-[350px] absolute top-0 left-10 -z-10"
+      />
+
+      <img
+        src="/img/assets/8.webp"
+        draggable={false}
+        alt="ingredient"
+        className="max-w-[40%] absolute bottom-0 left-10 -z-10"
+      />
+
+      <img
+        src="/img/assets/7.webp"
+        draggable={false}
+        alt="ingredient"
+        className="max-w-[40%] absolute top-[60%] -translate-y-1/2 right-0 -z-10"
+      />
+
       <div
-        className="flex flex-col gap-48 max-w-[80%] mx-auto"
+        className="flex flex-col gap-24 max-w-[80%] mx-auto py-24 "
         style={{
           fontFamily: "'Abel', sans-serif",
         }}
@@ -30,7 +51,9 @@ export default function ListMenusComponent() {
             return (
               <div
                 key={i}
-                className="flex gap-24 items-center -z-10 bg-extraWhite"
+                className={`flex gap-24 items-center ${
+                  i % 2 === 0 ? "" : "flex-row-reverse"
+                }`}
               >
                 <div className="w-1/2 flex flex-col">
                   <h2
@@ -51,49 +74,62 @@ export default function ListMenusComponent() {
                   </div>
                 </div>
 
-                <div className=" w-1/2 pt-6 pb-12 px-6 rounded-md border-grey border border-opacity-20">
-                  <p
-                    className="text-center text-3xl mb-12 pb-6 border-b border-grey border-opacity-20"
-                    style={{ fontFamily: "'Dancing Script', cursive" }}
-                  >
-                    {menu.name}
-                  </p>
+                <div
+                  className="w-2/3 max-w-[5146px] aspect-[5146/6816] pt-6 pb-12 px-6 rounded-md bg-contain bg-center bg-no-repeat flex flex-col"
+                  style={{ backgroundImage: "url('/img/menu-1.jpg')" }}
+                >
+                  <div className="px-[80px] flex flex-col h-full justify-center py-12 text-extraWhite text-opacity-80">
+                    <div>
+                      <p
+                        className="font-DK_Crayonista text-center text-7xl pb-6 "
+                      >
+                        {menu.name}
+                      </p>
 
-                  <div className="relative flex justify-center">
-                    {menu.dishes.length > 0 ? (
-                      <div className=" text-center flex flex-col gap-12">
-                        {Object.entries(groupDishesByCategory(menu.dishes)).map(
-                          ([_, dishes], index) => (
-                            <div
-                              key={index}
-                              className="py-4 bg- z-10 relative bg-extraWhite"
-                            >
+                      <hr className="h-[1px] w-[30%] mb-6 mx-auto opacity-30" />
+                    </div>
+
+                    <div
+                      className="font-DK_Crayonista relative flex justify-center overflow-y-auto pt-6"
+                    >
+                      {menu.dishes.length > 0 ? (
+                        <div className=" text-center flex flex-col">
+                          {Object.entries(
+                            groupDishesByCategory(menu.dishes)
+                          ).map(([_, dishes], index) => (
+                            <div key={index} className="z-10 relative ">
                               {dishes.map((dish, dishIndex) => (
-                                <div key={dish._id} className="text-lg">
+                                <div key={dish._id} className="text-4xl text-balance">
                                   <p>{dish.name}</p>
                                   {dishIndex < dishes.length - 1 && (
-                                    <p className="text-sm opacity-50">ou</p>
+                                    <p className="text-2xl opacity-70">ou</p>
                                   )}
                                 </div>
                               ))}
+                              {index <
+                                Object.entries(
+                                  groupDishesByCategory(menu.dishes)
+                                ).length -
+                                  1 && (
+                                <div className="w-12 h-[1px] rounded-full bg-extraWhite mx-auto my-6 opacity-20" />
+                              )}
                             </div>
-                          )
-                        )}
-                        <hr className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[1px] h-full bg-grey opacity-20" />
-                      </div>
-                    ) : (
-                      <div className="w-1/2 text-center flex flex-col gap-6">
-                        {menu.combinations.map((combo, index) => (
-                          <div key={index} className="flex flex-col gap-2">
-                            <p className="flex items-center justify-center">
-                              {combo.categories.join(" - ")}
-                            </p>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="w-1/2 text-center flex flex-col gap-6">
+                          {menu.combinations.map((combo, index) => (
+                            <div key={index} className="flex flex-col gap-2">
+                              <p className="flex items-center justify-center">
+                                {combo.categories.join(" - ")}
+                              </p>
 
-                            <p>{combo.price} €</p>
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                              <p>{combo.price} €</p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>

@@ -22,7 +22,11 @@ module.exports = {
       desktop: "1024px",
       tablet: "768px",
     },
-    extend: {},
+    extend: {
+      fontFamily: {
+        DK_Crayonista: ['"DK Crayonista"', "cursive"],
+      },
+    },
   },
   plugins: [],
 };

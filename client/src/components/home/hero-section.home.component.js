@@ -34,7 +34,8 @@ export default function HeroSectionHomeComponent(props) {
       // Animate the mask size
       animation.to(maskElement, {
         ease: "power1.out",
-        WebkitMaskImage: "radial-gradient(circle, black 100%, transparent 100%)",
+        WebkitMaskImage:
+          "radial-gradient(circle, black 100%, transparent 100%)",
         maskImage: "radial-gradient(circle, black 100%, transparent 100%)",
         onUpdate: () => {
           // Force browser optimization for Safari
@@ -78,7 +79,7 @@ export default function HeroSectionHomeComponent(props) {
           WebkitMaskImage:
             "radial-gradient(circle, black 40%, transparent 40%)",
           maskImage: "radial-gradient(circle, black 40%, transparent 40%)",
-          transition: "transform 0.1s linear", // Smooth updates
+          transition: "transform 0.1s linear",
         }}
       />
 

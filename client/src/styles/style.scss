@@ -1,5 +1,14 @@
 @import "./variables";
 
+@font-face {
+  font-family: 'DK Crayonista';
+  src: url('/fonts/DK-Crayonista.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+
 .custom-scrollbar::-webkit-scrollbar {
   display: none;
 }

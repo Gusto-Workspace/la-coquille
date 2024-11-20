@@ -24,10 +24,10 @@ export default function MainWinesDrinksComponent() {
       hoverTab === "wines"
         ? winesRef
         : hoverTab === "drinks"
-        ? drinksRef
-        : activeTab === "wines"
-        ? winesRef
-        : drinksRef;
+          ? drinksRef
+          : activeTab === "wines"
+            ? winesRef
+            : drinksRef;
 
     if (ref.current) {
       const rect = ref.current.getBoundingClientRect();

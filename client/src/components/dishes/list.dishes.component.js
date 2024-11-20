@@ -54,7 +54,7 @@ export default function ListDishesComponent() {
                       <div className="flex gap-4">
                         <div className="text-xl flex flex-col">
                           <h3 className="leading-6 bg-extraWhite flex gap-3 pr-2">
-                           <span className="">{dish.name}</span> 
+                            <span className="">{dish.name}</span>
 
                             <span className="flex gap-1 relative">
                               {dish.vegan && (
@@ -170,6 +170,13 @@ export default function ListDishesComponent() {
             </div>
           ))}
       </div>
+
+      <img
+        src="/img/assets/11.webp"
+        draggable={false}
+        alt="ingredient"
+        className="max-w-[40%] mx-auto"
+      />
     </section>
   );
 }
