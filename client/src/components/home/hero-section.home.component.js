@@ -31,23 +31,16 @@ export default function HeroSectionHomeComponent(props) {
         },
       });
 
-      // Animate the mask size
       animation.to(maskElement, {
         ease: "power1.out",
-        WebkitMaskImage:
-          "radial-gradient(circle, black 100%, transparent 100%)",
-        maskImage: "radial-gradient(circle, black 100%, transparent 100%)",
-        onUpdate: () => {
-          // Force browser optimization for Safari
-          maskElement.style.willChange = "transform, opacity";
-        },
-        onComplete: () => {
-          // Reset will-change for better performance after animation
-          maskElement.style.willChange = "auto";
+        clipPath: "circle(75% at center)",
+
+        onStart: () => {
+          maskElement.style["transform"] = "translateZ(0)";
+          maskElement.style["backface-visibility"] = "hidden";
         },
       });
 
-      // Animate the logo scaling
       animation.to(
         logoElement,
         {
@@ -70,18 +63,23 @@ export default function HeroSectionHomeComponent(props) {
     >
       <div
         ref={maskRef}
-        className="absolute inset-0"
+        className="absolute inset-0 bg-black"
         style={{
-          backgroundImage: "url('/img/restaurant-1.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          filter: "brightness(0.7)",
-          WebkitMaskImage:
-            "radial-gradient(circle, black 40%, transparent 40%)",
-          maskImage: "radial-gradient(circle, black 40%, transparent 40%)",
-          transition: "transform 0.1s linear",
+          clipPath: "circle(30% at center)",
+          // transition: "clip-path 0.2s linear",
         }}
-      />
+      >
+        <div
+          style={{
+            backgroundImage: "url('/img/restaurant-1.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            filter: "brightness(0.7)",
+            width: "100%",
+            height: "100%",
+          }}
+        />
+      </div>
 
       <div className="absolute z-10">
         <div className="flex flex-col gap-2 text-white text-center">

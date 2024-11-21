@@ -116,7 +116,7 @@ export default function MainWinesDrinksComponent() {
       {activeTab === "drinks" && (
         <img
           className="max-w-[60%] mx-auto mt-16"
-          src="/img/drinks-1.jpeg"
+          src="/img/drinks-1.webp"
           draggable={false}
           alt="wine"
         />
