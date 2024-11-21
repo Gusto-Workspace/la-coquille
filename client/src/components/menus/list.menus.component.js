@@ -22,21 +22,21 @@ export default function ListMenusComponent() {
         src="/img/assets/4.webp"
         draggable={false}
         alt="ingredient"
-        className="max-w-[350px] absolute top-0 left-10 -z-10"
+        className="max-w-[20%] absolute top-10 left-20 -z-10"
       />
 
       <img
-        src="/img/assets/8.webp"
+        src="/img/assets/12.jpeg"
         draggable={false}
         alt="ingredient"
-        className="max-w-[40%] absolute bottom-0 left-10 -z-10"
+        className="max-w-[35%] absolute bottom-10 left-20 -z-10"
       />
 
       <img
-        src="/img/assets/7.webp"
+        src="/img/assets/13.jpeg"
         draggable={false}
         alt="ingredient"
-        className="max-w-[40%] absolute top-[60%] -translate-y-1/2 right-0 -z-10"
+        className="max-w-[20%] absolute top-[60%] -translate-y-1/2 right-20 -z-10"
       />
 
       <div
@@ -68,15 +68,15 @@ export default function ListMenusComponent() {
                   </p>
 
                   <div className="relative ml-[40px]">
-                    <p className="pl-[40px] text-lg">{menu?.description}</p>
+                    <p className="pl-[40px] text-lg text-balance">{menu?.description}</p>
 
                     <hr className="absolute w-[1px] h-full bg-brown opacity-20 top-0 " />
                   </div>
                 </div>
 
                 <div
-                  className="w-2/3 max-w-[5146px] aspect-[5146/6816] pt-6 pb-12 px-6 rounded-md bg-contain bg-center bg-no-repeat flex flex-col"
-                  style={{ backgroundImage: "url('/img/menu-1.jpg')" }}
+                  className="w-[60%] max-w-[5146px] aspect-[5146/6816] pt-6 pb-12 px-6 rounded-md bg-contain bg-center bg-no-repeat flex flex-col"
+                  style={{ backgroundImage: "url('/img/menu-1.webp')" }}
                 >
                   <div className="px-[80px] flex flex-col h-full justify-center py-12 text-extraWhite text-opacity-80">
                     <div>
@@ -97,7 +97,7 @@ export default function ListMenusComponent() {
                           {Object.entries(
                             groupDishesByCategory(menu.dishes)
                           ).map(([_, dishes], index) => (
-                            <div key={index} className="z-10 relative ">
+                            <div key={index} className="z-10 relative py-2">
                               {dishes.map((dish, dishIndex) => (
                                 <div key={dish._id} className="text-4xl text-balance">
                                   <p>{dish.name}</p>
@@ -111,7 +111,7 @@ export default function ListMenusComponent() {
                                   groupDishesByCategory(menu.dishes)
                                 ).length -
                                   1 && (
-                                <div className="w-12 h-[1px] rounded-full bg-extraWhite mx-auto my-6 opacity-20" />
+                                <div className="w-12 h-[1px] rounded-full bg-extraWhite mx-auto mt-6 mb-2 opacity-20" />
                               )}
                             </div>
                           ))}

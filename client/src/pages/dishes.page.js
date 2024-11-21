@@ -44,7 +44,7 @@ export default function DishesPage(props) {
           <BannerComponent
             title="dishes:titles.main"
             description="dishes:description"
-            imgUrl="la_carte.jpg"
+            imgUrl="la_carte.webp"
           />
           <ListDishesComponent />
           <FooterComponent />

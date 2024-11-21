@@ -44,7 +44,8 @@ export default function ContactPage(props) {
           <BannerComponent
             title="contact:titles.main"
             description="contact:description"
-            imgUrl="contact.jpg"
+            imgUrl="contact.jpeg"
+            opacity={true}
           />
           <FormContactComponent />
           <FooterComponent />

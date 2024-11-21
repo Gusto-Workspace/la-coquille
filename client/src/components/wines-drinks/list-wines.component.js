@@ -67,8 +67,8 @@ export default function ListWinesComponent() {
       </p>
 
       <div
-        className="bg-cover bg-center bg-no-repeat rounded-lg drop-shadow-sm p-12 max-w-[1200px] mx-auto w-full flex flex-col gap-6"
-        style={{ backgroundImage: "url('/img/assets/wine.jpg')" }}
+        className="bg-cover bg-center bg-no-repeat rounded-lg drop-shadow-sm p-12 max-w-[1024px] mx-auto w-full flex flex-col gap-6"
+        style={{ backgroundImage: "url('/img/assets/wine.jpeg')" }}
       >
         {categories
           ?.filter(
@@ -84,13 +84,10 @@ export default function ListWinesComponent() {
           .map((category, i) => (
             <div key={i} className="flex flex-col gap-4">
               {/* Titre de la catégorie */}
-              <div className="relative">
-                <h2 className="relative text-xl font-semibold uppercase text-center bg-white px-6 w-fit mx-auto z-20">
-                  {category.name}
-                </h2>
 
-                <hr className="bg-darkBlue absolute h-[1px] w-full top-1/2 -translate-y-1/2 z-10 opacity-50" />
-              </div>
+              <h2 className="text-4xl uppercase text-center px-6 w-fit mx-auto z-20">
+                {category.name}
+              </h2>
 
               {/* Volumes affichés en haut à droite */}
               <div className="text-right font-semibold">
@@ -170,15 +167,10 @@ export default function ListWinesComponent() {
                 .map((subCategory, k) => (
                   <div key={k} className="flex flex-col gap-4 my-2">
                     {/* Nom de la sous-catégorie */}
-                    <div className="relative">
-                      <h3 className="text-lg relative font-semibold bg-white px-4 w-fit mx-auto z-20">
-                        {subCategory.name}
-                      </h3>
 
-                      <hr className="bg-darkBlue absolute h-[1px] w-[350px] left-1/2 -translate-x-1/2 top-0 z-10 opacity-30" />
-
-                      <hr className="bg-darkBlue absolute h-[1px] w-[350px] left-1/2 -translate-x-1/2 bottom-0 z-10 opacity-30" />
-                    </div>
+                    <h3 className="text-2xl italic relative font-semibold px-4 w-fit mx-auto">
+                      {subCategory.name}
+                    </h3>
 
                     {Object.entries(
                       groupByAppellation(

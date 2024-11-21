@@ -57,13 +57,12 @@ export default function MainWinesDrinksComponent() {
 
   return (
     <section
-      className="py-24 relative"
+      className="pt-24 "
       style={{
         fontFamily: "'Abel', sans-serif",
       }}
     >
       <div className="relative flex justify-center gap-24 items-center mb-4">
-        {/* Only show the underline when position is ready */}
         {isReady && (
           <div
             className="absolute h-[2px] rounded-full bg-grey transition-all duration-300"
@@ -104,6 +103,15 @@ export default function MainWinesDrinksComponent() {
         {activeTab === "wines" && <ListWinesComponent />}
         {activeTab === "drinks" && <ListDrinksComponent />}
       </div>
+
+      {activeTab === "wines" && (
+        <img
+          className="max-w-[50%] mx-auto"
+          src="/img/wine-1.jpeg"
+          draggable={false}
+          alt="wine"
+        />
+      )}
     </section>
   );
 }

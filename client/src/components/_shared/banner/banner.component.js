@@ -67,7 +67,11 @@ export default function BannerComponent(props) {
           transform: "translateY(0%)",
           willChange: "transform",
         }}
-      ></div>
+      />
+
+      {props.opacity && (
+        <div className="absolute inset-0 bg-black opacity-20 pointer-events-none" />
+      )}
 
       <h1
         ref={titleRef}

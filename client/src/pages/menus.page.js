@@ -44,7 +44,7 @@ export default function MenusPage(props) {
           <BannerComponent
             title="menus:titles.main"
             description="menus:description"
-            imgUrl="menus.jpg"
+            imgUrl="menus.jpeg"
           />
           <ListMenusComponent />
           <FooterComponent />
