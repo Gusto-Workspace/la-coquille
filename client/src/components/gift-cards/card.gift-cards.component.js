@@ -13,8 +13,6 @@ export default function CardGiftCardsComponent(props) {
 
   const router = useRouter();
 
-  console.log(restaurantContext.restaurantData);
-
   return (
     <div
       style={{

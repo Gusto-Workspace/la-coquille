@@ -29,8 +29,6 @@ export default function BuyGiftCardsPage() {
     },
   });
 
-  const watchSendCopy = watch("sendCopy");
-
   useEffect(() => {
     if (restaurantContext?.restaurantData) {
       setIsDataLoaded(true);
@@ -189,7 +187,7 @@ export default function BuyGiftCardsPage() {
           </div>
 
           {/* Champ Votre email (affiché si la checkbox est cochée) */}
-          {watchSendCopy && (
+          {watch("sendCopy") && (
             <div>
               <label
                 htmlFor="yourEmail"
