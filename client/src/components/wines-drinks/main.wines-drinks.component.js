@@ -52,12 +52,12 @@ export default function MainWinesDrinksComponent() {
 
   useEffect(() => {
     updateUnderlinePosition();
-    setIsReady(true); // Ensure underline appears after the first calculation
+    setIsReady(true);
   }, []);
 
   return (
     <section
-      className="pt-24 "
+      className="pt-24"
       style={{
         fontFamily: "'Abel', sans-serif",
       }}
@@ -108,6 +108,15 @@ export default function MainWinesDrinksComponent() {
         <img
           className="max-w-[50%] mx-auto"
           src="/img/wine-1.jpeg"
+          draggable={false}
+          alt="wine"
+        />
+      )}
+
+      {activeTab === "drinks" && (
+        <img
+          className="max-w-[60%] mx-auto mt-16"
+          src="/img/drinks-1.jpeg"
           draggable={false}
           alt="wine"
         />

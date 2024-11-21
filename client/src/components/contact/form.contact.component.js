@@ -158,7 +158,7 @@ export default function FormContactCompnent() {
             {...register("name", { required: true })}
             placeholder={t("form.labels.name")}
             className={`p-3 rounded-md ${
-              errors.name ? "border-red border" : "border-white border"
+              errors.name ? "border-red border" : "border-grey border"
             }`}
             style={{
               fontFamily: "'Abel', sans-serif",
@@ -172,7 +172,7 @@ export default function FormContactCompnent() {
             })}
             placeholder={t("form.labels.email")}
             className={`p-3 rounded-md ${
-              errors.email ? "border-red border" : "border-white border"
+              errors.email ? "border-red border" : "border-grey border"
             }`}
             style={{
               fontFamily: "'Abel', sans-serif",
@@ -183,7 +183,7 @@ export default function FormContactCompnent() {
             {...register("phone", { required: true })}
             placeholder={t("form.labels.phone")}
             className={`p-3 rounded-md ${
-              errors.phone ? "border-red border" : "border-white border"
+              errors.phone ? "border-red border" : "border-grey border"
             }`}
             style={{
               fontFamily: "'Abel', sans-serif",
@@ -194,7 +194,7 @@ export default function FormContactCompnent() {
             {...register("message", { required: true })}
             placeholder={t("form.labels.message")}
             className={`p-3 rounded-md h-32 text-darkBlue resize-none ${
-              errors.message ? "border-red border" : "border-white border"
+              errors.message ? "border-red border" : "border-grey border"
             }`}
             style={{
               fontFamily: "'Abel', sans-serif",
@@ -203,7 +203,7 @@ export default function FormContactCompnent() {
 
           <button
             type="submit"
-            className="bg-white p-3 rounded-md text-grey desktop:w-fit uppercase"
+            className="bg-grey p-3 rounded-md text-white desktop:w-fit uppercase"
             disabled={isSubmitting || isSubmitted}
             style={{
               fontFamily: "'Abel', sans-serif",

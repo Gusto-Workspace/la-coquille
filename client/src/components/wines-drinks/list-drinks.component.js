@@ -16,7 +16,14 @@ export default function ListDrinksComponent() {
         {t("drinks.description")}
       </p>
 
-      <div className="bg-white rounded-lg drop-shadow-sm p-12 max-w-[800px] mx-auto w-full flex flex-col gap-6">
+      <div
+  className="bg-cover bg-center bg-no-repeat rounded-lg drop-shadow-sm p-12 max-w-[800px] mx-auto w-full flex flex-col gap-6 shadow-xl"
+  style={{
+    backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('/img/assets/bg-drinks.webp')`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  }}
+>
         {restaurantContext?.restaurantData?.drink_categories
           .filter(
             (category) =>
@@ -30,13 +37,9 @@ export default function ListDrinksComponent() {
           )
           .map((category, i) => (
             <div key={i} className="flex flex-col gap-4">
-              <div className="relative">
-                <h2 className="relative text-xl font-semibold uppercase text-center bg-white px-6 w-fit mx-auto z-20">
-                  {category.name}
-                </h2>
-
-                <hr className="bg-darkBlue absolute h-[1px] w-full top-1/2 -translate-y-1/2 z-10 opacity-50" />
-              </div>
+              <h2 className="text-2xl font-semibold uppercase text-center px-6 w-fit mx-auto z-20">
+                {category.name}
+              </h2>
 
               {/* Affichage des boissons dans la catégorie principale */}
               <div className="flex flex-col gap-2">
@@ -45,7 +48,7 @@ export default function ListDrinksComponent() {
                   .map((drink, j) => (
                     <div key={j} className="flex items-center justify-between">
                       <div className="flex flex-col">
-                        <h3 className="text-md font-semibold">{drink.name}</h3>
+                        <h3 className="text-lg font-semibold">{drink.name}</h3>
                         <p className="text-sm opacity-50">
                           {drink.description}
                         </p>
@@ -77,15 +80,9 @@ export default function ListDrinksComponent() {
                 )
                 .map((subCategory, k) => (
                   <div key={k} className="flex flex-col gap-4 mt-4">
-                    <div className="relative">
-                      <h3 className="relative font-semibold bg-white px-4 w-fit mx-auto z-20">
-                        {subCategory.name}
-                      </h3>
-
-                      <hr className="bg-darkBlue absolute h-[1px] w-[350px] left-1/2 -translate-x-1/2 top-0 z-10 opacity-30" />
-
-                      <hr className="bg-darkBlue absolute h-[1px] w-[350px] left-1/2 -translate-x-1/2 bottom-0 z-10 opacity-30" />
-                    </div>
+                    <h3 className="text-xl font-semibold px-4 w-fit mx-auto z-20">
+                      {subCategory.name}
+                    </h3>
 
                     {/* Affichage des boissons dans la sous-catégorie */}
                     <div className="flex flex-col gap-2">
@@ -97,7 +94,7 @@ export default function ListDrinksComponent() {
                             className="flex items-center justify-between"
                           >
                             <div className="flex flex-col">
-                              <h4 className="text-md font-semibold">
+                              <h4 className="text-lg font-semibold">
                                 {drink.name}
                               </h4>
 

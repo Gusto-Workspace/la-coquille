@@ -67,8 +67,8 @@ export default function ListWinesComponent() {
       </p>
 
       <div
-        className="bg-cover bg-center bg-no-repeat rounded-lg drop-shadow-sm p-12 max-w-[1024px] mx-auto w-full flex flex-col gap-6"
-        style={{ backgroundImage: "url('/img/assets/wine.jpeg')" }}
+        className="bg-cover bg-center bg-no-repeat rounded-lg drop-shadow-sm shadow-xl p-12 max-w-[1024px] mx-auto w-full flex flex-col gap-6"
+        style={{ backgroundImage: "url('/img/assets/wine.webp')" }}
       >
         {categories
           ?.filter(

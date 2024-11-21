@@ -68,7 +68,9 @@ export default function ListMenusComponent() {
                   </p>
 
                   <div className="relative ml-[40px]">
-                    <p className="pl-[40px] text-lg text-balance">{menu?.description}</p>
+                    <p className="pl-[40px] text-lg text-balance">
+                      {menu?.description}
+                    </p>
 
                     <hr className="absolute w-[1px] h-full bg-brown opacity-20 top-0 " />
                   </div>
@@ -78,20 +80,16 @@ export default function ListMenusComponent() {
                   className="w-[60%] max-w-[5146px] aspect-[5146/6816] pt-6 pb-12 px-6 rounded-md bg-contain bg-center bg-no-repeat flex flex-col"
                   style={{ backgroundImage: "url('/img/menu-1.webp')" }}
                 >
-                  <div className="px-[80px] flex flex-col h-full justify-center py-12 text-extraWhite text-opacity-80">
+                  <div className="pl-[85px] pr-[80px] flex flex-col h-full justify-center py-12 text-extraWhite text-opacity-80">
                     <div>
-                      <p
-                        className="font-DK_Crayonista text-center text-7xl pb-6 "
-                      >
+                      <p className="font-DK_Crayonista text-center text-7xl pb-6 text-balance">
                         {menu.name}
                       </p>
 
-                      <hr className="h-[1px] w-[30%] mb-6 mx-auto opacity-30" />
+                      <hr className="h-[1px] w-[30%] mb-3 mx-auto opacity-30" />
                     </div>
 
-                    <div
-                      className="font-DK_Crayonista relative flex justify-center overflow-y-auto pt-6"
-                    >
+                    <div className="font-DK_Crayonista relative flex justify-center overflow-y-auto pt-6">
                       {menu.dishes.length > 0 ? (
                         <div className=" text-center flex flex-col">
                           {Object.entries(
@@ -99,8 +97,15 @@ export default function ListMenusComponent() {
                           ).map(([_, dishes], index) => (
                             <div key={index} className="z-10 relative py-2">
                               {dishes.map((dish, dishIndex) => (
-                                <div key={dish._id} className="text-4xl text-balance">
-                                  <p>{dish.name}</p>
+                                <div
+                                  key={dish._id}
+                                  className="text-4xl text-balance"
+                                >
+                                  <p>
+                                    {dish.name
+                                      .replace(/« /g, "«\u00A0")
+                                      .replace(/ »/g, "\u00A0»")}
+                                  </p>
                                   {dishIndex < dishes.length - 1 && (
                                     <p className="text-2xl opacity-70">ou</p>
                                   )}
