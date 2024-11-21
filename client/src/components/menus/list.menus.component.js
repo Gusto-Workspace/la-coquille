@@ -77,10 +77,10 @@ export default function ListMenusComponent() {
                 </div>
 
                 <div
-                  className="w-[60%] max-w-[5146px] aspect-[5146/6816] pt-6 pb-12 px-6 rounded-md bg-contain bg-center bg-no-repeat flex flex-col"
+                  className="w-[60%] max-w-[5146px] max-h-[90vh] aspect-[5146/6816] pt-6 pb-12 px-6 rounded-md bg-contain bg-center bg-no-repeat flex flex-col"
                   style={{ backgroundImage: "url('/img/menu-1.webp')" }}
                 >
-                  <div className="pl-[85px] pr-[80px] flex flex-col h-full justify-center py-12 text-extraWhite text-opacity-80">
+                  <div className="pl-[45px] pr-[40px] flex flex-col h-full justify-center py-12 text-extraWhite text-opacity-80">
                     <div>
                       <p className="font-DK_Crayonista text-center text-7xl pb-6 text-balance">
                         {menu.name}
@@ -107,7 +107,9 @@ export default function ListMenusComponent() {
                                       .replace(/ »/g, "\u00A0»")}
                                   </p>
                                   {dishIndex < dishes.length - 1 && (
-                                    <p className="text-2xl opacity-70">ou</p>
+                                    <p className="text-2xl opacity-70 leading-5">
+                                      ou
+                                    </p>
                                   )}
                                 </div>
                               ))}
