@@ -53,7 +53,7 @@ export default function BuyGiftCardsPage() {
     return <p>Chargement des données...</p>;
   }
 
-  const onSubmit = (data) => {
+  function onSubmit(data) {
     alert(
       `Carte cadeau validée pour ${data.beneficiary}.\nEmail bénéficiaire : ${
         data.beneficiaryEmail
@@ -63,7 +63,7 @@ export default function BuyGiftCardsPage() {
         data.sendCopy ? "Oui" : "Non"
       }.\nVotre email : ${data.yourEmail || "Non renseigné"}`
     );
-  };
+  }
 
   return (
     <div className="flex flex-col tablet:flex-row gap-8 p-6">
@@ -153,12 +153,12 @@ export default function BuyGiftCardsPage() {
             >
               Ajouter un commentaire sur la carte
             </label>
-            <input
+            <textarea
               id="comment"
               type="text"
               {...register("comment")}
               placeholder="Votre commentaire"
-              className="border rounded-lg w-full p-2 text-lg"
+              className="border rounded-lg w-full p-2 text-lg resize-none"
             />
           </div>
 
