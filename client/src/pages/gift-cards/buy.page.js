@@ -6,8 +6,11 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 // COMPONENTS
 import NavComponent from "@/components/_shared/nav/nav.component";
+import BannerComponent from "@/components/_shared/banner/banner.component";
+import FooterComponent from "@/components/_shared/footer/footer.component";
+import BuyGiftCardsComponent from "@/components/gift-cards/buy.gift-cards.component";
 
-export default function GiftCardsPage(props) {
+export default function BuyGiftCardsPage(props) {
   const title = "La Coquille - Restaurant";
   const description =
     "La Coquille est un restaurant gastronomique à Concarneau en Bretagne dans le Finistère. Le restaurant est situé sur les quais en face de la Ville Close.";
@@ -38,15 +41,13 @@ export default function GiftCardsPage(props) {
         <NavComponent />
 
         <div className="mt-[62px]">
-          <div className="my-12">test</div>
-          <div className="my-12">test</div>
-          <div className="my-12">test</div>
-          <div className="my-12">test</div>
-          <div className="my-12">test</div>
-          <div className="my-12">test</div>
-          <div className="my-12">test</div>
-          <div className="my-12">test</div>
-          <div className="my-12">test</div>
+          <BannerComponent
+            title="gifts:titles.main"
+            description="gifts:descriptions.main"
+            imgUrl="gifts.webp"
+          />
+          <BuyGiftCardsComponent />
+          <FooterComponent />
         </div>
       </div>
     </>
