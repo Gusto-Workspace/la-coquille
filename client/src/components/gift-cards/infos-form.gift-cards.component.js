@@ -31,21 +31,54 @@ export default function InfosFormGiftCardsComponent({
         >
           Bénéficiaire
         </label>
+
+        <div className="flex gap-4">
+          <input
+            id="beneficiary"
+            type="text"
+            placeholder="Prénom du bénéficiaire"
+            {...register("beneficiaryFirstName", { required: true })}
+            className={`border rounded-lg w-full p-2 text-lg max-w-56 ${
+              errors.beneficiary ? "border-red" : ""
+            }`}
+            onChange={handleFieldChange("beneficiaryFirstName")}
+          />
+          <input
+            id="beneficiary"
+            type="text"
+            placeholder="Prénom du bénéficiaire"
+            {...register("beneficiaryLastName", { required: true })}
+            className={`border rounded-lg w-full p-2 text-lg max-w-56 ${
+              errors.beneficiary ? "border-red" : ""
+            }`}
+            onChange={handleFieldChange("beneficiaryLastName")}
+          />
+        </div>
+      </div>
+
+      <div>
+        <label
+          htmlFor="beneficiary"
+          className="block text-lg font-semibold mb-2"
+        >
+          De la part de
+        </label>
+
         <input
           id="beneficiary"
           type="text"
-          placeholder="Nom du bénéficiaire"
-          {...register("beneficiary", { required: true })}
-          className={`border rounded-lg w-full p-2 text-lg max-w-56 ${
+          placeholder="Écrire ..."
+          {...register("sender", { required: true })}
+          className={`border rounded-lg w-full p-2 text-lg max-w-[465px] ${
             errors.beneficiary ? "border-red" : ""
           }`}
-          onChange={handleFieldChange("beneficiary")}
+          onChange={handleFieldChange("sender")}
         />
       </div>
 
       {/* Champ Email du Bénéficiaire */}
       <div>
-        <label htmlFor="sendEmail" className="block text-lg font-semibold">
+        <label htmlFor="sendEmail" className="block text-lg font-semibold mb-2">
           À quelle adresse mail voulez-vous envoyer la carte ?
         </label>
         <input

@@ -18,7 +18,9 @@ export default function BuyGiftCardsPage() {
   const [giftCard, setGiftCard] = useState(null);
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
-    beneficiary: "",
+    beneficiaryFirstName: "",
+    beneficiaryLastName: "",
+    sender: "",
     sendEmail: "",
     comment: "",
     hidePrice: false,
@@ -43,14 +45,14 @@ export default function BuyGiftCardsPage() {
     return <p>Chargement des données...</p>;
   }
 
-  const handleFormSubmit = (data) => {
+  function handleFormSubmit(data) {
     console.log("Données soumises :", data);
     setCurrentStep(2); // Passer à l'étape Paiement
-  };
+  }
 
-  const handleFormChange = (updatedData) => {
+  function handleFormChange(updatedData) {
     setFormData((prev) => ({ ...prev, ...updatedData }));
-  };
+  }
 
   const renderStepContent = () => {
     switch (currentStep) {
@@ -68,7 +70,8 @@ export default function BuyGiftCardsPage() {
             <PaymentFormGiftCardsComponent
               amount={giftCard.value}
               onPaymentSuccess={() => setCurrentStep(3)}
-              formData={formData} // Garde les données actuelles
+              formData={formData}
+              giftId={giftCard._id}
             />
           </Elements>
         );
@@ -104,32 +107,35 @@ export default function BuyGiftCardsPage() {
             alt="logo"
             className="max-w-[30%]"
           />
-          
+
           <div className="flex flex-col items-center justify-center my-auto">
             <h1 className="text-2xl font-bold mb-2">Carte cadeau</h1>
 
             {!formData.hidePrice && (
               <p className="text-lg">{`${giftCard.value} €`}</p>
             )}
-            
+
             {giftCard.description && (
               <p className="text-lg">{giftCard.description}</p>
             )}
 
             <p className="text-lg ">
               <span className="text-sm italic">Pour :</span>{" "}
-              <span>{formData.beneficiary}</span>
+              <span>
+                {formData.beneficiaryFirstName} {formData.beneficiaryLastName}
+              </span>
             </p>
+
             {formData.comment && (
-              <p className="text-lg ">
-                <span className="text-sm italic">Message :</span>{" "}
-                <span>{formData.comment}</span>
+              <p className="text-lg">
+                <span>"{formData.comment}"</span>
               </p>
             )}
-            {formData.sendEmail && (
+
+            {formData.sender && (
               <p className="text-lg ">
-                <span className="font-semibold">Email :</span>{" "}
-                {formData.sendEmail}
+                <span className="text-sm italic">De la part de :</span>{" "}
+                <span>{formData.sender}</span>
               </p>
             )}
           </div>
@@ -145,7 +151,7 @@ export default function BuyGiftCardsPage() {
               className="flex items-center text-center relative justify-between w-full mx-auto"
             >
               <span
-                className={`text-center bg-white z-20 w-fit mx-auto px-4 ${
+                className={`text-center bg-white z-10 w-fit mx-auto px-4 ${
                   currentStep > index
                     ? "text-grey"
                     : currentStep === index + 1
@@ -168,7 +174,7 @@ export default function BuyGiftCardsPage() {
                       width: currentStep > index + 1 ? "100%" : "0%",
                       transition: "width 0.5s ease-in-out",
                     }}
-                    className={`absolute top-1/2 transform -translate-y-1/2 left-1/2 h-[2px] bg-grey z-10`}
+                    className={`absolute top-1/2 transform -translate-y-1/2 left-1/2 h-[2px] bg-grey z-[9]`}
                   />
                   <div
                     style={{
