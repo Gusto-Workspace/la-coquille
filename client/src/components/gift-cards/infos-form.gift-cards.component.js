@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 
 export default function InfosFormGiftCardsComponent({
   onSubmit,
@@ -8,9 +8,10 @@ export default function InfosFormGiftCardsComponent({
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm({
-    defaultValues: formData,
+    defaultValues: formData, // Utilisation des données actuelles pour pré-remplir les champs
   });
 
   const handleFieldChange = (fieldName) => (e) => {
@@ -33,9 +34,9 @@ export default function InfosFormGiftCardsComponent({
         <input
           id="beneficiary"
           type="text"
-          {...register("beneficiary", { required: true })}
           placeholder="Nom du bénéficiaire"
-          className={`border rounded-lg w-full p-2 text-lg ${
+          {...register("beneficiary", { required: true })}
+          className={`border rounded-lg w-full p-2 text-lg max-w-56 ${
             errors.beneficiary ? "border-red" : ""
           }`}
           onChange={handleFieldChange("beneficiary")}
@@ -44,21 +45,18 @@ export default function InfosFormGiftCardsComponent({
 
       {/* Champ Email du Bénéficiaire */}
       <div>
-        <label
-          htmlFor="beneficiaryEmail"
-          className="block text-lg font-semibold"
-        >
-          À quelle adresse mail voulez vous envoyer la carte ?
+        <label htmlFor="sendEmail" className="block text-lg font-semibold">
+          À quelle adresse mail voulez-vous envoyer la carte ?
         </label>
         <input
-          id="beneficiaryEmail"
+          id="sendEmail"
           type="email"
-          {...register("sendEmail", { required: true })}
           placeholder="Adresse mail"
+          {...register("sendEmail", { required: true })}
           className={`border rounded-lg w-full p-2 text-lg ${
-            errors.beneficiaryEmail ? "border-red" : ""
+            errors.sendEmail ? "border-red" : ""
           }`}
-          onChange={handleFieldChange("beneficiaryEmail")}
+          onChange={handleFieldChange("sendEmail")}
         />
       </div>
 
@@ -69,8 +67,8 @@ export default function InfosFormGiftCardsComponent({
         </label>
         <textarea
           id="comment"
-          {...register("comment")}
           placeholder="Votre commentaire"
+          {...register("comment")}
           className="border rounded-lg w-full p-2 text-lg resize-none"
           onChange={handleFieldChange("comment")}
         />
@@ -106,27 +104,45 @@ export default function InfosFormGiftCardsComponent({
       </div>
 
       {/* Champ Votre email */}
-      {formData.sendCopy && ( // Utilisation de formData pour garantir l'affichage correct
+      {formData.sendCopy && (
         <div>
+          <label
+            htmlFor="copyEmail"
+            className="block text-lg font-semibold mb-2"
+          >
+            Adresse email pour copie
+          </label>
           <input
-            id="yourEmail"
+            id="copyEmail"
             type="email"
-            {...register("copyEmail", { required: true })}
             placeholder="Adresse email"
+            {...register("copyEmail", { required: true })}
             className={`border rounded-lg w-full p-2 text-lg ${
-              errors.yourEmail ? "border-red" : ""
+              errors.copyEmail ? "border-red" : ""
             }`}
-            onChange={handleFieldChange("yourEmail")}
+            onChange={handleFieldChange("copyEmail")}
           />
         </div>
       )}
 
+      <div className="flex flex-col gap-2">
+        <p className="underline">Important</p>
+
+        <p className="italic">
+          La carte cadeau a une durée de validité de 6 mois. Une fois le
+          paiement effectué, la carte cadeau sera envoyée par mail à l'adresse
+          renseignée ci-dessus. Cet email contiendra également un code unique à
+          transmettre directement au restaurant le jour d'utiliation de la carte
+          cadeau
+        </p>
+      </div>
+
       {/* Bouton Valider */}
       <button
         type="submit"
-        className="w-full py-2 px-4 rounded-lg text-white text-lg bg-grey"
+        className="w-full py-2 px-4 rounded-lg text-extraWhite text-lg bg-grey"
       >
-        Passer au paiement
+        Procéder au paiement
       </button>
     </form>
   );

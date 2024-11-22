@@ -68,6 +68,7 @@ export default function BuyGiftCardsPage() {
             <PaymentFormGiftCardsComponent
               amount={giftCard.value}
               onPaymentSuccess={() => setCurrentStep(3)}
+              formData={formData} // Garde les données actuelles
             />
           </Elements>
         );
@@ -87,73 +88,96 @@ export default function BuyGiftCardsPage() {
 
   return (
     <div
-      className="flex flex-col tablet:flex-row gap-8 p-6"
+      className="flex items-center justify-between gap-12 py-24 max-w-[90%] mx-auto"
       style={{
         fontFamily: "'Abel', sans-serif",
       }}
     >
-      {/* Informations sur la carte cadeau */}
-      <div className="flex-1 border rounded-lg p-6 bg-white shadow-md">
-        <h1 className="text-2xl font-bold mb-4">Carte cadeau</h1>
-        {giftCard.description && (
-          <p className="text-lg mb-2">
-            <span className="font-semibold">Description :</span>{" "}
-            {giftCard.description}
-          </p>
-        )}
+      <div
+        className="w-[100%] h-auto bg-center bg-cover flex-grow aspect-square flex items-center"
+        style={{ backgroundImage: "url(/img/assets/bg-card.jpeg)" }}
+      >
+        <div className="rounded-lg p-6 flex flex-col items-center bg-extraWhite aspect-[16/9] max-w-[70%] mx-auto">
+          <img
+            src="/img/logo-noir.png"
+            draggable={false}
+            alt="logo"
+            className="max-w-[30%]"
+          />
+          
+          <div className="flex flex-col items-center justify-center my-auto">
+            <h1 className="text-2xl font-bold mb-2">Carte cadeau</h1>
 
-        {!formData.hidePrice && (
-          <p className="text-lg mb-2">
-            <span className="font-semibold">Valeur :</span>{" "}
-            {`${giftCard.value} €`}
-          </p>
-        )}
-        <p className="text-lg mb-2">
-          <span className="font-semibold">Pour :</span>{" "}
-          {formData.beneficiary || "Non renseigné"}
-        </p>
-        {formData.comment && (
-          <p className="text-lg mb-2">
-            <span className="font-semibold">Commentaire :</span>{" "}
-            {formData.comment}
-          </p>
-        )}
-        {formData.sendCopy && formData.yourEmail && (
-          <p className="text-lg mb-2">
-            <span className="font-semibold">Email copie :</span>{" "}
-            {formData.yourEmail}
-          </p>
-        )}
+            {!formData.hidePrice && (
+              <p className="text-lg">{`${giftCard.value} €`}</p>
+            )}
+            
+            {giftCard.description && (
+              <p className="text-lg">{giftCard.description}</p>
+            )}
+
+            <p className="text-lg ">
+              <span className="text-sm italic">Pour :</span>{" "}
+              <span>{formData.beneficiary}</span>
+            </p>
+            {formData.comment && (
+              <p className="text-lg ">
+                <span className="text-sm italic">Message :</span>{" "}
+                <span>{formData.comment}</span>
+              </p>
+            )}
+            {formData.sendEmail && (
+              <p className="text-lg ">
+                <span className="font-semibold">Email :</span>{" "}
+                {formData.sendEmail}
+              </p>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* Étapes */}
-      <div className="flex-1 border rounded-lg p-6 bg-white shadow-md">
-        <div className="flex items-center mb-6">
+      <div className="w-full rounded-lg p-12 bg-white shadow-md">
+        <div className="flex items-center mb-6 mx-auto text-center">
           {["Informations", "Paiement", "Validation"].map((step, index) => (
-            <div key={index} className="flex items-center relative justify-between w-full">
+            <div
+              key={index}
+              className="flex items-center text-center relative justify-between w-full mx-auto"
+            >
               <span
-                className={`text-center w-full ${
-                  currentStep === index + 1
-                    ? "text-grey font-bold"
-                    : "text-grey text-opacity-50"
+                className={`text-center bg-white z-20 w-fit mx-auto px-4 ${
+                  currentStep > index
+                    ? "text-grey"
+                    : currentStep === index + 1
+                      ? "text-grey font-bold"
+                      : "text-grey text-opacity-50"
                 } ${currentStep === 2 && index === 0 ? "cursor-pointer" : ""}`}
                 onClick={() => {
                   if (currentStep === 2 && index === 0) {
-                    setCurrentStep(1); // Retour à l'étape 1 depuis l'étape 2
+                    setCurrentStep(1);
                   }
                 }}
               >
                 {step}
               </span>
-              
+
               {index < 2 && (
-                <div
-                  className={`absolute top-1/2 transform -translate-y-1/2 left-1/2 w-full h-[2px] transition-all duration-200 ${
-                    currentStep > index + 1
-                      ? "bg-grey"
-                      : "bg-extraWhite"
-                  }`}
-                ></div>
+                <div>
+                  <div
+                    style={{
+                      width: currentStep > index + 1 ? "100%" : "0%",
+                      transition: "width 0.5s ease-in-out",
+                    }}
+                    className={`absolute top-1/2 transform -translate-y-1/2 left-1/2 h-[2px] bg-grey z-10`}
+                  />
+                  <div
+                    style={{
+                      width: "100%",
+                      transition: "width 0.5s ease-in-out",
+                    }}
+                    className={`absolute top-1/2 transform -translate-y-1/2 left-1/2 h-[2px] bg-extraWhite`}
+                  />
+                </div>
               )}
             </div>
           ))}
