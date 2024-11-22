@@ -1,9 +1,14 @@
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 
-// CONTEXT
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
 import { GlobalContext } from "@/contexts/global.context";
+import InfosFormGiftCardsComponent from "./infos-form.gift-cards.component";
+import PaymentFormGiftCardsComponent from "./payment-form.gift-cards.component";
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
 
 export default function BuyGiftCardsPage() {
   const router = useRouter();
@@ -11,64 +16,85 @@ export default function BuyGiftCardsPage() {
   const { restaurantContext } = useContext(GlobalContext);
 
   const [giftCard, setGiftCard] = useState(null);
-  const [isDataLoaded, setIsDataLoaded] = useState(false);
-
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      beneficiary: "",
-      beneficiaryEmail: "",
-      comment: "",
-      hidePrice: false,
-      sendCopy: false,
-      yourEmail: "",
-    },
+  const [currentStep, setCurrentStep] = useState(1);
+  const [formData, setFormData] = useState({
+    beneficiary: "",
+    sendEmail: "",
+    comment: "",
+    hidePrice: false,
+    sendCopy: false,
+    copyEmail: "",
   });
 
   useEffect(() => {
     if (restaurantContext?.restaurantData) {
-      setIsDataLoaded(true);
-
-      if (id) {
-        const foundGiftCard = restaurantContext.restaurantData.giftCards.find(
-          (card) => card._id === id
-        );
-
-        if (foundGiftCard) {
-          setGiftCard(foundGiftCard);
-        } else if (isDataLoaded) {
-          router.push("/gift-cards");
-        }
+      const foundGiftCard = restaurantContext.restaurantData.giftCards.find(
+        (card) => card._id === id
+      );
+      if (foundGiftCard) {
+        setGiftCard(foundGiftCard);
+      } else {
+        router.push("/gift-cards");
       }
     }
-  }, [id, restaurantContext, router, isDataLoaded]);
+  }, [id, restaurantContext, router]);
 
-  if (!isDataLoaded || !giftCard) {
+  if (!giftCard) {
     return <p>Chargement des données...</p>;
   }
 
-  function onSubmit(data) {
-    alert(
-      `Carte cadeau validée pour ${data.beneficiary}.\nEmail bénéficiaire : ${
-        data.beneficiaryEmail
-      }.\nCommentaire : ${
-        data.comment || "Aucun"
-      }.\nPrix ${data.hidePrice ? "masqué" : "visible"}.\nRecevoir une copie : ${
-        data.sendCopy ? "Oui" : "Non"
-      }.\nVotre email : ${data.yourEmail || "Non renseigné"}`
-    );
-  }
+  const handleFormSubmit = (data) => {
+    console.log("Données soumises :", data);
+    setCurrentStep(2); // Passer à l'étape Paiement
+  };
+
+  const handleFormChange = (updatedData) => {
+    setFormData((prev) => ({ ...prev, ...updatedData }));
+  };
+
+  const renderStepContent = () => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <InfosFormGiftCardsComponent
+            onSubmit={handleFormSubmit}
+            onChange={handleFormChange}
+            formData={formData}
+          />
+        );
+      case 2:
+        return (
+          <Elements stripe={stripePromise}>
+            <PaymentFormGiftCardsComponent
+              amount={giftCard.value}
+              onPaymentSuccess={() => setCurrentStep(3)}
+            />
+          </Elements>
+        );
+      case 3:
+        return (
+          <div>
+            <p>
+              Votre achat de carte cadeau a été validé et la carte a été envoyée
+              par mail !
+            </p>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
-    <div className="flex flex-col tablet:flex-row gap-8 p-6">
-      {/* Partie gauche : Informations sur la carte cadeau */}
+    <div
+      className="flex flex-col tablet:flex-row gap-8 p-6"
+      style={{
+        fontFamily: "'Abel', sans-serif",
+      }}
+    >
+      {/* Informations sur la carte cadeau */}
       <div className="flex-1 border rounded-lg p-6 bg-white shadow-md">
         <h1 className="text-2xl font-bold mb-4">Carte cadeau</h1>
-
         {giftCard.description && (
           <p className="text-lg mb-2">
             <span className="font-semibold">Description :</span>{" "}
@@ -76,145 +102,63 @@ export default function BuyGiftCardsPage() {
           </p>
         )}
 
-        {!watch("hidePrice") && (
+        {!formData.hidePrice && (
           <p className="text-lg mb-2">
             <span className="font-semibold">Valeur :</span>{" "}
             {`${giftCard.value} €`}
           </p>
         )}
-
         <p className="text-lg mb-2">
           <span className="font-semibold">Pour :</span>{" "}
-          {watch("beneficiary") || "Non renseigné"}
+          {formData.beneficiary || "Non renseigné"}
         </p>
-
-        {watch("comment") && (
+        {formData.comment && (
           <p className="text-lg mb-2">
             <span className="font-semibold">Commentaire :</span>{" "}
-            {watch("comment")}
+            {formData.comment}
           </p>
         )}
-
-        <p className="text-lg mb-2">
-          <span className="font-semibold">ID :</span> {giftCard._id}
-        </p>
+        {formData.sendCopy && formData.yourEmail && (
+          <p className="text-lg mb-2">
+            <span className="font-semibold">Email copie :</span>{" "}
+            {formData.yourEmail}
+          </p>
+        )}
       </div>
 
-      {/* Partie droite : Formulaire */}
+      {/* Étapes */}
       <div className="flex-1 border rounded-lg p-6 bg-white shadow-md">
-        <h2 className="text-xl font-bold mb-4">Informations</h2>
-
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* Champ Bénéficiaire */}
-          <div>
-            <label
-              htmlFor="beneficiary"
-              className="block text-lg font-semibold mb-2"
-            >
-              Bénéficiaire
-            </label>
-            <input
-              id="beneficiary"
-              type="text"
-              {...register("beneficiary", { required: true })}
-              placeholder="Nom du bénéficiaire"
-              className={`border rounded-lg w-full p-2 text-lg ${
-                errors.beneficiary ? "border-red" : ""
-              }`}
-            />
-          </div>
-
-          {/* Champ Email du Bénéficiaire */}
-          <div>
-            <label
-              htmlFor="beneficiaryEmail"
-              className="block text-lg font-semibold mb-2"
-            >
-              Adresse email du bénéficiaire
-            </label>
-            <input
-              id="beneficiaryEmail"
-              type="email"
-              {...register("beneficiaryEmail", { required: true })}
-              placeholder="Email du bénéficiaire"
-              className={`border rounded-lg w-full p-2 text-lg ${
-                errors.beneficiaryEmail ? "border-red" : ""
-              }`}
-            />
-          </div>
-
-          {/* Champ Commentaire */}
-          <div>
-            <label
-              htmlFor="comment"
-              className="block text-lg font-semibold mb-2"
-            >
-              Ajouter un commentaire sur la carte
-            </label>
-            <textarea
-              id="comment"
-              type="text"
-              {...register("comment")}
-              placeholder="Votre commentaire"
-              className="border rounded-lg w-full p-2 text-lg resize-none"
-            />
-          </div>
-
-          {/* Checkbox Masquer le prix */}
-          <div className="flex items-center gap-2">
-            <input
-              id="hidePrice"
-              type="checkbox"
-              {...register("hidePrice")}
-              className="w-5 h-5"
-            />
-            <label htmlFor="hidePrice" className="text-lg">
-              Masquer le prix lors de l'envoi du bon cadeau
-            </label>
-          </div>
-
-          {/* Checkbox Recevoir une copie */}
-          <div className="flex items-center gap-2">
-            <input
-              id="sendCopy"
-              type="checkbox"
-              {...register("sendCopy")}
-              className="w-5 h-5"
-            />
-            <label htmlFor="sendCopy" className="text-lg">
-              Recevoir une copie du mail
-            </label>
-          </div>
-
-          {/* Champ Votre email (affiché si la checkbox est cochée) */}
-          {watch("sendCopy") && (
-            <div>
-              <label
-                htmlFor="yourEmail"
-                className="block text-lg font-semibold mb-2"
+        <div className="flex items-center mb-6">
+          {["Informations", "Paiement", "Validation"].map((step, index) => (
+            <div key={index} className="flex items-center relative justify-between w-full">
+              <span
+                className={`text-center w-full ${
+                  currentStep === index + 1
+                    ? "text-grey font-bold"
+                    : "text-grey text-opacity-50"
+                } ${currentStep === 2 && index === 0 ? "cursor-pointer" : ""}`}
+                onClick={() => {
+                  if (currentStep === 2 && index === 0) {
+                    setCurrentStep(1); // Retour à l'étape 1 depuis l'étape 2
+                  }
+                }}
               >
-                Votre adresse email
-              </label>
-              <input
-                id="yourEmail"
-                type="email"
-                {...register("yourEmail", { required: true })}
-                placeholder="Votre adresse email"
-                className={`border rounded-lg w-full p-2 text-lg ${
-                  errors.yourEmail ? "border-red" : ""
-                }`}
-              />
+                {step}
+              </span>
+              
+              {index < 2 && (
+                <div
+                  className={`absolute top-1/2 transform -translate-y-1/2 left-1/2 w-full h-[2px] transition-all duration-200 ${
+                    currentStep > index + 1
+                      ? "bg-grey"
+                      : "bg-extraWhite"
+                  }`}
+                ></div>
+              )}
             </div>
-          )}
-
-          {/* Bouton Valider */}
-          <button
-            type="submit"
-            className="w-full py-2 px-4 rounded-lg text-extraWhite text-lg bg-grey hover:bg-grey-dark"
-          >
-            Valider
-          </button>
-        </form>
+          ))}
+        </div>
+        {renderStepContent()}
       </div>
     </div>
   );
