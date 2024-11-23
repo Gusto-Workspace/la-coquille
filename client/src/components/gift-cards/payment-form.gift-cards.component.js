@@ -37,15 +37,15 @@ export default function PaymentFormGiftCardsComponent(props) {
   };
 
   const sendGiftCardEmail = async (data) => {
-    console.log("data sent to api", data);
-
     try {
       const pdfContent = await generateGiftCardPdf({
         value: data.value,
         code: data.code,
         validUntil: data.validUntil,
         description: data.description,
-        restaurantName: "Restaurant La Coquille",
+        message: data.message,
+        senderName: data.senderName,
+        hidePrice: props.formData.hidePrice,
         beneficiaryName: `${data.beneficiaryFirstName} ${data.beneficiaryLastName}`,
       });
 

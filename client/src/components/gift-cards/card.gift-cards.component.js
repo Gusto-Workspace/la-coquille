@@ -29,19 +29,29 @@ export default function CardGiftCardsComponent(props) {
         </p>
       </div>
 
-      <div className="my-12 grid grid-cols-1 tablet:grid-cols-3 desktop:grid-cols-4 gap-6">
+      <div className="my-12 grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3  gap-6">
         {restaurantContext?.restaurantData?.giftCards
           ?.filter(props.filterCondition)
           ?.sort((a, b) => a.value - b.value)
           .map((giftCard, i) => (
-            <div key={i} className="flex flex-col items-center gap-2 border">
-              <div className="flex flex-col text-center gap-2 h-full">
-                {giftCard.description && (
-                  <p className="text-sm opacity-50">{giftCard.description}</p>
-                )}
+            <div key={i} className="flex flex-col items-center gap-6 p-2">
+              <div
+                className="flex flex-col items-end gap-2 h-full border aspect-[16/9] w-[100%] bg-center bg-cover bg-no-repeat shadow-xl drop-shadow-xl"
+                style={{ backgroundImage: "url(/img/assets/bg-gift-card.png" }}
+              >
+                <div className="w-2/3 flex flex-col gap-2 items-center justify-center h-full my-auto">
+                  <h1 className="text-[2vw] font-bold">Carte cadeau</h1>
 
-                <h2 className="text-xl">{giftCard.value} €</h2>
+                  <div className="flex flex-col items-center">
+                    <h2 className="text-[1.5vw]">{giftCard.value} €</h2>
+
+                    {giftCard.description && (
+                      <p className="text-[1vw]">{giftCard.description}</p>
+                    )}
+                  </div>
+                </div>
               </div>
+
               <button
                 onClick={() =>
                   router.push({
@@ -53,7 +63,7 @@ export default function CardGiftCardsComponent(props) {
                 }
                 className="bg-grey text-extraWhite px-6 py-2 w-fit rounded-md"
               >
-                Offrir
+                Sélectionner cette carte
               </button>
             </div>
           ))}

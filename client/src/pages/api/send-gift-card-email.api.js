@@ -27,8 +27,6 @@ function sendTransactionalEmail(params) {
 
     const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
-    let sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
-
     const formattedValidUntil = new Date(params.validUntil).toLocaleDateString(
       "fr-FR",
       {
@@ -38,7 +36,7 @@ function sendTransactionalEmail(params) {
       }
     );
 
-    // Construire le contenu de l'email dynamiquement
+    // Construire le contenu de l'email pour le destinataire principal
     let emailContent = `
       <html>
         <body>
@@ -63,7 +61,7 @@ function sendTransactionalEmail(params) {
     // Ajouter le message (s'il y en a un)
     if (params.message) {
       emailContent += `
-        <blockquote>${params.message}</blockquote>
+        <blockquote>Message joint : ${params.message}</blockquote>
       `;
     }
 
@@ -83,61 +81,68 @@ function sendTransactionalEmail(params) {
       </html>
     `;
 
-    sendSmtpEmail.htmlContent = emailContent;
+    // Construire le contenu de l'email pour la copie
+    let emailCopyContent = `
+      <html>
+        <body>
+          <p><em>Copie du mail envoyé à ${params.beneficiaryFirstName} ${params.beneficiaryLastName} concernant la carte cadeau.</em></p>
+          ${emailContent}
+        </body>
+      </html>
+    `;
 
-    sendSmtpEmail.sender = {
+    // Envoyer l'email principal
+    const mainEmail = new SibApiV3Sdk.SendSmtpEmail();
+    mainEmail.sender = {
       email: "baccialone.leo@gmail.com",
       name: params.restaurantName,
     };
-
-    // Ajouter le destinataire principal
-    sendSmtpEmail.to = [
+    mainEmail.to = [
       {
         email: params.beneficiaryEmail,
         name: `${params.beneficiaryFirstName} ${params.beneficiaryLastName}`,
       },
     ];
-
-    // Ajouter une copie si nécessaire
-    if (params.sendCopy && params.copyEmail) {
-      sendSmtpEmail.cc = [
-        {
-          email: params.copyEmail,
-          name: `Copie : ${params.senderName}`,
-        },
-      ];
-
-      // Ajoutez un message spécifique pour la copie
-      sendSmtpEmail.htmlContent += `
-        <p><em>Copie du mail envoyé à ${params.beneficiaryFirstName} ${params.beneficiaryLastName} concernant la carte cadeau.</em></p>
-      `;
-    }
-
-    sendSmtpEmail.subject = `🎁 Votre carte cadeau de ${params.restaurantName}`;
-    sendSmtpEmail.attachment = [
+    mainEmail.subject = `🎁 Votre carte cadeau de ${params.restaurantName}`;
+    mainEmail.htmlContent = emailContent;
+    mainEmail.attachment = [
       {
         name: "Carte_Cadeau.pdf",
         content: params.attachment,
       },
     ];
 
-    apiInstance
-      .sendTransacEmail(sendSmtpEmail)
-      .then((data) => {
-        console.log("Email envoyé avec succès :", data);
-      })
-      .catch((error) => {
-        console.error(
-          "Erreur lors de l'envoi de l'email:",
-          error.response ? error.response.body : error
-        );
-      });
+    apiInstance.sendTransacEmail(mainEmail)
+
+    // Envoyer l'email en copie
+    if (params.sendCopy && params.copyEmail) {
+      const copyEmail = new SibApiV3Sdk.SendSmtpEmail();
+      copyEmail.sender = {
+        email: "baccialone.leo@gmail.com",
+        name: params.restaurantName,
+      };
+      copyEmail.to = [
+        {
+          email: params.copyEmail,
+          name: `Copie : ${params.senderName}`,
+        },
+      ];
+      copyEmail.subject = `🎁 [COPIE] Carte cadeau de ${params.restaurantName}`;
+      copyEmail.htmlContent = emailCopyContent;
+      copyEmail.attachment = [
+        {
+          name: "Carte_Cadeau.pdf",
+          content: params.attachment,
+        },
+      ];
+
+      apiInstance.sendTransacEmail(copyEmail)
+    }
   } catch (err) {
     console.error("Erreur dans sendTransactionalEmail:", err);
     throw new Error(err);
   }
 }
-
 
 export default function handler(req, res) {
   if (req.method === "POST") {
@@ -176,4 +181,3 @@ export default function handler(req, res) {
     return res.status(405).json({ message: "Méthode non autorisée" });
   }
 }
-

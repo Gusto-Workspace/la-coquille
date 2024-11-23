@@ -77,7 +77,7 @@ export default function BuyGiftCardsPage() {
         );
       case 3:
         return (
-          <div>
+          <div className="flex items-center justify-center text-pretty text-center">
             <p>
               Votre achat de carte cadeau a été validé et la carte a été envoyée
               par mail !
@@ -96,41 +96,38 @@ export default function BuyGiftCardsPage() {
         fontFamily: "'Abel', sans-serif",
       }}
     >
-      <div
-        className="w-[100%] h-auto bg-center bg-cover flex-grow aspect-square flex items-center"
-        style={{ backgroundImage: "url(/img/assets/bg-card.jpeg)" }}
-      >
+      <div className="w-[100%] h-auto flex-grow flex items-center">
         <div
-          className="rounded-md p-6 flex flex-col items-center aspect-[16/9] w-[70%] mx-auto bg-center bg-cover bg-no-repeat"
-          style={{ backgroundImage: "url(/img/assets/bg-drinks.webp" }}
+          className="rounded-md flex flex-col items-end aspect-[16/9] w-[100%] mx-auto bg-center bg-cover bg-no-repeat shadow-2xl"
+          style={{ backgroundImage: "url(/img/assets/bg-gift-card.png" }}
         >
-          <div className="flex flex-col items-center justify-center my-auto">
-            <h1 className="text-2xl font-bold mb-2">Carte cadeau</h1>
-
-            {!formData.hidePrice && (
-              <p className="text-lg">{`${giftCard.value} €`}</p>
-            )}
+          <div className="w-2/3 flex flex-col gap-2 items-center justify-center my-auto">
+            <h1 className="text-[2.5vw] font-bold mb-2">Carte cadeau</h1>
 
             {giftCard.description && (
-              <p className="text-lg">{giftCard.description}</p>
+              <p className="text-[1.5vw]">{giftCard.description}</p>
             )}
 
-            <p className="text-lg ">
-              <span className="text-sm italic">Pour :</span>{" "}
+            {!formData.hidePrice && (
+              <p className="text-[1.5vw]">{`${giftCard.value} €`}</p>
+            )}
+
+            <p className="text-[1.5vw]">
+              <span className="text-[1vw] italic">Pour :</span>{" "}
               <span>
                 {formData.beneficiaryFirstName} {formData.beneficiaryLastName}
               </span>
             </p>
 
             {formData.comment && (
-              <p className="text-lg">
+              <p className="text-[1.5vw] text-center px-2">
                 <span>"{formData.comment}"</span>
               </p>
             )}
 
             {formData.sender && (
-              <p className="text-lg ">
-                <span className="text-sm italic">De la part de :</span>{" "}
+              <p className="text-[1.5vw]">
+                <span className="text-[1vw] italic">De la part de :</span>{" "}
                 <span>{formData.sender}</span>
               </p>
             )}

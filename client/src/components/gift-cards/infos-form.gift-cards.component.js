@@ -46,7 +46,7 @@ export default function InfosFormGiftCardsComponent({
           <input
             id="beneficiary"
             type="text"
-            placeholder="Prénom du bénéficiaire"
+            placeholder="Nom du bénéficiaire"
             {...register("beneficiaryLastName", { required: true })}
             className={`border rounded-lg w-full p-2 text-lg max-w-56 ${
               errors.beneficiary ? "border-red" : ""
@@ -61,7 +61,8 @@ export default function InfosFormGiftCardsComponent({
           htmlFor="beneficiary"
           className="block text-lg font-semibold mb-2"
         >
-          De la part de
+          De la part de{" "}
+          <span className="text-sm italic opacity-30">(falcultatif)</span>
         </label>
 
         <input
@@ -96,7 +97,8 @@ export default function InfosFormGiftCardsComponent({
       {/* Champ Commentaire */}
       <div>
         <label htmlFor="comment" className="block text-lg font-semibold mb-2">
-          Ajouter un commentaire sur la carte
+          Ajouter un commentaire sur la carte{" "}
+          <span className="text-sm italic opacity-30">(falcultatif)</span>
         </label>
         <textarea
           id="comment"
@@ -104,6 +106,7 @@ export default function InfosFormGiftCardsComponent({
           {...register("comment")}
           className="border rounded-lg w-full p-2 text-lg resize-none"
           onChange={handleFieldChange("comment")}
+          maxLength={80}
         />
       </div>
 
