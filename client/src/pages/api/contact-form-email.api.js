@@ -33,7 +33,7 @@ function sendTransactionalEmail(params) {
     }
 
     sendSmtpEmail.sender = {
-      email: "restaurant-la-coquille@orange.fr",
+      email: "baccialone.leo@gmail.com",
       name: "Formulaire Contact",
     };
 

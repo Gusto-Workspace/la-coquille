@@ -32,29 +32,29 @@ export default function FormContactCompnent() {
 
   async function onSubmit(data) {
     console.log("Données du formulaire soumises:", data);
-    //   setIsSubmitting(true);
+      setIsSubmitting(true);
 
-    // try {
-    //   const response = await fetch("/api/contact-form-email", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(data),
-    //   });
+    try {
+      const response = await fetch("/api/contact-form-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
-    //   if (response.ok) {
-    //     console.log("Réponse du serveur: succès");
-    //     setIsSubmitted(true);
-    //     reset();
-    //   } else {
-    //     console.error("Réponse du serveur: erreur", response);
-    //   }
-    // } catch (error) {
-    //   console.error("Erreur lors de l'envoi de la requête:", error);
-    // } finally {
-    //   setIsSubmitting(false);
-    // }
+      if (response.ok) {
+        console.log("Réponse du serveur: succès");
+        setIsSubmitted(true);
+        reset();
+      } else {
+        console.error("Réponse du serveur: erreur", response);
+      }
+    } catch (error) {
+      console.error("Erreur lors de l'envoi de la requête:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (

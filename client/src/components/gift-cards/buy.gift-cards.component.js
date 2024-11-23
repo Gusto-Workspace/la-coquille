@@ -45,9 +45,8 @@ export default function BuyGiftCardsPage() {
     return <p>Chargement des données...</p>;
   }
 
-  function handleFormSubmit(data) {
-    console.log("Données soumises :", data);
-    setCurrentStep(2); // Passer à l'étape Paiement
+  function handleFormSubmit() {
+    setCurrentStep(2);
   }
 
   function handleFormChange(updatedData) {
@@ -69,6 +68,7 @@ export default function BuyGiftCardsPage() {
           <Elements stripe={stripePromise}>
             <PaymentFormGiftCardsComponent
               amount={giftCard.value}
+              giftCard={giftCard}
               onPaymentSuccess={() => setCurrentStep(3)}
               formData={formData}
               giftId={giftCard._id}
@@ -100,14 +100,10 @@ export default function BuyGiftCardsPage() {
         className="w-[100%] h-auto bg-center bg-cover flex-grow aspect-square flex items-center"
         style={{ backgroundImage: "url(/img/assets/bg-card.jpeg)" }}
       >
-        <div className="rounded-lg p-6 flex flex-col items-center bg-extraWhite aspect-[16/9] max-w-[70%] mx-auto">
-          <img
-            src="/img/logo-noir.png"
-            draggable={false}
-            alt="logo"
-            className="max-w-[30%]"
-          />
-
+        <div
+          className="rounded-md p-6 flex flex-col items-center aspect-[16/9] w-[70%] mx-auto bg-center bg-cover bg-no-repeat"
+          style={{ backgroundImage: "url(/img/assets/bg-drinks.webp" }}
+        >
           <div className="flex flex-col items-center justify-center my-auto">
             <h1 className="text-2xl font-bold mb-2">Carte cadeau</h1>
 

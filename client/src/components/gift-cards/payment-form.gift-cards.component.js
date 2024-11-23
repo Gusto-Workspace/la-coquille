@@ -29,7 +29,7 @@ export default function PaymentFormGiftCardsComponent(props) {
         props.formData
       );
 
-      console.log("Achat réussi, code généré :", response.data);
+      return response.data;
     } catch (error) {
       console.error("Erreur lors de l'envoi des données au backend :", error);
       throw error;
@@ -37,6 +37,8 @@ export default function PaymentFormGiftCardsComponent(props) {
   };
 
   const sendGiftCardEmail = async (data) => {
+    console.log("data sent to api", data);
+
     try {
       const pdfContent = await generateGiftCardPdf({
         value: data.value,
@@ -46,60 +48,61 @@ export default function PaymentFormGiftCardsComponent(props) {
         restaurantName: "Restaurant La Coquille",
         beneficiaryName: `${data.beneficiaryFirstName} ${data.beneficiaryLastName}`,
       });
-  
+
       const emailData = {
         beneficiaryFirstName: data.beneficiaryFirstName,
         beneficiaryLastName: data.beneficiaryLastName,
         beneficiaryEmail: data.beneficiaryEmail,
         senderName: data.senderName,
         value: data.value,
+        description: data.description,
         code: data.code,
         message: data.message,
         validUntil: data.validUntil,
         attachment: pdfContent,
+        hidePrice: props.formData.hidePrice,
+        sendCopy: props.formData.sendCopy,
+        copyEmail: props.formData.copyEmail,
       };
-  
+
       const response = await fetch("/api/send-gift-card-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(emailData),
       });
-  
+
       if (!response.ok) {
         throw new Error("Erreur lors de l'envoi de l'email");
       }
-  
-      console.log("Email envoyé avec succès !");
     } catch (error) {
       console.error("Erreur lors de l'envoi de l'email :", error);
     }
   };
-  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
+
     if (!stripe || !elements) {
       return;
     }
-  
+
     setIsLoading(true);
-  
+
     try {
       const response = await fetch("/api/payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ amount: props.amount * 100 }),
       });
-  
+
       const { clientSecret, error } = await response.json();
-  
+
       if (error) {
         setErrorMessage(error);
         setIsLoading(false);
         return;
       }
-  
+
       const result = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: elements.getElement(CardNumberElement),
@@ -108,17 +111,23 @@ export default function PaymentFormGiftCardsComponent(props) {
           },
         },
       });
-  
+
       if (result.error) {
         setErrorMessage(result.error.message);
       } else if (result.paymentIntent.status === "succeeded") {
-        console.log("Paiement réussi !");
-        const purchaseData = await sendPurchaseData(); // Envoyer les données au backend
+        const purchaseData = await sendPurchaseData();
+
         await sendGiftCardEmail({
-          ...purchaseData, // Données retournées par l'API backend
+          beneficiaryFirstName: props.formData.beneficiaryFirstName,
+          beneficiaryLastName: props.formData.beneficiaryLastName,
+          code: purchaseData.purchaseCode,
+          message: props.formData.comment,
+          description: props.giftCard.description,
+          validUntil: purchaseData.validUntil,
+          value: props.amount,
           beneficiaryEmail: props.formData.sendEmail,
-          senderName: `${formDetails.firstName} ${formDetails.lastName}`,
-        }); // Envoyer l'email avec le PDF
+          senderName: props.formData.sender,
+        });
         props.onPaymentSuccess();
       }
     } catch (error) {

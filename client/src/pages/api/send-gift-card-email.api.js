@@ -1,3 +1,11 @@
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "10mb", // Augmente la limite à 10 Mo
+    },
+  },
+};
+
 import SibApiV3Sdk from "sib-api-v3-sdk";
 
 function instantiateClient() {
@@ -21,13 +29,45 @@ function sendTransactionalEmail(params) {
 
     let sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
 
-    sendSmtpEmail.htmlContent = `
+    const formattedValidUntil = new Date(params.validUntil).toLocaleDateString(
+      "fr-FR",
+      {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      }
+    );
+
+    // Construire le contenu de l'email dynamiquement
+    let emailContent = `
       <html>
         <body>
           <p>Bonjour <strong>${params.beneficiaryFirstName} ${params.beneficiaryLastName}</strong>,</p>
           <p>Vous avez reçu un cadeau spécial de la part de <strong>${params.senderName}</strong> ! 🎉</p>
-          <p>Voici votre carte cadeau d'une valeur de <strong>${params.value} €</strong>, accompagnée de ce message :</p>
-          <blockquote>${params.message}</blockquote>
+    `;
+
+    // Ajouter le prix si "masquer le prix" n'est pas activé
+    if (!params.hidePrice) {
+      emailContent += `
+        <p>Voici votre carte cadeau d'une valeur de <strong>${params.value} €</strong>.</p>
+      `;
+    }
+
+    // Ajouter la description si elle existe
+    if (params.description) {
+      emailContent += `
+        <p>Description : ${params.description}</p>
+      `;
+    }
+
+    // Ajouter le message (s'il y en a un)
+    if (params.message) {
+      emailContent += `
+        <blockquote>${params.message}</blockquote>
+      `;
+    }
+
+    emailContent += `
           <p>📎 Vous trouverez votre carte cadeau en pièce jointe à cet email.</p>
           <p><strong>Comment utiliser votre carte cadeau ?</strong></p>
           <ul>
@@ -35,24 +75,44 @@ function sendTransactionalEmail(params) {
             <li>Rendez-vous au Restaurant La Coquille pour profiter d'un instant savoureux !</li>
             <li>Lors du paiement, donnez le code suivant : <strong>${params.code}</strong></li>
           </ul>
-          <p>Cette carte est valable jusqu'au <strong>${params.validUntil}</strong>.</p>
+          <p>Cette carte est valable jusqu'au <strong>${formattedValidUntil}</strong>.</p>
           <p>Nous sommes ravis de vous accueillir et espérons que vous passerez un excellent moment !</p>
           <p>Cordialement,</p>
           <p><strong>${params.restaurantName}</strong></p>
         </body>
-      </html>`;
+      </html>
+    `;
+
+    sendSmtpEmail.htmlContent = emailContent;
 
     sendSmtpEmail.sender = {
       email: "baccialone.leo@gmail.com",
       name: params.restaurantName,
     };
 
+    // Ajouter le destinataire principal
     sendSmtpEmail.to = [
       {
         email: params.beneficiaryEmail,
         name: `${params.beneficiaryFirstName} ${params.beneficiaryLastName}`,
       },
     ];
+
+    // Ajouter une copie si nécessaire
+    if (params.sendCopy && params.copyEmail) {
+      sendSmtpEmail.cc = [
+        {
+          email: params.copyEmail,
+          name: `Copie : ${params.senderName}`,
+        },
+      ];
+
+      // Ajoutez un message spécifique pour la copie
+      sendSmtpEmail.htmlContent += `
+        <p><em>Copie du mail envoyé à ${params.beneficiaryFirstName} ${params.beneficiaryLastName} concernant la carte cadeau.</em></p>
+      `;
+    }
+
     sendSmtpEmail.subject = `🎁 Votre carte cadeau de ${params.restaurantName}`;
     sendSmtpEmail.attachment = [
       {
@@ -78,6 +138,7 @@ function sendTransactionalEmail(params) {
   }
 }
 
+
 export default function handler(req, res) {
   if (req.method === "POST") {
     try {
@@ -90,10 +151,14 @@ export default function handler(req, res) {
         beneficiaryEmail: data.beneficiaryEmail,
         senderName: data.senderName,
         value: data.value,
+        description: data.description,
         code: data.code,
         message: data.message,
         validUntil: data.validUntil,
         attachment: data.attachment, // PDF encodé en base64
+        hidePrice: data.hidePrice,
+        sendCopy: data.sendCopy,
+        copyEmail: data.copyEmail,
       };
 
       sendTransactionalEmail(paramsEmail);
@@ -111,3 +176,4 @@ export default function handler(req, res) {
     return res.status(405).json({ message: "Méthode non autorisée" });
   }
 }
+
