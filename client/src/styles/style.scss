@@ -1,13 +1,17 @@
 @import "./variables";
 
 @font-face {
-  font-family: 'DK Crayonista';
-  src: url('/fonts/DK-Crayonista.ttf') format('truetype');
+  font-family: "DK Crayonista";
+  src: url("/fonts/DK-Crayonista.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
-
+/* Ajoute ces styles */
+img {
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0); /* Active le GPU pour éviter les saccades */
+}
 
 .custom-scrollbar::-webkit-scrollbar {
   display: none;

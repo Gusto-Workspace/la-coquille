@@ -8,15 +8,15 @@ export default function IngredientsHomeComponent() {
 
   return (
     <section className="flex items-center justify-between py-24">
-      <div className="flex items-center gap-24 max-w-[80%] mx-auto">
-        <div className="text-left w-1/2">
+      <div className="flex flex-col desktop:flex-row items-center gap-12 desktop:gap-24 max-w-[80%] mx-auto">
+        <div className="text-center desktop:text-left w-full desktop:w-1/2">
           <h3 className="text-sm tracking-wide opacity-70 uppercase">
             {t("ingredients.subtitle")}
           </h3>
 
           <div className="flex flex-col gap-6">
             <h2
-              className="text-4xl mt-4 font-bold tracking-widest uppercase"
+              className="text-3xl desktop:text-4xl mt-4 font-bold tracking-widest uppercase"
               style={{ fontFamily: "'Abel', sans-serif" }}
             >
               {t("ingredients.title")}
@@ -28,7 +28,8 @@ export default function IngredientsHomeComponent() {
             >
               {t("ingredients.description")}
             </p>
-            <div className="flex gap-2">
+            
+            <div className="flex gap-2 justify-center desktop:justify-start">
               <Link
                 href="/dishes"
                 style={{ fontFamily: "'Abel', sans-serif" }}
@@ -48,11 +49,11 @@ export default function IngredientsHomeComponent() {
           </div>
         </div>
 
-        <div className="w-1/2">
+        <div className="desktop:w-1/2">
           <img
             src="/img/ingredient.jpg"
             alt="lobster"
-            className="max-h-[300px]"
+            className="desktop:max-h-[300px]"
             draggable={false}
           />
         </div>

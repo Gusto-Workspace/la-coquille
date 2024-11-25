@@ -18,43 +18,40 @@ export default function GalleryHomeComponent() {
       const topRowElement = topRowRef.current;
       const bottomRowElement = bottomRowRef.current;
 
-      // Apply animations with `will-change` for smoother performance
+      // Apply will-change at the start
+      topRowElement.style.willChange = "transform";
+      bottomRowElement.style.willChange = "transform";
+
       gsap.to(topRowElement, {
-        x: 100,
+        x: 200,
         scrollTrigger: {
           trigger: topRowElement,
           start: "top bottom",
           end: "bottom top",
-          scrub: 1,
-        },
-        onStart: () => {
-          topRowElement.style.willChange = "transform";
-        },
-        onComplete: () => {
-          topRowElement.style.willChange = "auto";
+          scrub: 2,
         },
       });
 
       gsap.to(bottomRowElement, {
-        x: -100,
+        x: -200,
         scrollTrigger: {
           trigger: bottomRowElement,
           start: "top bottom",
           end: "bottom top",
-          scrub: 1,
-        },
-        onStart: () => {
-          bottomRowElement.style.willChange = "transform";
-        },
-        onComplete: () => {
-          bottomRowElement.style.willChange = "auto";
+          scrub: 2,
         },
       });
+
+      // Clean up
+      return () => {
+        topRowElement.style.willChange = "auto";
+        bottomRowElement.style.willChange = "auto";
+      };
     }
   }, []);
 
   return (
-    <section className="bg-grey text-center py-24">
+    <section className="bg-grey text-center py-12 desktop:py-24">
       <div className="overflow-hidden space-y-6">
         <div
           ref={topRowRef}
@@ -66,9 +63,9 @@ export default function GalleryHomeComponent() {
               key={`top-${i + 1}`}
               src={`/img/dishes/${i + 1}.jpg`}
               alt={`Dish ${i + 1}`}
-              style={{ width: "calc(100vw / 4 )", aspectRatio: "1/1" }}
-              className="object-cover rounded-md"
+              className="object-cover rounded-md w-[calc(100vw/2)] desktop:w-[calc(100vw/4)] aspect-square"
               draggable={false}
+              loading="lazy"
             />
           ))}
         </div>
@@ -83,8 +80,9 @@ export default function GalleryHomeComponent() {
               key={`bottom-${i + 7}`}
               src={`/img/dishes/${i + 7}.jpg`}
               alt={`Dish ${i + 7}`}
-              style={{ width: "calc(100vw / 4 )", aspectRatio: "1/1" }}
-              className="object-cover rounded-md"
+              className="object-cover rounded-md w-[calc(100vw/2)] desktop:w-[calc(100vw/4)] aspect-square"
+              draggable={false}
+              loading="lazy"
             />
           ))}
         </div>

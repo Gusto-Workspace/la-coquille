@@ -81,7 +81,7 @@ export default function NewsHomeComponent() {
 
         <div className="flex flex-col gap-6 items-center max-w-[80%] mx-auto">
           <h2
-            className="text-4xl mt-4 font-bold tracking-widest uppercase"
+            className="text-3xl desktop:text-4xl mt-4 font-bold tracking-widest uppercase"
             style={{ fontFamily: "'Abel', sans-serif" }}
           >
             {t("news.title")}
@@ -98,25 +98,29 @@ export default function NewsHomeComponent() {
 
       <div
         ref={scrollContainerRef}
-        className="flex gap-8 mx-auto overflow-x-auto scroll-smooth px-[10%] custom-scrollbar"
+        className="flex gap-8 mx-auto overflow-x-auto max-w-full scroll-smooth px-[10%] custom-scrollbar"
       >
         {restaurantContext?.restaurantData?.news
           ?.filter((data) => data.visible)
           .map((data, i) => (
             <div
               key={i}
-              className="flex-shrink-0 flex flex-col gap-4"
+              className="flex-shrink-0 flex flex-col gap-4 w-[calc((100%-5px)/1)] desktop:w-[calc((100%-64px)/3)]"
               style={{
-                width: `calc((100% - 64px) / 3)`,
                 fontFamily: "'Abel', sans-serif",
               }}
             >
               <div
-                className="h-[280px] bg-cover bg-center rounded-lg"
+                className={`h-[280px] bg-black bg-opacity-10 bg-no-repeat bg-center rounded-lg ${
+                  data.image ? "bg-cover" : "opacity-60"
+                }`}
                 style={{
-                  backgroundImage: `url(${data.image})`,
+                  backgroundImage: `url(${data.image || "/img/logo-noir.png"})`,
+                  backgroundSize: data.image ? "cover" : "80%",
+                  backgroundPosition: "center",
                 }}
               />
+
               <p className="uppercase opacity-30 tracking-wider text-sm">
                 {formatDate(data.published_at)}
               </p>
@@ -133,7 +137,7 @@ export default function NewsHomeComponent() {
           ))}
       </div>
 
-      <div className="relative w-full flex justify-center items-center">
+      <div className="hidden relative w-full desktop:flex justify-center items-center">
         <div className="relative h-1 w-[80%] bg-white rounded-full">
           <div
             className="absolute w-0 h-full bg-grey opacity-50 rounded-full"
@@ -146,7 +150,7 @@ export default function NewsHomeComponent() {
           className="absolute left-[3%] z-10 bg-grey/80 hover:bg-grey text-white rounded-full w-10 h-10 flex items-center justify-center"
           aria-label="Scroll Left"
         >
-          <ChevronSvg strokeColor='#FFFFFF' className="-ml-[2px] rotate-90" />
+          <ChevronSvg strokeColor="#FFFFFF" className="-ml-[2px] rotate-90" />
         </button>
 
         <button
@@ -154,7 +158,7 @@ export default function NewsHomeComponent() {
           className="absolute right-[3%] z-10 bg-grey/80 hover:bg-grey text-white rounded-full w-10 h-10 flex items-center justify-center"
           aria-label="Scroll Right"
         >
-          <ChevronSvg strokeColor='#FFFFFF' className="ml-[2px] -rotate-90" />
+          <ChevronSvg strokeColor="#FFFFFF" className="ml-[2px] -rotate-90" />
         </button>
       </div>
     </section>

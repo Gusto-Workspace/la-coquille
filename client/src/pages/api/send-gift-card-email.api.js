@@ -103,7 +103,7 @@ function sendTransactionalEmail(params) {
         name: `${params.beneficiaryFirstName} ${params.beneficiaryLastName}`,
       },
     ];
-    mainEmail.subject = `🎁 Votre carte cadeau de ${params.restaurantName}`;
+    mainEmail.subject = `🎁 Votre carte cadeau ${params.restaurantName}`;
     mainEmail.htmlContent = emailContent;
     mainEmail.attachment = [
       {
@@ -127,7 +127,7 @@ function sendTransactionalEmail(params) {
           name: `Copie : ${params.senderName}`,
         },
       ];
-      copyEmail.subject = `🎁 [COPIE] Carte cadeau de ${params.restaurantName}`;
+      copyEmail.subject = `🎁 [COPIE] Carte cadeau ${params.restaurantName}`;
       copyEmail.htmlContent = emailCopyContent;
       copyEmail.attachment = [
         {
@@ -160,7 +160,7 @@ export default function handler(req, res) {
         code: data.code,
         message: data.message,
         validUntil: data.validUntil,
-        attachment: data.attachment, // PDF encodé en base64
+        attachment: data.attachment,
         hidePrice: data.hidePrice,
         sendCopy: data.sendCopy,
         copyEmail: data.copyEmail,

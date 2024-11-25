@@ -46,7 +46,7 @@ export default function CardGiftCardsComponent(props) {
                     <h2 className="text-[1.5vw]">{giftCard.value} €</h2>
 
                     {giftCard.description && (
-                      <p className="text-[1vw]">{giftCard.description}</p>
+                      <p className="text-[1vw] text-center px-4">{giftCard.description}</p>
                     )}
                   </div>
                 </div>

@@ -6,13 +6,13 @@ export default function StoryHomeComponent() {
 
   return (
     <section className="bg-white text-center pb-24 pt-48">
-      <div className="mb-8">
+      <div className="mb-8 px-6">
         <h3 className="text-sm tracking-wide opacity-70 uppercase">
           {t("story.subtitle")}
         </h3>
 
         <h2
-          className="text-4xl mt-4 mb-6 font-bold tracking-widest uppercase"
+          className="text-3xl desktop:text-4xl mt-4 mb-6 font-bold tracking-widest uppercase"
           style={{ fontFamily: "'Abel', sans-serif" }}
         >
           {t("story.title")}
@@ -26,7 +26,7 @@ export default function StoryHomeComponent() {
         </p>
       </div>
 
-      <div className="flex max-w-[80%] justify-center gap-8 mt-12 mx-auto">
+      <div className="flex flex-col desktop:flex-row max-w-[80%] justify-center gap-8 mt-12 mx-auto">
         <div className="md:w-1/2">
           <img
             src="/img/story-1.jpg"
