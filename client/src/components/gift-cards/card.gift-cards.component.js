@@ -40,13 +40,13 @@ export default function CardGiftCardsComponent(props) {
                 style={{ backgroundImage: "url(/img/assets/bg-gift-card.png" }}
               >
                 <div className="w-2/3 flex flex-col gap-2 items-center justify-center h-full my-auto">
-                  <h1 className="text-[2vw] font-bold">Carte cadeau</h1>
+                  <h1 className="text-2xl desktop:text-[2vw] font-bold">Carte cadeau</h1>
 
                   <div className="flex flex-col items-center">
-                    <h2 className="text-[1.5vw]">{giftCard.value} €</h2>
+                    <h2 className="text-xl desktop:text-[1.5vw]">{giftCard.value} €</h2>
 
                     {giftCard.description && (
-                      <p className="text-[1vw] text-center px-4">{giftCard.description}</p>
+                      <p className="text-sm desktop:text-[1vw] text-center px-4">{giftCard.description}</p>
                     )}
                   </div>
                 </div>

@@ -62,7 +62,7 @@ export default function MainWinesDrinksComponent() {
         fontFamily: "'Abel', sans-serif",
       }}
     >
-      <div className="relative flex justify-center gap-24 items-center mb-4">
+      <div className="relative flex justify-center gap-12 desktop:gap-24 items-center mb-4">
         {isReady && (
           <div
             className="absolute h-[2px] rounded-full bg-grey transition-all duration-300"
@@ -79,7 +79,7 @@ export default function MainWinesDrinksComponent() {
           onClick={() => setActiveTab("wines")}
           onMouseEnter={() => setHoverTab("wines")}
           onMouseLeave={() => setHoverTab(null)}
-          className={`px-6 py-2 text-3xl font-semibold uppercase text-center transition-opacity duration-300 ${
+          className={`px-2 desktop:px-6 py-2 text-xl desktop:text-3xl font-semibold uppercase text-center transition-opacity duration-300 ${
             activeTab === "wines" ? "" : " opacity-30"
           }`}
         >
@@ -91,7 +91,7 @@ export default function MainWinesDrinksComponent() {
           onClick={() => setActiveTab("drinks")}
           onMouseEnter={() => setHoverTab("drinks")}
           onMouseLeave={() => setHoverTab(null)}
-          className={`px-6 py-2 text-3xl font-semibold uppercase text-center transition-opacity duration-300 ${
+          className={`px-2 desktop:px-6 py-2 text-xl desktop:text-3xl font-semibold uppercase text-center transition-opacity duration-300 ${
             activeTab === "drinks" ? "" : " opacity-30"
           }`}
         >
@@ -99,14 +99,14 @@ export default function MainWinesDrinksComponent() {
         </button>
       </div>
 
-      <div className="max-w-[80%] mx-auto">
+      <div className="desktop:max-w-[80%] mx-auto">
         {activeTab === "wines" && <ListWinesComponent />}
         {activeTab === "drinks" && <ListDrinksComponent />}
       </div>
 
       {activeTab === "wines" && (
         <img
-          className="max-w-[50%] mx-auto"
+          className="desktop:max-w-[50%] mx-auto"
           src="/img/wine-1.jpeg"
           draggable={false}
           alt="wine"
@@ -115,7 +115,7 @@ export default function MainWinesDrinksComponent() {
 
       {activeTab === "drinks" && (
         <img
-          className="max-w-[60%] mx-auto mt-16"
+          className="desktop:max-w-[60%] mx-auto mt-16"
           src="/img/drinks-1.webp"
           draggable={false}
           alt="wine"

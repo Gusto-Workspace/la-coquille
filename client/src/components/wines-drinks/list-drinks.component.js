@@ -18,7 +18,7 @@ export default function ListDrinksComponent() {
       </p>
 
       <div
-        className="bg-cover bg-center bg-no-repeat rounded-lg drop-shadow-sm p-12 max-w-[800px] mx-auto w-full flex flex-col gap-6 shadow-xl"
+        className="bg-cover bg-center bg-no-repeat rounded-lg drop-shadow-sm desktop: p-6 desktop:p-12 max-w-[800px] mx-auto w-full flex flex-col gap-6 shadow-xl"
         style={{
           backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('/img/assets/bg-drinks.webp')`,
           backgroundSize: "cover",
@@ -38,7 +38,7 @@ export default function ListDrinksComponent() {
           )
           .map((category, i) => (
             <div key={i} className="flex flex-col gap-4">
-              <h2 className="text-2xl font-semibold uppercase text-center px-6 w-fit mx-auto z-20">
+              <h2 className="text-xl desktop:text-2xl font-semibold uppercase text-center px-6 w-fit mx-auto z-20">
                 {category.name}
               </h2>
 
@@ -49,7 +49,7 @@ export default function ListDrinksComponent() {
                   .map((drink, j) => (
                     <div key={j} className="flex items-center justify-between">
                       <div className="flex flex-col">
-                        <h3 className="text-lg font-semibold">{drink.name}</h3>
+                        <h3 className="desktop:text-lg font-semibold">{drink.name}</h3>
                         <p className="text-sm opacity-50">
                           {drink.description}
                         </p>
@@ -81,7 +81,7 @@ export default function ListDrinksComponent() {
                 )
                 .map((subCategory, k) => (
                   <div key={k} className="flex flex-col gap-4 mt-4">
-                    <h3 className="text-xl font-semibold px-4 w-fit mx-auto z-20">
+                    <h3 className="text-lg desktop:text-xl font-semibold px-4 w-fit mx-auto z-20">
                       {subCategory.name}
                     </h3>
 
@@ -95,7 +95,7 @@ export default function ListDrinksComponent() {
                             className="flex items-center justify-between"
                           >
                             <div className="flex flex-col">
-                              <h4 className="text-lg font-semibold">
+                              <h4 className="desktop:text-lg font-semibold">
                                 {drink.name}
                               </h4>
 

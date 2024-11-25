@@ -52,7 +52,7 @@ export default function BannerComponent(props) {
   return (
     <div
       ref={bannerRef}
-      className="h-[30vw] flex flex-col justify-center text-center items-center gap-6 text-extraWhite relative overflow-hidden"
+      className="py-24 desktop:py-0 desktop:h-[30vw] px-4 flex flex-col justify-center text-center items-center gap-6 text-extraWhite relative overflow-hidden"
       style={{
         willChange: "transform",
       }}
@@ -63,22 +63,22 @@ export default function BannerComponent(props) {
         style={{
           backgroundImage: `url('/img/${props.imgUrl}')`,
           backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundPosition: "center left",
           transform: "translateY(0%)",
           willChange: "transform",
         }}
       />
 
-      {props.opacity && (
-        <div className="absolute inset-0 bg-black opacity-20 pointer-events-none" />
-      )}
+      <div
+        className={`${!props.opacity ? "absolute inset-0 bg-black opacity-20 pointer-events-none desktop:hidden" : "absolute inset-0 bg-black opacity-20 pointer-events-none"} `}
+      />
 
       <h1
         ref={titleRef}
         style={{
           fontFamily: "'Abel', sans-serif",
         }}
-        className="text-6xl uppercase z-10"
+        className="text-4xl desktop:text-6xl uppercase z-10"
       >
         {t(props.title)}
       </h1>

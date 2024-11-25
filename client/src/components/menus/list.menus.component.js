@@ -22,14 +22,14 @@ export default function ListMenusComponent() {
         src="/img/assets/4.webp"
         draggable={false}
         alt="ingredient"
-        className="max-w-[20%] absolute top-10 left-20 -z-10"
+        className="max-w-[40%] desktop:max-w-[20%] absolute top-0 desktop:top-10 right-0 desktop:left-20 -z-10"
       />
 
       <img
         src="/img/assets/12.jpeg"
         draggable={false}
         alt="ingredient"
-        className="max-w-[35%] absolute bottom-10 left-20 -z-10"
+        className="max-w-[60%] desktop:max-w-[35%] absolute bottom-5 desktop:bottom-10 left-1/2 -translate-x-1/2 desktop:-translate-x-0 desktop:left-20 -z-10"
       />
 
       <img
@@ -40,7 +40,7 @@ export default function ListMenusComponent() {
       />
 
       <div
-        className="flex flex-col gap-24 max-w-[80%] mx-auto py-24 "
+        className="flex flex-col gap-12 desktop:gap-24 desktop:max-w-[80%] mx-auto pt-24 pb-36 desktop:pb-24"
         style={{
           fontFamily: "'Abel', sans-serif",
         }}
@@ -51,11 +51,11 @@ export default function ListMenusComponent() {
             return (
               <div
                 key={i}
-                className={`flex gap-24 items-center ${
-                  i % 2 === 0 ? "" : "flex-row-reverse"
+                className={`max-w-[80%] mx-auto desktop:max-w-full flex flex-col desktop:flex-row gap-12 desktop:gap-24 items-center ${
+                  i % 2 === 0 ? "" : "desktop:flex-row-reverse"
                 }`}
               >
-                <div className="w-1/2 flex flex-col">
+                <div className="desktop:w-1/2 flex flex-col">
                   <h2
                     className="text-5xl"
                     style={{ fontFamily: "'Dancing Script', cursive" }}
@@ -67,7 +67,7 @@ export default function ListMenusComponent() {
                     {menu?.price} {menu?.price && "€"}
                   </p>
 
-                  <div className="relative ml-[40px]">
+                  <div className="relative desktop:ml-[40px]">
                     <p className="pl-[40px] text-lg text-balance">
                       {menu?.description}
                     </p>
@@ -77,29 +77,29 @@ export default function ListMenusComponent() {
                 </div>
 
                 <div
-                  className="w-[60%] max-w-[5146px] max-h-[90vh] aspect-[5146/6816] pt-6 pb-12 px-6 rounded-md bg-contain bg-center bg-no-repeat flex flex-col"
+                  className="desktop:w-[60%] max-w-[5146px] max-h-[60vh] desktop:max-h-[90vh] aspect-[5146/6816] pt-6 pb-12 px-6 rounded-md bg-contain bg-center bg-no-repeat flex flex-col"
                   style={{ backgroundImage: "url('/img/menu-1.webp')" }}
                 >
-                  <div className="pl-[45px] pr-[40px] flex flex-col h-full justify-center py-12 text-extraWhite text-opacity-80">
+                  <div className="pl-4 pr-3 desktop:pl-[45px] desktop:pr-[40px] flex flex-col h-full justify-center desktop:py-12 text-extraWhite text-opacity-80">
                     <div>
-                      <p className="font-DK_Crayonista text-center text-7xl pb-6 text-balance">
+                      <p className="font-DK_Crayonista text-center text-4xl desktop:text-7xl pb-2 desktop:pb-6 text-balance">
                         {menu.name}
                       </p>
 
                       <hr className="h-[1px] w-[30%] mb-3 mx-auto opacity-30" />
                     </div>
 
-                    <div className="font-DK_Crayonista relative flex justify-center overflow-y-auto pt-6">
+                    <div className="font-DK_Crayonista relative flex justify-center overflow-y-auto pt-2 desktop:pt-6">
                       {menu.dishes.length > 0 ? (
                         <div className=" text-center flex flex-col">
                           {Object.entries(
                             groupDishesByCategory(menu.dishes)
                           ).map(([_, dishes], index) => (
-                            <div key={index} className="z-10 relative py-2">
+                            <div key={index} className="z-10 relative desktop:py-2">
                               {dishes.map((dish, dishIndex) => (
                                 <div
                                   key={dish._id}
-                                  className="text-4xl text-balance"
+                                  className="text-2xl desktop:text-4xl text-balance"
                                 >
                                   <p>
                                     {dish.name
@@ -107,7 +107,7 @@ export default function ListMenusComponent() {
                                       .replace(/ »/g, "\u00A0»")}
                                   </p>
                                   {dishIndex < dishes.length - 1 && (
-                                    <p className="text-2xl opacity-70 leading-5">
+                                    <p className="text-xl opacity-70 leading-5">
                                       ou
                                     </p>
                                   )}
@@ -118,13 +118,13 @@ export default function ListMenusComponent() {
                                   groupDishesByCategory(menu.dishes)
                                 ).length -
                                   1 && (
-                                <div className="w-12 h-[1px] rounded-full bg-extraWhite mx-auto mt-6 mb-2 opacity-20" />
+                                <div className="w-12 h-[1px] rounded-full bg-extraWhite mx-auto my-2 desktop:mt-6 desktop:mb-2 opacity-20" />
                               )}
                             </div>
                           ))}
                         </div>
                       ) : (
-                        <div className="w-1/2 text-center flex flex-col gap-6">
+                        <div className="desktop:w-1/2 text-center flex flex-col gap-6">
                           {menu.combinations.map((combo, index) => (
                             <div key={index} className="flex flex-col gap-2">
                               <p className="flex items-center justify-center">

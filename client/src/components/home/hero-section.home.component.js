@@ -6,40 +6,64 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+function throttle(func, limit) {
+  let lastFunc;
+  let lastRan;
+  return function (...args) {
+    const context = this;
+    if (!lastRan) {
+      func.apply(context, args);
+      lastRan = Date.now();
+    } else {
+      clearTimeout(lastFunc);
+      lastFunc = setTimeout(
+        function () {
+          if (Date.now() - lastRan >= limit) {
+            func.apply(context, args);
+            lastRan = Date.now();
+          }
+        },
+        limit - (Date.now() - lastRan)
+      );
+    }
+  };
+}
+
 export default function HeroSectionHomeComponent(props) {
   const heroRef = useRef(null);
-  const maskRef = useRef(null);
+  const bgBlackRef = useRef(null);
   const logoRef = useRef(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const maskElement = maskRef.current;
+      const bgBlackElement = bgBlackRef.current;
       const heroElement = heroRef.current;
       const logoElement = logoRef.current;
+
+      gsap.set(bgBlackElement, { willChange: "transform" });
 
       const animation = gsap.timeline({
         scrollTrigger: {
           trigger: heroElement,
           start: "top top",
-          end: "+=100vh",
-          scrub: true,
+          end: "+=200vh",
+          scrub: 1,
           pin: true,
           pinSpacing: false,
-          onUpdate: (self) => {
+          onUpdate: throttle((self) => {
             props.setIsNavVisible(self.progress >= 1);
-          },
+          }, 500),
         },
       });
 
-      animation.to(maskElement, {
-        ease: "power1.out",
-        clipPath: "circle(75% at center)",
-
-        onStart: () => {
-          maskElement.style["transform"] = "translateZ(0)";
-          maskElement.style["backface-visibility"] = "hidden";
+      animation.to(
+        bgBlackElement,
+        {
+          scale: 3.5,
+          ease: "power2.out",
         },
-      });
+        0
+      );
 
       animation.to(
         logoElement,
@@ -59,27 +83,28 @@ export default function HeroSectionHomeComponent(props) {
   return (
     <div
       ref={heroRef}
-      className="relative w-full h-screen overflow-hidden flex items-center justify-center bg-[#070303]"
+      className="relative w-full h-screen overflow-hidden flex items-center justify-center "
     >
       <div
-        ref={maskRef}
-        className="absolute inset-0 bg-black"
+        className="absolute inset-0"
         style={{
-          clipPath: "circle(30% at center)",
-          // transition: "clip-path 0.2s linear",
+          backgroundImage: "url('/img/restaurant-1.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "brightness(0.7)",
         }}
-      >
-        <div
-          style={{
-            backgroundImage: "url('/img/restaurant-1.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            filter: "brightness(0.7)",
-            width: "100%",
-            height: "100%",
-          }}
-        />
-      </div>
+      />
+
+      <div
+        ref={bgBlackRef}
+        className="absolute inset-0 bg-no-repeat bg-center"
+        style={{
+          backgroundImage: "url('/img/assets/bg-black.png')",
+          backgroundSize: "cover",
+          transform: "scale(1.3)",
+          transition: "transform 0.1s linear",
+        }}
+      />
 
       <div className="absolute z-10">
         <div className="flex flex-col gap-2 text-white text-center">
@@ -88,7 +113,7 @@ export default function HeroSectionHomeComponent(props) {
             src="/img/logo-blanc.png"
             draggable={false}
             alt="logo"
-            className="w-[350px] scale-90"
+            className="w-[280px] desktop:w-[350px] scale-90"
           />
         </div>
       </div>

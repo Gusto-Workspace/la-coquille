@@ -31,8 +31,7 @@ export default function FormContactCompnent() {
   } = useForm();
 
   async function onSubmit(data) {
-    console.log("Données du formulaire soumises:", data);
-      setIsSubmitting(true);
+    setIsSubmitting(true);
 
     try {
       const response = await fetch("/api/contact-form-email", {
@@ -44,7 +43,6 @@ export default function FormContactCompnent() {
       });
 
       if (response.ok) {
-        console.log("Réponse du serveur: succès");
         setIsSubmitted(true);
         reset();
       } else {
@@ -58,8 +56,8 @@ export default function FormContactCompnent() {
   }
 
   return (
-    <section className="flex justify-center items-center py-24 max-w-[80%] mx-auto">
-      <div className="flex justify-center flex-col w-1/2 gap-12">
+    <section className="flex flex-col gap-12 desktop:flex-row justify-center items-center py-24 max-w-[80%] mx-auto">
+      <div className="flex justify-center flex-col w-full desktop:w-1/2 gap-6 desktop:gap-12">
         <div
           className="flex flex-col gap-6"
           style={{
@@ -120,7 +118,7 @@ export default function FormContactCompnent() {
           </div>
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 mx-auto desktop:mx-0">
           {footerItemsData.map((item) => {
             const IconComponent = icons[item.icon];
             const socialLink =
@@ -149,7 +147,7 @@ export default function FormContactCompnent() {
         </div>
       </div>
 
-      <div className="w-1/2 flex justify-center items-center">
+      <div className="w-full desktop:w-1/2 flex justify-center items-center">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-4 w-full"

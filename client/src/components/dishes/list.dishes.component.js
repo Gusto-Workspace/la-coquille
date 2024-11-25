@@ -35,7 +35,7 @@ export default function ListDishesComponent() {
               category.dishes.some((dish) => dish.showOnWebsite)
           )
           .map((category, i) => (
-            <div key={i} className="flex flex-col gap-16">
+            <div key={i} className="flex flex-col gap-16 max-w-[90%] mx-auto desktop:mx-0 desktop:max-w-[100%]">
               <div className="flex flex-col gap-4">
                 <h2 className="relative text-3xl font-semibold uppercase text-center bg-extraWhite px-6 w-fit mx-auto">
                   {category.name}
@@ -46,17 +46,17 @@ export default function ListDishesComponent() {
                 </p>
               </div>
 
-              <div className="w-[80%] mx-auto grid grid-cols-1 tablet:grid-cols-1 desktop:grid-cols-2 gap-y-6 gap-x-16">
+              <div className="desktop:w-[80%] mx-auto grid grid-cols-1 tablet:grid-cols-1 desktop:grid-cols-2 gap-y-6 gap-x-16">
                 {category?.dishes
                   .filter((dish) => dish.showOnWebsite)
                   .map((dish, j) => (
-                    <div key={j} className="flex gap-4 justify-between">
+                    <div key={j} className="flex justify-between">
                       <div className="flex gap-4">
-                        <div className="text-xl flex flex-col">
-                          <h3 className="leading-6 bg-extraWhite flex gap-3 pr-2">
+                        <div className="text-lg desktop:text-xl flex flex-col">
+                          <h3 className="leading-6 bg-extraWhite flex">
                             <span className="">{dish.name}</span>
 
-                            <span className="flex gap-1 relative">
+                            <span className="flex gap-1 relative mx-3">
                               {dish.vegan && (
                                 <div
                                   onMouseEnter={() =>
@@ -157,10 +157,10 @@ export default function ListDishesComponent() {
                         </div>
                       </div>
 
-                      <hr className="flex-grow h-[1px] bg-grey opacity-20 mt-[14px] -z-10" />
+                      <hr className="flex-grow h-[1px] bg-grey opacity-20 mt-[14px] -z-10 min-w-[10px] desktop:min-w-[50px]" />
 
-                      <div className="flex gap-4 bg-extraWhite pl-2">
-                        <p className="text-lg whitespace-nowrap">
+                      <div className="flex gap-4 bg-extraWhite pl-4">
+                        <p className="desktop:text-lg whitespace-nowrap">
                           {dish.price.toFixed(2)} €
                         </p>
                       </div>
@@ -175,7 +175,7 @@ export default function ListDishesComponent() {
         src="/img/assets/11.webp"
         draggable={false}
         alt="ingredient"
-        className="max-w-[40%] mx-auto"
+        className="desktop:max-w-[40%] mx-auto"
       />
     </section>
   );

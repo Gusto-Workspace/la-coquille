@@ -27,7 +27,7 @@ export default function FooterComponent() {
               src="/img/logo-blanc.png"
               draggable={false}
               alt="logo"
-              className="max-h-[50px]"
+              className="max-h-[35px] desktop:max-h-[50px]"
             />
           </Link>
 
@@ -61,7 +61,7 @@ export default function FooterComponent() {
         </div>
 
         <div className="flex flex-col items-center justify-evenly gap-12">
-          <ul className="flex gap-6 items-center text-extraWhite uppercase text-sm mx-auto">
+          <ul className="flex flex-col desktop:flex-row gap-4 desktop:gap-6 items-center text-extraWhite uppercase text-sm mx-auto">
             {navItemsData.map((item) => {
               return (
                 <li
@@ -97,8 +97,8 @@ export default function FooterComponent() {
 
         <hr className="h-[2px] w-full bg-extraWhite opacity-30" />
 
-        <div className="flex justify-between text-sm text-extraWhite opacity-30">
-          <div className="flex gap-4">
+        <div className="flex flex-col desktop:flex-row gap-4 desktop:gap-0 text-center desktop:text-start justify-between text-sm text-extraWhite opacity-30">
+          <div className="flex flex-col desktop:flex-row gap-0 desktop:gap-4">
             <Link href="/policy">Politique de confidentialité</Link>•
             <Link href="/legales">Mentions légales</Link>
           </div>

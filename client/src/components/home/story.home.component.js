@@ -5,7 +5,7 @@ export default function StoryHomeComponent() {
   const { t } = useTranslation("index");
 
   return (
-    <section className="bg-white text-center pb-24 pt-48">
+    <section className="bg-white text-center pb-24 pt-72">
       <div className="mb-8 px-6">
         <h3 className="text-sm tracking-wide opacity-70 uppercase">
           {t("story.subtitle")}
