@@ -65,6 +65,7 @@ export default function ListWinesComponent() {
       <p className="px-[5%] desktop:px-0 pt-4 pb-12 text-center max-w-[620px] mx-auto font-extralight opacity-70 text-lg">
         {t("wines.description")}
       </p>
+      
       <div className="overflow-x-auto">
         <div
           className="mx-[5%] bg-cover bg-center bg-no-repeat rounded-lg drop-shadow-sm shadow-xl p-12 w-[1024px] desktop:max-w-[1024px] desktop:mx-auto  flex flex-col gap-6"

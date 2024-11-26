@@ -6,13 +6,16 @@ import { useTranslation } from "next-i18next";
 // CONTEXT
 import { GlobalContext } from "@/contexts/global.context";
 
+// SVG
+import { BioSvg } from "../_shared/_svgs/bio.svg";
+
 export default function ListDrinksComponent() {
   const { restaurantContext } = useContext(GlobalContext);
 
   const { t } = useTranslation("drinks");
 
   return (
-    <div>
+    <div className="px-[5%] desktop:px-0">
       <p className="pt-4 pb-12 text-center max-w-[620px] mx-auto font-extralight opacity-70 text-lg">
         {t("drinks.description")}
       </p>
@@ -55,7 +58,7 @@ export default function ListDrinksComponent() {
                         </p>
                       </div>
 
-                      <div className="flex gap-4 items-center">
+                      <div className="flex gap-1 desktop:gap-4 items-center">
                         {drink.bio && (
                           <BioSvg
                             fillColor="white"
@@ -104,7 +107,7 @@ export default function ListDrinksComponent() {
                               </p>
                             </div>
 
-                            <div className="flex gap-4 items-center">
+                            <div className="flex gap-1 desktop:gap-4 items-center">
                               {drink.bio && (
                                 <BioSvg
                                   fillColor="white"
