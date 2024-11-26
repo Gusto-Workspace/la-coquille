@@ -35,7 +35,7 @@ export default function NavComponent({ isVisible = true }) {
       >
         <div className="h-[62px] w-full bg-extraWhite absolute desktop:hidden"/>
 
-        <div>
+        <div className="z-10">
           <Link href="/">
             <img
               src="/img/logo-noir.png"

@@ -33,7 +33,7 @@ function sendTransactionalEmail(params) {
     }
 
     sendSmtpEmail.sender = {
-      email: "baccialone.leo@gmail.com",
+      email: "no-reply@lacoquille-concarneau.fr",
       name: "Formulaire Contact",
     };
 
@@ -68,7 +68,7 @@ export default function handler(req, res) {
       const data = req.body;
 
       const paramsEmail = {
-        to: [{ email: "baccialone.leo@gmail.com", name: "Marie" }],
+        to: [{ email: "restaurant-la-coquille@orange.fr", name: "Marie" }],
         contact: true,
         subject: "Nouveau message via le formulaire de contact",
         name: data.name,

@@ -11,7 +11,7 @@ export default function InfosFormGiftCardsComponent({
     control,
     formState: { errors },
   } = useForm({
-    defaultValues: formData, // Utilisation des données actuelles pour pré-remplir les champs
+    defaultValues: formData, 
   });
 
   const handleFieldChange = (fieldName) => (e) => {
@@ -27,7 +27,7 @@ export default function InfosFormGiftCardsComponent({
       <div>
         <label
           htmlFor="beneficiary"
-          className="block text-lg font-semibold mb-2"
+          className="block desktop:text-lg font-semibold mb-2"
         >
           Bénéficiaire
         </label>
@@ -59,7 +59,7 @@ export default function InfosFormGiftCardsComponent({
       <div>
         <label
           htmlFor="beneficiary"
-          className="block text-lg font-semibold mb-2"
+          className="block desktop:text-lg font-semibold mb-2"
         >
           De la part de{" "}
           <span className="text-sm italic opacity-30">(falcultatif)</span>
@@ -79,7 +79,7 @@ export default function InfosFormGiftCardsComponent({
 
       {/* Champ Email du Bénéficiaire */}
       <div>
-        <label htmlFor="sendEmail" className="block text-lg font-semibold mb-2">
+        <label htmlFor="sendEmail" className="block desktop:text-lg font-semibold mb-2">
           À quelle adresse mail voulez-vous envoyer la carte ?
         </label>
         <input
@@ -96,7 +96,7 @@ export default function InfosFormGiftCardsComponent({
 
       {/* Champ Commentaire */}
       <div>
-        <label htmlFor="comment" className="block text-lg font-semibold mb-2">
+        <label htmlFor="comment" className="block desktop:text-lg font-semibold mb-2">
           Ajouter un commentaire sur la carte{" "}
           <span className="text-sm italic opacity-30">(falcultatif)</span>
         </label>
@@ -119,7 +119,7 @@ export default function InfosFormGiftCardsComponent({
           className="w-5 h-5"
           onChange={handleFieldChange("hidePrice")}
         />
-        <label htmlFor="hidePrice" className="text-lg">
+        <label htmlFor="hidePrice" className="desktop:text-lg">
           Masquer le prix lors de l'envoi du bon cadeau
         </label>
       </div>
@@ -134,7 +134,7 @@ export default function InfosFormGiftCardsComponent({
           onChange={handleFieldChange("sendCopy")}
           checked={formData.sendCopy}
         />
-        <label htmlFor="sendCopy" className="text-lg">
+        <label htmlFor="sendCopy" className="desktop:text-lg">
           Ajouter un destinataire
         </label>
       </div>
@@ -144,7 +144,7 @@ export default function InfosFormGiftCardsComponent({
         <div>
           <label
             htmlFor="copyEmail"
-            className="block text-lg font-semibold mb-2"
+            className="block desktop:text-lg font-semibold mb-2"
           >
             Adresse email pour copie
           </label>

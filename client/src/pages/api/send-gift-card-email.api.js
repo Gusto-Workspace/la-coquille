@@ -94,7 +94,7 @@ function sendTransactionalEmail(params) {
     // Envoyer l'email principal
     const mainEmail = new SibApiV3Sdk.SendSmtpEmail();
     mainEmail.sender = {
-      email: "baccialone.leo@gmail.com",
+      email: "no-reply@lacoquille-concarneau.fr",
       name: params.restaurantName,
     };
     mainEmail.to = [
@@ -118,7 +118,7 @@ function sendTransactionalEmail(params) {
     if (params.sendCopy && params.copyEmail) {
       const copyEmail = new SibApiV3Sdk.SendSmtpEmail();
       copyEmail.sender = {
-        email: "baccialone.leo@gmail.com",
+        email: "no-reply@lacoquille-concarneau.fr",
         name: params.restaurantName,
       };
       copyEmail.to = [

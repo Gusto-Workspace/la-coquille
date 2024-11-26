@@ -42,7 +42,7 @@ export default function BuyGiftCardsPage() {
   }, [id, restaurantContext, router]);
 
   if (!giftCard) {
-    return <p>Chargement des données...</p>;
+    return <p className="p-12">Chargement des données...</p>;
   }
 
   function handleFormSubmit() {
@@ -91,7 +91,7 @@ export default function BuyGiftCardsPage() {
 
   return (
     <div
-      className="flex items-center justify-between gap-12 py-24 max-w-[90%] mx-auto"
+      className="flex flex-col desktop:flex-row items-center justify-between gap-12 py-24 max-w-[90%] mx-auto"
       style={{
         fontFamily: "'Abel', sans-serif",
       }}
@@ -101,42 +101,48 @@ export default function BuyGiftCardsPage() {
           className="rounded-md flex flex-col items-end aspect-[16/9] w-[100%] mx-auto bg-center bg-cover bg-no-repeat shadow-2xl"
           style={{ backgroundImage: "url(/img/assets/bg-gift-card.png" }}
         >
-          <div className="w-2/3 flex flex-col gap-2 items-center justify-center my-auto">
-            <h1 className="text-[2.5vw] font-bold mb-2">Carte cadeau</h1>
+          <div className="w-2/3 flex flex-col desktop:gap-2 items-center justify-center my-auto">
+            <h1 className="text-2xl desktop:text-[2vw] font-bold desktop:mb-4">
+              Carte cadeau
+            </h1>
 
-            {giftCard.description && (
-              <p className="text-[1.5vw]">{giftCard.description}</p>
-            )}
+            <div className="flex flex-col desktop:gap-3 items-center">
+              {!formData.hidePrice && (
+                <p className="text-xl desktop:text-[1.5vw]">{`${giftCard.value} €`}</p>
+              )}
 
-            {!formData.hidePrice && (
-              <p className="text-[1.5vw]">{`${giftCard.value} €`}</p>
-            )}
+              {giftCard.description && (
+                <p className="text-sm desktop:text-[1.5vw] text-center px-4">
+                  {giftCard.description}
+                </p>
+              )}
 
-            <p className="text-[1.5vw]">
-              <span className="text-[1vw] italic">Pour :</span>{" "}
-              <span>
-                {formData.beneficiaryFirstName} {formData.beneficiaryLastName}
-              </span>
-            </p>
-
-            {formData.comment && (
-              <p className="text-[1.5vw] text-center px-2">
-                <span>"{formData.comment}"</span>
+              <p className="text-sm desktop:text-[1.2vw]">
+                <span className="text-sm desktop:text-[1vw] text-center italic">Pour :</span>{" "}
+                <span>
+                  {formData.beneficiaryFirstName} {formData.beneficiaryLastName}
+                </span>
               </p>
-            )}
 
-            {formData.sender && (
-              <p className="text-[1.5vw]">
-                <span className="text-[1vw] italic">De la part de :</span>{" "}
-                <span>{formData.sender}</span>
-              </p>
-            )}
+              {formData.comment && (
+                <p className="text-sm desktop:text-[1.2vw] text-center px-2">
+                  <span>"{formData.comment}"</span>
+                </p>
+              )}
+
+              {formData.sender && (
+                <p className="text-sm desktop:text-[1.2vw]">
+                  <span className="text-sm desktop:text-[1vw] italic">De la part de :</span>{" "}
+                  <span>{formData.sender}</span>
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Étapes */}
-      <div className="w-full rounded-lg p-12 bg-white shadow-md">
+      <div className="w-full rounded-lg p-4 desktop:p-12 bg-white shadow-md">
         <div className="flex items-center mb-6 mx-auto text-center">
           {["Informations", "Paiement", "Validation"].map((step, index) => (
             <div
@@ -144,7 +150,7 @@ export default function BuyGiftCardsPage() {
               className="flex items-center text-center relative justify-between w-full mx-auto"
             >
               <span
-                className={`text-center bg-white z-10 w-fit mx-auto px-4 ${
+                className={`text-center bg-white z-10 w-fit mx-auto px-2 desktop:px-4 ${
                   currentStep > index
                     ? "text-grey"
                     : currentStep === index + 1
