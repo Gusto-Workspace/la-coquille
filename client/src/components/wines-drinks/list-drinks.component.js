@@ -21,7 +21,7 @@ export default function ListDrinksComponent() {
       </p>
 
       <div
-        className="bg-cover bg-center bg-no-repeat rounded-lg drop-shadow-sm desktop: p-6 desktop:p-12 max-w-[800px] mx-auto w-full flex flex-col gap-6 shadow-xl"
+        className="bg-cover bg-center bg-no-repeat rounded-lg drop-shadow-sm desktop: p-6 desktop:p-12 max-w-[1000px] mx-auto w-full flex flex-col gap-6 shadow-xl"
         style={{
           backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('/img/assets/bg-drinks.webp')`,
           backgroundSize: "cover",
