@@ -21,7 +21,7 @@ export default function ListDrinksComponent() {
       </p>
 
       <div
-        className="bg-cover bg-center bg-no-repeat rounded-lg drop-shadow-sm desktop: p-6 desktop:p-12 max-w-[1000px] mx-auto w-full flex flex-col gap-6 shadow-xl"
+        className="bg-cover bg-center bg-no-repeat rounded-lg drop-shadow-sm desktop: p-6 desktop:p-12 max-w-[1000px] mx-auto w-full flex flex-col gap-12 shadow-xl"
         style={{
           backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('/img/assets/bg-drinks.webp')`,
           backgroundSize: "cover",
@@ -40,40 +40,47 @@ export default function ListDrinksComponent() {
                 ))
           )
           .map((category, i) => (
-            <div key={i} className="flex flex-col gap-4">
+            <div key={i} className="flex flex-col gap-8">
               <h2 className="text-xl desktop:text-2xl font-semibold uppercase text-center px-6 w-fit mx-auto z-20">
                 {category.name}
               </h2>
 
               {/* Affichage des boissons dans la catégorie principale */}
-              <div className="flex flex-col gap-2">
-                {category.drinks
-                  .filter((drink) => drink.showOnWebsite)
-                  .map((drink, j) => (
-                    <div key={j} className="flex items-center justify-between">
-                      <div className="flex flex-col">
-                        <h3 className="desktop:text-lg font-semibold">{drink.name}</h3>
-                        <p className="text-sm opacity-50">
-                          {drink.description}
-                        </p>
-                      </div>
+              {category.drinks.some((drink) => drink.showOnWebsite) && (
+                <div className="desktop:w-[95%] mx-auto grid grid-cols-1 tablet:grid-cols-1 desktop:grid-cols-2 gap-y-6 gap-x-16">
+                  {category.drinks
+                    .filter((drink) => drink.showOnWebsite)
+                    .map((drink, j) => (
+                      <div
+                        key={j}
+                        className="flex items-center gap-1 justify-between"
+                      >
+                        <div className="flex flex-col">
+                          <h3 className="desktop:text-lg font-semibold">
+                            {drink.name}
+                          </h3>
+                          <p className="text-sm opacity-50">
+                            {drink.description}
+                          </p>
+                        </div>
 
-                      <div className="flex gap-1 desktop:gap-4 items-center">
-                        {drink.bio && (
-                          <BioSvg
-                            fillColor="white"
-                            width={9}
-                            height={9}
-                            className="bg-darkBlue p-1 w-4 h-4 rounded-full opacity-70"
-                          />
-                        )}
-                        <p className="text-md font-semibold min-w-[66px] text-right">
-                          {drink.price.toFixed(2)} €
-                        </p>
+                        <div className="flex gap-1 desktop:gap-2 items-center">
+                          {drink.bio && (
+                            <BioSvg
+                              fillColor="white"
+                              width={9}
+                              height={9}
+                              className="bg-darkBlue p-1 w-4 h-4 rounded-full opacity-70"
+                            />
+                          )}
+                          <p className="text-md font-semibold min-w-[66px] text-right">
+                            {drink.price.toFixed(2)} €
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-              </div>
+                    ))}
+                </div>
+              )}
 
               {/* Affichage des sous-catégories visibles avec boissons */}
               {category.subCategories
@@ -83,19 +90,19 @@ export default function ListDrinksComponent() {
                     subCategory.drinks.some((drink) => drink.showOnWebsite)
                 )
                 .map((subCategory, k) => (
-                  <div key={k} className="flex flex-col gap-4 mt-4">
-                    <h3 className="text-lg desktop:text-xl font-semibold px-4 w-fit mx-auto z-20">
+                  <div key={k} className="flex flex-col gap-4">
+                    <h3 className="italic text-lg desktop:text-xl font-semibold px-4 w-fit mx-auto z-20">
                       {subCategory.name}
                     </h3>
 
                     {/* Affichage des boissons dans la sous-catégorie */}
-                    <div className="flex flex-col gap-2">
+                    <div className="desktop:w-[95%] mx-auto grid grid-cols-1 tablet:grid-cols-1 desktop:grid-cols-2 gap-y-6 gap-x-16">
                       {subCategory.drinks
                         .filter((drink) => drink.showOnWebsite)
                         .map((drink, l) => (
                           <div
                             key={l}
-                            className="flex items-center justify-between"
+                            className="flex items-center gap-1 justify-between"
                           >
                             <div className="flex flex-col">
                               <h4 className="desktop:text-lg font-semibold">
@@ -107,7 +114,7 @@ export default function ListDrinksComponent() {
                               </p>
                             </div>
 
-                            <div className="flex gap-1 desktop:gap-4 items-center">
+                            <div className="flex gap-1 desktop:gap-2 items-center">
                               {drink.bio && (
                                 <BioSvg
                                   fillColor="white"
