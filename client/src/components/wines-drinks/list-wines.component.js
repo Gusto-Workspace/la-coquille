@@ -137,7 +137,7 @@ export default function ListWinesComponent() {
 
                             {/* Prix alignés sous les volumes */}
                             <div className="flex">
-                              {volumes.map((volume, idx) => {
+                              {volumes?.map((volume, idx) => {
                                 const matchingVolume = wine.volumes.find(
                                   (v) => v.volume === volume
                                 );
