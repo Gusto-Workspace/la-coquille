@@ -64,7 +64,7 @@ export default function FormContactCompnent() {
           }}
         >
           <h3 className="text-xl">Horaires d'ouverture</h3>
-          
+
           <ul className="mt-4 opacity-50">
             {restaurantContext?.restaurantData?.opening_hours.map(
               (day, index) => (
@@ -79,7 +79,7 @@ export default function FormContactCompnent() {
                       ? t("hours.close")
                       : day.hours.length > 0
                         ? `${day.hours[0].open} - ${day.hours[0].close}`
-                        : t("hours.noHours")}{" "}
+                        : "-"}
                   </span>
                 </li>
               )
