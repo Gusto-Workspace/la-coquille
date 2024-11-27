@@ -56,8 +56,36 @@ export default function FormContactCompnent() {
   }
 
   return (
-    <section className="flex flex-col gap-12 desktop:flex-row justify-center items-center py-24 max-w-[80%] mx-auto">
+    <section className="flex flex-col gap-12 desktop:flex-row justify-center  py-24 max-w-[80%] mx-auto">
       <div className="flex justify-center flex-col w-full desktop:w-1/2 gap-6 desktop:gap-12">
+        <div
+          style={{
+            fontFamily: "'Abel', sans-serif",
+          }}
+        >
+          <h3 className="text-xl">Horaires d'ouverture</h3>
+          
+          <ul className="mt-4 opacity-50">
+            {restaurantContext?.restaurantData?.opening_hours.map(
+              (day, index) => (
+                <li
+                  key={index}
+                  className="flex justify-between items-center py-2"
+                >
+                  <span>{t(day.day)}</span>
+
+                  <span>
+                    {day.isClosed
+                      ? t("hours.close")
+                      : day.hours.length > 0
+                        ? `${day.hours[0].open} - ${day.hours[0].close}`
+                        : t("hours.noHours")}{" "}
+                  </span>
+                </li>
+              )
+            )}
+          </ul>
+        </div>
         <div
           className="flex flex-col gap-6"
           style={{
@@ -147,7 +175,7 @@ export default function FormContactCompnent() {
         </div>
       </div>
 
-      <div className="w-full desktop:w-1/2 flex justify-center items-center">
+      <div className="w-full desktop:w-1/2 flex justify-center">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-4 w-full"

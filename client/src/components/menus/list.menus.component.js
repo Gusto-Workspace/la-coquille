@@ -29,18 +29,11 @@ export default function ListMenusComponent() {
         src="/img/assets/12.jpeg"
         draggable={false}
         alt="ingredient"
-        className="max-w-[60%] desktop:max-w-[35%] absolute bottom-5 desktop:bottom-10 left-1/2 -translate-x-1/2 desktop:-translate-x-0 desktop:left-20 -z-10"
-      />
-
-      <img
-        src="/img/assets/13.jpeg"
-        draggable={false}
-        alt="ingredient"
-        className="max-w-[20%] absolute top-[60%] -translate-y-1/2 right-20 -z-10"
+        className="max-w-[325px] desktop:max-w-[550px] absolute bottom-0 left-1/2 -translate-x-1/2 -z-10"
       />
 
       <div
-        className="flex flex-col gap-12 desktop:gap-24 desktop:max-w-[80%] mx-auto pt-24 pb-36 desktop:pb-24"
+        className="flex flex-col gap-12 desktop:gap-24 desktop:max-w-[80%] mx-auto pt-24 pb-36 desktop:pb-72"
         style={{
           fontFamily: "'Abel', sans-serif",
         }}
@@ -51,7 +44,7 @@ export default function ListMenusComponent() {
             return (
               <div
                 key={i}
-                className={`max-w-[80%] mx-auto desktop:max-w-full flex flex-col desktop:flex-row gap-12 desktop:gap-24 items-center ${
+                className={`max-w-[80%] mx-auto desktop:min-w-full flex flex-col desktop:flex-row gap-12 desktop:gap-24 items-center ${
                   i % 2 === 0 ? "" : "desktop:flex-row-reverse"
                 }`}
               >
@@ -91,11 +84,14 @@ export default function ListMenusComponent() {
 
                     <div className="font-DK_Crayonista relative flex justify-center overflow-y-auto pt-2 desktop:pt-6">
                       {menu.dishes.length > 0 ? (
-                        <div className=" text-center flex flex-col">
+                        <div className="text-center flex flex-col">
                           {Object.entries(
                             groupDishesByCategory(menu.dishes)
                           ).map(([_, dishes], index) => (
-                            <div key={index} className="z-10 relative desktop:py-2">
+                            <div
+                              key={index}
+                              className="z-10 relative desktop:py-2"
+                            >
                               {dishes.map((dish, dishIndex) => (
                                 <div
                                   key={dish._id}
@@ -124,14 +120,16 @@ export default function ListMenusComponent() {
                           ))}
                         </div>
                       ) : (
-                        <div className="desktop:w-1/2 text-center flex flex-col gap-6">
+                        <div className="text-center flex flex-col gap-6">
                           {menu.combinations.map((combo, index) => (
                             <div key={index} className="flex flex-col gap-2">
-                              <p className="flex items-center justify-center">
+                              <p className="text-2xl desktop:text-4xl text-balance">
                                 {combo.categories.join(" - ")}
                               </p>
 
-                              <p>{combo.price} €</p>
+                              <p className="text-xl desktop:text-2xl">
+                                {combo.price} €
+                              </p>
                             </div>
                           ))}
                         </div>

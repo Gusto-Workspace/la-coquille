@@ -74,6 +74,12 @@ function sendTransactionalEmail(params) {
             <li>Lors du paiement, donnez le code suivant : <strong>${params.code}</strong></li>
           </ul>
           <p>Cette carte est valable jusqu'au <strong>${formattedValidUntil}</strong>.</p>
+          <p><em>⚠️ Si la carte est utilisée après cette date, une majoration de 15 € sera appliquée au montant de la carte cadeau.</em></p>
+          <hr>
+          <p><strong>Informations pratiques :</strong></p>
+          <p>📍 Adresse : 1 Rue du Moros, 29900 Concarneau</p>
+          <p>📞 Téléphone : 02 98 97 08 52</p>
+          <p>🌐 Site internet : <a href="https://www.lacoquille-concarneau.fr" target="_blank">www.lacoquille-concarneau.fr</a></p>
           <p>Nous sommes ravis de vous accueillir et espérons que vous passerez un excellent moment !</p>
           <p>Cordialement,</p>
           <p><strong>${params.restaurantName}</strong></p>
