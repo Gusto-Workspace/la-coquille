@@ -68,7 +68,7 @@ export default function ListWinesComponent() {
       
       <div className="overflow-x-auto">
         <div
-          className="mx-[5%] bg-cover bg-center bg-no-repeat rounded-lg drop-shadow-sm shadow-xl p-12 w-[1024px] desktop:max-w-[1024px] desktop:mx-auto  flex flex-col gap-6"
+          className="mx-[5%] bg-contain bg-center rounded-lg drop-shadow-sm shadow-xl p-12 w-[1024px] desktop:max-w-[1024px] desktop:mx-auto  flex flex-col gap-6"
           style={{ backgroundImage: "url('/img/assets/wine.webp')" }}
         >
           {categories
