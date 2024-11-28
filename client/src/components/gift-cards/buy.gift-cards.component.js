@@ -112,7 +112,7 @@ export default function BuyGiftCardsPage() {
               )}
 
               {giftCard.description && (
-                <p className="text-sm desktop:text-[1.5vw] text-center px-4 leading-7">
+                <p className="text-sm desktop:text-[1.2vw] text-center px-4 leading-7">
                   {giftCard.description}
                 </p>
               )}

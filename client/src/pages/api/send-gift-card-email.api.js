@@ -80,7 +80,7 @@ function sendTransactionalEmail(params) {
           <p>📍 Adresse : 1 Rue du Moros, 29900 Concarneau</p>
           <p>📞 Téléphone : 02 98 97 08 52</p>
           <p>🌐 Site internet : <a href="https://www.lacoquille-concarneau.fr" target="_blank">www.lacoquille-concarneau.fr</a></p>
-          <p>Nous sommes ravis de vous accueillir et espérons que vous passerez un excellent moment !</p>
+          <p>Nous sommes ravis de vous accueillir et espérons que vous passerez un excellent moment !</p>
           <p>Cordialement,</p>
           <p><strong>${params.restaurantName}</strong></p>
         </body>

@@ -49,7 +49,7 @@ export async function generateGiftCardPdf({
   const largeFontSize = 56;
   const fontSize = 32;
   const smallFontSize = 26;
-  const largeSpacing = 24; // Espacement sous "Carte Cadeau"
+  const largeSpacing = 0; // Espacement sous "Carte Cadeau"
   const lineHeightReduced = fontSize - 10; // Espacement réduit
   const topMargin = 30; // Marge au-dessus de "Carte Cadeau"
   const bottomSpacing = 20; // Espacement au-dessus de "Code :"
@@ -92,7 +92,15 @@ export async function generateGiftCardPdf({
   let totalHeight = topMargin;
   totalHeight += largeFontSize + largeSpacing; // "Carte Cadeau"
   if (!hidePrice && value) totalHeight += fontSize + lineHeightReduced; // Prix
-  if (description) totalHeight += fontSize + lineHeightReduced; // Description
+  if (description) {
+    const wrappedDescription = wrapText(
+      description,
+      abelFont,
+      fontSize,
+      maxTextWidth
+    );
+    totalHeight += wrappedDescription.length * (fontSize + lineHeightReduced); // Hauteur totale pour chaque ligne de la description
+  }
   totalHeight += Math.max(smallFontSize, fontSize) + lineHeightReduced; // "Pour :" + bénéficiaire
   if (message) {
     const wrappedMessage = wrapText(message, abelFont, fontSize, maxTextWidth);
@@ -138,19 +146,26 @@ export async function generateGiftCardPdf({
     currentY -= fontSize + lineHeightReduced;
   }
 
-  // Dessiner la description
+  // Dessiner la description avec retour à la ligne
   if (description) {
-    page.drawText(description, {
-      x:
-        width / 3 +
-        (effectiveWidth - abelFont.widthOfTextAtSize(description, fontSize)) /
-          2,
-      y: currentY,
-      size: fontSize,
-      font: abelFont,
-      color: textColor,
+    const wrappedDescription = wrapText(
+      description,
+      abelFont,
+      fontSize,
+      maxTextWidth
+    );
+    wrappedDescription.forEach((line) => {
+      page.drawText(line, {
+        x:
+          width / 3 +
+          (effectiveWidth - abelFont.widthOfTextAtSize(line, fontSize)) / 2,
+        y: currentY,
+        size: fontSize,
+        font: abelFont,
+        color: textColor,
+      });
+      currentY -= fontSize + lineHeightReduced;
     });
-    currentY -= fontSize + lineHeightReduced;
   }
 
   // Dessiner "Pour :" et le bénéficiaire
@@ -179,7 +194,12 @@ export async function generateGiftCardPdf({
 
   // Dessiner le message
   if (message) {
-    const wrappedMessage = wrapText(`"${message}"`, abelFont, fontSize, maxTextWidth);
+    const wrappedMessage = wrapText(
+      `"${message}"`,
+      abelFont,
+      fontSize,
+      maxTextWidth
+    );
     wrappedMessage.forEach((line) => {
       page.drawText(line, {
         x:
