@@ -70,10 +70,10 @@ export default function ListMenusComponent() {
                 </div>
 
                 <div
-                  className="desktop:w-[60%] max-w-[5146px] max-h-[60vh] desktop:max-h-[90vh] aspect-[5146/6816] pt-6 pb-12 px-6 rounded-md bg-contain bg-center bg-no-repeat flex flex-col"
+                  className="desktop:w-[60%] max-w-[100%] max-h-[60vh] desktop:max-h-[90vh] aspect-[5146/6816] pt-6  px-6 rounded-md bg-contain bg-center bg-no-repeat flex flex-col"
                   style={{ backgroundImage: "url('/img/menu-1.webp')" }}
                 >
-                  <div className="pl-4 pr-3 desktop:pl-[45px] desktop:pr-[40px] flex flex-col h-full justify-center desktop:py-12 text-extraWhite text-opacity-80">
+                  <div className="pl-4 pr-3 pb-8 desktop:max-w-[80%] mx-auto flex flex-col h-full justify-center desktop:py-12 text-extraWhite text-opacity-80">
                     <div>
                       <p className="font-DK_Crayonista text-center text-4xl desktop:text-7xl pb-2 desktop:pb-6 text-balance">
                         {menu.name}
@@ -120,7 +120,7 @@ export default function ListMenusComponent() {
                           ))}
                         </div>
                       ) : (
-                        <div className="text-center flex flex-col gap-6">
+                        <div className="text-center flex flex-col gap-2">
                           {menu.combinations.map((combo, index) => (
                             <div key={index} className="flex flex-col gap-2">
                               <p className="text-2xl desktop:text-4xl text-balance">
