@@ -124,30 +124,16 @@ export default function InfosFormGiftCardsComponent({
         </label>
       </div>
 
-      {/* Checkbox Recevoir une copie */}
-      <div className="flex items-center gap-2">
-        <input
-          id="sendCopy"
-          type="checkbox"
-          {...register("sendCopy")}
-          className="w-5 h-5"
-          onChange={handleFieldChange("sendCopy")}
-          checked={formData.sendCopy}
-        />
-        <label htmlFor="sendCopy" className="desktop:text-lg">
-          Ajouter un destinataire
-        </label>
-      </div>
-
       {/* Champ Votre email */}
-      {formData.sendCopy && (
+    
         <div>
           <label
             htmlFor="copyEmail"
             className="block desktop:text-lg font-semibold mb-2"
           >
-            Adresse email pour copie
+            Saisissez votre adresse mail
           </label>
+
           <input
             id="copyEmail"
             type="email"
@@ -159,7 +145,7 @@ export default function InfosFormGiftCardsComponent({
             onChange={handleFieldChange("copyEmail")}
           />
         </div>
-      )}
+   
 
       <div className="flex flex-col gap-2">
         <p className="underline">Important</p>

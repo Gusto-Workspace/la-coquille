@@ -61,7 +61,6 @@ export default function PaymentFormGiftCardsComponent(props) {
         validUntil: data.validUntil,
         attachment: pdfContent,
         hidePrice: props.formData.hidePrice,
-        sendCopy: props.formData.sendCopy,
         copyEmail: props.formData.copyEmail,
       };
 

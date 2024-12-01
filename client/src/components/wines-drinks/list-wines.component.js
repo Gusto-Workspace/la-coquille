@@ -17,6 +17,7 @@ export default function ListWinesComponent() {
   );
 
   const [volumes, setVolumes] = useState();
+  const [hoveredTooltip, setHoveredTooltip] = useState(null);
 
   useEffect(() => {
     setCategories(restaurantContext?.restaurantData?.wine_categories);
@@ -65,7 +66,7 @@ export default function ListWinesComponent() {
       <p className="px-[5%] desktop:px-0 pt-4 pb-12 text-center max-w-[620px] mx-auto font-extralight opacity-70 text-lg">
         {t("wines.description")}
       </p>
-      
+
       <div className="overflow-x-auto">
         <div
           className="mx-[5%] bg-contain bg-center rounded-lg drop-shadow-sm shadow-xl p-12 w-[1024px] desktop:max-w-[1024px] desktop:mx-auto  flex flex-col gap-6"
@@ -121,17 +122,30 @@ export default function ListWinesComponent() {
                           >
                             {/* Nom du vin + année */}
                             <div className="flex-1 flex items-center justify-between">
-                              <p className="font-medium font-lg">
-                                {wine.name}
+                              <div className="flex font-medium font-lg">
+                                <p className="mr-2">{wine.name}</p>
                                 {wine.bio && (
-                                  <BioSvg
-                                    fillColor="white"
-                                    width={9}
-                                    height={9}
-                                    className="bg-darkBlue p-1 w-4 h-4 rounded-full opacity-70 inline-block ml-2"
-                                  />
+                                  <div
+                                    onMouseEnter={() =>
+                                      setHoveredTooltip(`${wine._id}-bio`)
+                                    }
+                                    onMouseLeave={() => setHoveredTooltip(null)}
+                                    className="relative inline-block"
+                                  >
+                                    <BioSvg
+                                      fillColor="white"
+                                      width={9}
+                                      height={9}
+                                      className="bg-darkBlue p-1 w-5 h-5 rounded-full opacity-70 inline-block"
+                                    />
+                                    {hoveredTooltip === `${wine._id}-bio` && (
+                                      <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-1 bg-darkBlue text-white text-xs p-2 rounded-lg whitespace-nowrap z-50">
+                                       Bio
+                                      </div>
+                                    )}
+                                  </div>
                                 )}
-                              </p>
+                              </div>
                               <p className="text-base">{wine.year || "-"}</p>
                             </div>
 
@@ -194,17 +208,32 @@ export default function ListWinesComponent() {
                             >
                               {/* Nom du vin + année */}
                               <div className="flex-1 flex items-center justify-between">
-                                <p className="font-medium text-lg">
-                                  {wine.name}
+                                <div className="flex font-medium font-lg">
+                                  <p className="mr-2">{wine.name}</p>
                                   {wine.bio && (
-                                    <BioSvg
-                                      fillColor="white"
-                                      width={9}
-                                      height={9}
-                                      className="bg-darkBlue p-1 w-4 h-4 rounded-full opacity-70 inline-block ml-2"
-                                    />
+                                    <div
+                                      onMouseEnter={() =>
+                                        setHoveredTooltip(`${wine._id}-bio`)
+                                      }
+                                      onMouseLeave={() =>
+                                        setHoveredTooltip(null)
+                                      }
+                                      className="relative inline-block"
+                                    >
+                                      <BioSvg
+                                        fillColor="white"
+                                        width={9}
+                                        height={9}
+                                        className="bg-darkBlue p-1 w-5 h-5 rounded-full opacity-70 inline-block"
+                                      />
+                                      {hoveredTooltip === `${wine._id}-bio` && (
+                                        <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-1 bg-darkBlue text-white text-xs p-2 rounded-lg whitespace-nowrap z-50">
+                                         Bio
+                                        </div>
+                                      )}
+                                    </div>
                                   )}
-                                </p>
+                                </div>
                                 <p className="text-base">{wine.year || "-"}</p>
                               </div>
 

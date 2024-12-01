@@ -102,10 +102,11 @@ export default function NewsHomeComponent() {
       >
         {restaurantContext?.restaurantData?.news
           ?.filter((data) => data.visible)
+          .reverse()
           .map((data, i) => (
             <div
               key={i}
-              className="flex-shrink-0 flex flex-col gap-4 w-[calc((100%-5px)/1)] desktop:w-[calc((100%-64px)/3)]"
+              className="flex-shrink-0 flex flex-col gap-4 w-[calc((100%-35px)/1)] desktop:w-[calc((100%-64px)/3)]"
               style={{
                 fontFamily: "'Abel', sans-serif",
               }}
@@ -128,7 +129,7 @@ export default function NewsHomeComponent() {
               <h2 className="text-xl uppercase">{data.title}</h2>
 
               <p
-                className="opacity-50"
+                className="news-text"
                 dangerouslySetInnerHTML={{
                   __html: data.description,
                 }}
