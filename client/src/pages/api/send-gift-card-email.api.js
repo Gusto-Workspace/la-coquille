@@ -44,21 +44,18 @@ function sendTransactionalEmail(params) {
           <p>Vous avez reçu un cadeau spécial de la part de <strong>${params.senderName}</strong> ! 🎉</p>
     `;
 
-    // Ajouter le prix si "masquer le prix" n'est pas activé
     if (!params.hidePrice) {
       emailContent += `
         <p>Voici votre carte cadeau d'une valeur de <strong>${params.value} €</strong>.</p>
       `;
     }
 
-    // Ajouter la description si elle existe
     if (params.description) {
       emailContent += `
         <p>Description : ${params.description}</p>
       `;
     }
 
-    // Ajouter le message (s'il y en a un)
     if (params.message) {
       emailContent += `
         <blockquote>Message joint : ${params.message}</blockquote>
@@ -87,12 +84,26 @@ function sendTransactionalEmail(params) {
       </html>
     `;
 
-    // Construire le contenu de l'email pour la copie
-    let emailCopyContent = `
+    // Construire le contenu de l'email de confirmation pour la copie
+    let emailConfirmationContent = `
       <html>
         <body>
-          <p><em>Copie du mail envoyé à ${params.beneficiaryFirstName} ${params.beneficiaryLastName} concernant la carte cadeau.</em></p>
-          ${emailContent}
+          <p>Bonjour,</p>
+          <p>Nous confirmons que la commande d'une carte cadeau pour <strong>${params.beneficiaryFirstName} ${params.beneficiaryLastName}</strong> a bien été envoyée avec succès.</p>
+          <p>Voici les détails de la commande :</p>
+          <ul>
+            <li><strong>Montant :</strong> ${params.value} €</li>
+            <li><strong>Code :</strong> ${params.code}</li>
+            <li><strong>Date de validité :</strong> ${formattedValidUntil}</li>
+          </ul>
+          <p>📎 La carte cadeau est jointe à cet email.</p>
+          <hr>
+          <p><strong>Informations pratiques :</strong></p>
+          <p>📍 Adresse : 1 Rue du Moros, 29900 Concarneau</p>
+          <p>📞 Téléphone : 02 98 97 08 52</p>
+          <p>🌐 Site internet : <a href="https://www.lacoquille-concarneau.fr" target="_blank">www.lacoquille-concarneau.fr</a></p>
+          <p>Merci pour votre commande et à bientôt,</p>
+          <p><strong>${params.restaurantName}</strong></p>
         </body>
       </html>
     `;
@@ -118,10 +129,10 @@ function sendTransactionalEmail(params) {
       },
     ];
 
-    apiInstance.sendTransacEmail(mainEmail)
+    apiInstance.sendTransacEmail(mainEmail);
 
-    // Envoyer l'email en copie
-    if (params.sendCopy && params.copyEmail) {
+    // Envoyer l'email de confirmation
+    if (params.copyEmail) {
       const copyEmail = new SibApiV3Sdk.SendSmtpEmail();
       copyEmail.sender = {
         email: "no-reply@lacoquille-concarneau.fr",
@@ -130,11 +141,11 @@ function sendTransactionalEmail(params) {
       copyEmail.to = [
         {
           email: params.copyEmail,
-          name: `Copie : ${params.senderName}`,
+          name: `Confirmation : ${params.senderName}`,
         },
       ];
-      copyEmail.subject = `🎁 [COPIE] Carte cadeau ${params.restaurantName}`;
-      copyEmail.htmlContent = emailCopyContent;
+      copyEmail.subject = `Confirmation de commande - Carte cadeau ${params.restaurantName}`;
+      copyEmail.htmlContent = emailConfirmationContent;
       copyEmail.attachment = [
         {
           name: "Carte_Cadeau.pdf",
@@ -142,7 +153,7 @@ function sendTransactionalEmail(params) {
         },
       ];
 
-      apiInstance.sendTransacEmail(copyEmail)
+      apiInstance.sendTransacEmail(copyEmail);
     }
   } catch (err) {
     console.error("Erreur dans sendTransactionalEmail:", err);
@@ -168,7 +179,6 @@ export default function handler(req, res) {
         validUntil: data.validUntil,
         attachment: data.attachment,
         hidePrice: data.hidePrice,
-        sendCopy: data.sendCopy,
         copyEmail: data.copyEmail,
       };
 
