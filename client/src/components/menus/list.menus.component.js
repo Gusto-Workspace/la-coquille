@@ -75,7 +75,7 @@ export default function ListMenusComponent() {
                 >
                   <div className="pl-4 pr-3 pb-8 desktop:max-w-[80%] mx-auto flex flex-col h-full justify-center desktop:py-12 text-extraWhite text-opacity-80">
                     <div>
-                      <p className="font-DK_Crayonista text-center text-4xl desktop:text-7xl pb-2 desktop:pb-6 text-balance">
+                      <p className="max-w-[50vh] mx-auto font-DK_Crayonista text-center text-4xl desktop:text-7xl pb-2 desktop:pb-6 text-balance">
                         {menu.name}
                       </p>
 
@@ -84,7 +84,7 @@ export default function ListMenusComponent() {
 
                     <div className="font-DK_Crayonista relative flex justify-center overflow-y-auto pt-2 desktop:pt-6">
                       {menu.dishes.length > 0 ? (
-                        <div className="text-center flex flex-col">
+                        <div className="text-center flex flex-col max-w-[50vh]">
                           {Object.entries(
                             groupDishesByCategory(menu.dishes)
                           ).map(([_, dishes], index) => (
