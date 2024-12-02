@@ -1,4 +1,7 @@
+// AXIOS
 import axios from "axios";
+
+// STRIPE
 import {
   CardNumberElement,
   CardExpiryElement,
@@ -6,7 +9,10 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
+
 import { useState } from "react";
+
+// UTILS
 import { generateGiftCardPdf } from "@/_assets/utils/generate-gift-card-pdf.utils";
 
 export default function PaymentFormGiftCardsComponent(props) {
