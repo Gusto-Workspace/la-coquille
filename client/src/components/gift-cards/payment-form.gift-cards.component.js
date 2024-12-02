@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 // AXIOS
 import axios from "axios";
 
@@ -9,8 +11,6 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-
-import { useState } from "react";
 
 // UTILS
 import { generateGiftCardPdf } from "@/_assets/utils/generate-gift-card-pdf.utils";
