@@ -3,7 +3,6 @@ import CardGiftCardsComponent from "./card.gift-cards.component";
 
 export default function ListGiftCardsComponent() {
  
-
   return (
     <section className="max-w-[90%] desktop:max-w-[80%] mx-auto py-24 flex flex-col gap-12">
       <CardGiftCardsComponent
