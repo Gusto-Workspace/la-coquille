@@ -38,7 +38,7 @@ export default function InfosFormGiftCardsComponent({
             placeholder="Prénom du bénéficiaire"
             {...register("beneficiaryFirstName", { required: true })}
             className={`border rounded-lg w-full p-2 text-lg max-w-56 ${
-              errors.beneficiary ? "border-red" : ""
+              errors.beneficiaryFirstName ? "border-red" : ""
             }`}
             onChange={handleFieldChange("beneficiaryFirstName")}
           />
@@ -48,7 +48,7 @@ export default function InfosFormGiftCardsComponent({
             placeholder="Nom du bénéficiaire"
             {...register("beneficiaryLastName", { required: true })}
             className={`border rounded-lg w-full p-2 text-lg max-w-56 ${
-              errors.beneficiary ? "border-red" : ""
+              errors.beneficiaryLastName ? "border-red" : ""
             }`}
             onChange={handleFieldChange("beneficiaryLastName")}
           />
@@ -69,7 +69,7 @@ export default function InfosFormGiftCardsComponent({
           placeholder="Écrire ..."
           {...register("sender", { required: true })}
           className={`border rounded-lg w-full p-2 text-lg max-w-[465px] ${
-            errors.beneficiary ? "border-red" : ""
+            errors.sender ? "border-red" : ""
           }`}
           onChange={handleFieldChange("sender")}
         />
