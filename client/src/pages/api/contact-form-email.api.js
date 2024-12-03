@@ -1,9 +1,13 @@
 import SibApiV3Sdk from "sib-api-v3-sdk";
 
 async function sendTransactionalEmail(params) {
+  // Configuration du client avec la clé API
+  const defaultClient = SibApiV3Sdk.ApiClient.instance;
+  const apiKey = defaultClient.authentications["api-key"];
+  apiKey.apiKey = process.env.BREVO_API_KEY;
+
   const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
-  // Création de l'objet pour l'envoi de l'email
   const sendSmtpEmail = {
     sender: {
       email: "no-reply@lacoquille-concarneau.fr",
@@ -27,7 +31,6 @@ async function sendTransactionalEmail(params) {
   };
 
   try {
-    // Envoi de l'email via l'API
     const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
     console.log("Email envoyé avec succès :", data);
     return data;
@@ -44,7 +47,6 @@ export default async function handler(req, res) {
   if (req.method === "POST") {
     const data = req.body;
 
-    // Préparation des paramètres pour l'envoi
     const params = {
       to: [{ email: "contact@gusto-manager.com", name: "Marie" }],
       subject: "Nouveau message via le formulaire de contact",
