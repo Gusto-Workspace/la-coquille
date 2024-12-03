@@ -8,10 +8,9 @@ export default function InfosFormGiftCardsComponent({
   const {
     register,
     handleSubmit,
-    control,
     formState: { errors },
   } = useForm({
-    defaultValues: formData, 
+    defaultValues: formData,
   });
 
   const handleFieldChange = (fieldName) => (e) => {
@@ -77,26 +76,12 @@ export default function InfosFormGiftCardsComponent({
         />
       </div>
 
-      {/* Champ Email du Bénéficiaire */}
-      <div>
-        <label htmlFor="sendEmail" className="block desktop:text-lg font-semibold mb-2">
-          À quelle adresse mail voulez-vous envoyer la carte ?
-        </label>
-        <input
-          id="sendEmail"
-          type="email"
-          placeholder="Adresse mail"
-          {...register("sendEmail", { required: true })}
-          className={`border rounded-lg w-full p-2 text-lg ${
-            errors.sendEmail ? "border-red" : ""
-          }`}
-          onChange={handleFieldChange("sendEmail")}
-        />
-      </div>
-
       {/* Champ Commentaire */}
       <div>
-        <label htmlFor="comment" className="block desktop:text-lg font-semibold mb-2">
+        <label
+          htmlFor="comment"
+          className="block desktop:text-lg font-semibold mb-2"
+        >
           Ajouter un commentaire sur la carte{" "}
           <span className="text-sm italic opacity-30">(falcultatif)</span>
         </label>
@@ -125,27 +110,26 @@ export default function InfosFormGiftCardsComponent({
       </div>
 
       {/* Champ Votre email */}
-    
-        <div>
-          <label
-            htmlFor="copyEmail"
-            className="block desktop:text-lg font-semibold mb-2"
-          >
-            Saisissez votre adresse mail
-          </label>
 
-          <input
-            id="copyEmail"
-            type="email"
-            placeholder="Adresse email"
-            {...register("copyEmail", { required: true })}
-            className={`border rounded-lg w-full p-2 text-lg ${
-              errors.copyEmail ? "border-red" : ""
-            }`}
-            onChange={handleFieldChange("copyEmail")}
-          />
-        </div>
-   
+      <div>
+        <label
+          htmlFor="sendEmail"
+          className="block desktop:text-lg font-semibold mb-2"
+        >
+          Saisissez votre adresse mail
+        </label>
+
+        <input
+          id="sendEmail"
+          type="email"
+          placeholder="Adresse email"
+          {...register("sendEmail", { required: true })}
+          className={`border rounded-lg w-full p-2 text-lg ${
+            errors.sendEmail ? "border-red" : ""
+          }`}
+          onChange={handleFieldChange("sendEmail")}
+        />
+      </div>
 
       <div className="flex flex-col gap-2">
         <p className="underline">Important</p>
