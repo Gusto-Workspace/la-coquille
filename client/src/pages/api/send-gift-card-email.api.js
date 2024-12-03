@@ -1,133 +1,145 @@
 export const config = {
   api: {
     bodyParser: {
-      sizeLimit: "10mb", // Augmente la limite à 10 Mo
+      sizeLimit: "10mb", // Augmente la limite de la taille du corps à 10 Mo
     },
   },
 };
 
 import SibApiV3Sdk from "sib-api-v3-sdk";
 
-function instantiateClient() {
-  try {
-    const defaultClient = SibApiV3Sdk.ApiClient.instance;
-    const apiKey = defaultClient.authentications["api-key"];
+// Fonction pour envoyer un email transactionnel
+async function sendTransactionalEmail(params) {
+  const defaultClient = SibApiV3Sdk.ApiClient.instance;
+  const apiKey = defaultClient.authentications["api-key"];
+  apiKey.apiKey = process.env.BREVO_API_KEY;
+  const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
-    apiKey.apiKey = process.env.BREVO_API_KEY;
-    return defaultClient;
-  } catch (err) {
-    console.error("Erreur lors de l'instanciation du client:", err);
-    throw new Error(err);
-  }
-}
+  // Formatage de la date
+  const formattedValidUntil = new Date(params.validUntil).toLocaleDateString(
+    "fr-FR",
+    {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    }
+  );
 
-function sendTransactionalEmail(params) {
-  try {
-    instantiateClient();
+  // Contenu HTML de l'email
+  const emailContent = `
+    <html>
+      <body>
+        <p>Bonjour,</p>
+        <p>Nous confirmons la commande d'une carte cadeau pour <strong>${params.beneficiaryFirstName} ${params.beneficiaryLastName}</strong>.</p>
+        <p>Voici les détails de la commande :</p>
+        <ul>
+          <li><strong>Montant :</strong> ${params.value} €</li>
+          <li><strong>Code :</strong> ${params.code}</li>
+          <li><strong>Date de validité :</strong> ${formattedValidUntil}</li>
+        </ul>
+        <p>📎 La carte cadeau est jointe à cet email.</p>
+        <p><strong>Comment utiliser la carte cadeau ?</strong></p>
+        <ul>
+          <li>Lors de la réservation, précisez que vous bénéficiez d'une carte cadeau.</li>
+          <li>Rendez-vous au Restaurant La Coquille pour profiter d'un instant savoureux !</li>
+          <li>Lors du paiement, donnez le code suivant : <strong>${params.code}</strong></li>
+        </ul>
+        <p><em>⚠️ Si la carte est utilisée après cette date, une majoration de 15 € sera appliquée au montant de la carte cadeau.</em></p>
+        <hr>
+        <p><strong>Informations pratiques :</strong></p>
+        <p>📍 Adresse : 1 Rue du Moros, 29900 Concarneau</p>
+        <p>📞 Téléphone : 02 98 97 08 52</p>
+        <p>🌐 Site internet : <a href="https://www.lacoquille-concarneau.fr" target="_blank">www.lacoquille-concarneau.fr</a></p>
+        <p>Merci pour votre commande et à bientôt,</p>
+        <p><strong>${params.restaurantName}</strong></p>
+      </body>
+    </html>
+  `;
 
-    const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
-
-    const formattedValidUntil = new Date(params.validUntil).toLocaleDateString(
-      "fr-FR",
-      {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      }
-    );
-
-    // Construire le contenu de l'email de confirmation de commande
-    let emailContent = `
-      <html>
-        <body>
-          <p>Bonjour,</p>
-          <p>Nous confirmons la commande d'une carte cadeau pour <strong>${params.beneficiaryFirstName} ${params.beneficiaryLastName}</strong>.</p>
-          <p>Voici les détails de la commande :</p>
-          <ul>
-            <li><strong>Montant :</strong> ${params.value} €</li>
-            <li><strong>Code :</strong> ${params.code}</li>
-            <li><strong>Date de validité :</strong> ${formattedValidUntil}</li>
-          </ul>
-          <p>📎 La carte cadeau est jointe à cet email.</p>
-          <p><strong>Comment utiliser la carte cadeau ?</strong></p>
-          <ul>
-            <li>Lors de la réservation, précisez que vous bénéficiez d'une carte cadeau.</li>
-            <li>Rendez-vous au Restaurant La Coquille pour profiter d'un instant savoureux !</li>
-            <li>Lors du paiement, donnez le code suivant : <strong>${params.code}</strong></li>
-          </ul>
-          <p><em>⚠️ Si la carte est utilisée après cette date, une majoration de 15 € sera appliquée au montant de la carte cadeau.</em></p>
-          <hr>
-          <p><strong>Informations pratiques :</strong></p>
-          <p>📍 Adresse : 1 Rue du Moros, 29900 Concarneau</p>
-          <p>📞 Téléphone : 02 98 97 08 52</p>
-          <p>🌐 Site internet : <a href="https://www.lacoquille-concarneau.fr" target="_blank">www.lacoquille-concarneau.fr</a></p>
-          <p>Merci pour votre commande et à bientôt,</p>
-          <p><strong>${params.restaurantName}</strong></p>
-        </body>
-      </html>
-    `;
-
-    // Envoyer l'email de confirmation
-
-    const mainEmail = new SibApiV3Sdk.SendSmtpEmail();
-    mainEmail.sender = {
+  // Configuration de l'email
+  const mainEmail = {
+    sender: {
       email: "no-reply@lacoquille-concarneau.fr",
       name: params.restaurantName,
-    };
-    mainEmail.to = [
+    },
+    to: [
       {
         email: params.sendEmail,
         name: params.sendEmail,
       },
-    ];
-    mainEmail.subject = `Confirmation de commande - Carte cadeau ${params.restaurantName}`;
-    mainEmail.htmlContent = emailContent;
-    mainEmail.attachment = [
+    ],
+    subject: `Confirmation de commande - Carte cadeau ${params.restaurantName}`,
+    htmlContent: emailContent,
+    attachment: [
       {
         name: "Carte_Cadeau.pdf",
-        content: params.attachment,
+        content: params.attachment, 
       },
-    ];
+    ],
+  };
 
-    apiInstance.sendTransacEmail(mainEmail);
-  } catch (err) {
-    console.error("Erreur dans sendTransactionalEmail:", err);
-    throw new Error(err);
+  // Envoi de l'email
+  try {
+    const response = await apiInstance.sendTransacEmail(mainEmail);
+    console.log("Email envoyé avec succès :", response);
+    return response;
+  } catch (error) {
+    console.error(
+      "Erreur lors de l'envoi de l'email :",
+      error.response?.body || error
+    );
+    throw error;
   }
 }
 
-export default function handler(req, res) {
-  if (req.method === "POST") {
-    try {
-      const data = req.body;
-
-      const paramsEmail = {
-        restaurantName: "Restaurant La Coquille",
-        beneficiaryFirstName: data.beneficiaryFirstName,
-        beneficiaryLastName: data.beneficiaryLastName,
-        sendEmail: data.sendEmail,
-        senderName: data.senderName,
-        value: data.value,
-        description: data.description,
-        code: data.code,
-        message: data.message,
-        validUntil: data.validUntil,
-        attachment: data.attachment,
-        hidePrice: data.hidePrice,
-      };
-
-      sendTransactionalEmail(paramsEmail);
-
-      return res
-        .status(200)
-        .json({ status: 200, message: "Email envoyé avec succès" });
-    } catch (err) {
-      console.error("Erreur lors de la gestion de la requête POST:", err);
-      return res
-        .status(500)
-        .json({ status: 500, message: "Erreur lors de l'envoi de l'email" });
-    }
-  } else {
+// Route API pour gérer les requêtes POST
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
     return res.status(405).json({ message: "Méthode non autorisée" });
+  }
+
+  try {
+    const data = req.body;
+
+    // Validation des données entrantes
+    if (
+      !data.beneficiaryFirstName ||
+      !data.beneficiaryLastName ||
+      !data.sendEmail ||
+      !data.value ||
+      !data.code ||
+      !data.validUntil ||
+      !data.attachment
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Paramètres manquants ou invalides" });
+    }
+
+    // Préparation des paramètres pour l'email
+    const paramsEmail = {
+      restaurantName: "Restaurant La Coquille",
+      beneficiaryFirstName: data.beneficiaryFirstName,
+      beneficiaryLastName: data.beneficiaryLastName,
+      sendEmail: data.sendEmail,
+      value: data.value,
+      code: data.code,
+      validUntil: data.validUntil,
+      attachment: data.attachment,
+    };
+
+    // Envoi de l'email
+    const emailResponse = await sendTransactionalEmail(paramsEmail);
+
+    return res.status(200).json({
+      status: 200,
+      message: "Email envoyé avec succès",
+      data: emailResponse,
+    });
+  } catch (err) {
+    console.error("Erreur lors de la gestion de la requête POST :", err);
+    return res
+      .status(500)
+      .json({ message: "Erreur lors de l'envoi de l'email" });
   }
 }
