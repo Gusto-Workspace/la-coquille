@@ -58,7 +58,7 @@ export default function PaymentFormGiftCardsComponent(props) {
       const emailData = {
         beneficiaryFirstName: data.beneficiaryFirstName,
         beneficiaryLastName: data.beneficiaryLastName,
-        beneficiaryEmail: data.beneficiaryEmail,
+        sendEmail: data.sendEmail,
         senderName: data.senderName,
         value: data.value,
         description: data.description,
@@ -67,7 +67,7 @@ export default function PaymentFormGiftCardsComponent(props) {
         validUntil: data.validUntil,
         attachment: pdfContent,
         hidePrice: props.formData.hidePrice,
-        copyEmail: props.formData.copyEmail,
+       
       };
 
       const response = await fetch("/api/send-gift-card-email", {
@@ -130,7 +130,7 @@ export default function PaymentFormGiftCardsComponent(props) {
           description: props.giftCard.description,
           validUntil: purchaseData.validUntil,
           value: props.amount,
-          beneficiaryEmail: props.formData.sendEmail,
+          sendEmail: props.formData.sendEmail,
           senderName: props.formData.sender,
         });
         props.onPaymentSuccess();

@@ -24,7 +24,6 @@ export default function BuyGiftCardsPage() {
     sendEmail: "",
     comment: "",
     hidePrice: false,
-    copyEmail: "",
   });
 
   useEffect(() => {
