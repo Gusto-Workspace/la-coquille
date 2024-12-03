@@ -61,7 +61,6 @@ export default function InfosFormGiftCardsComponent({
           className="block desktop:text-lg font-semibold mb-2"
         >
           De la part de{" "}
-          <span className="text-sm italic opacity-30">(falcultatif)</span>
         </label>
 
         <input
