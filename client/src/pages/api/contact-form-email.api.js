@@ -48,7 +48,7 @@ export default async function handler(req, res) {
     const data = req.body;
 
     const params = {
-      to: [{ email: "contact@gusto-manager.com", name: "Marie" }],
+      to: [{ email: "restaurant-la-coquille@orange.fr", name: "Marie" }],
       subject: "Nouveau message via le formulaire de contact",
       name: data.name,
       email: data.email,
