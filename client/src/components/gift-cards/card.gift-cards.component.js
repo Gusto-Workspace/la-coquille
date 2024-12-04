@@ -29,10 +29,9 @@ export default function CardGiftCardsComponent(props) {
         </p>
       </div>
 
-      <div className="my-12 grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-3  gap-6">
+      <div className="my-12 grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-2  gap-6">
         {restaurantContext?.restaurantData?.giftCards
           ?.filter(props.filterCondition)
-          ?.sort((a, b) => a.value - b.value)
           .map((giftCard, i) => (
             <div key={i} className="flex flex-col items-center gap-6 p-2">
               <div
@@ -46,7 +45,7 @@ export default function CardGiftCardsComponent(props) {
                     <h2 className="text-xl desktop:text-[1.5vw]">{giftCard.value} €</h2>
 
                     {giftCard.description && (
-                      <p className="text-sm desktop:text-lg text-center px-4">{giftCard.description}</p>
+                      <p className="text-sm desktop:text-xl text-center px-4">{giftCard.description}</p>
                     )}
                   </div>
                 </div>
