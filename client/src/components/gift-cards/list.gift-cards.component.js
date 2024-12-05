@@ -8,13 +8,13 @@ export default function ListGiftCardsComponent() {
       <CardGiftCardsComponent
         title="titles.value"
         description="descriptions.value"
-        filterCondition={(giftCard) => !giftCard.description}
+        filterCondition={(giftCard) => !giftCard.description && giftCard.visible}
       />
 
       <CardGiftCardsComponent
         title="titles.menus"
         description="descriptions.menus"
-        filterCondition={(giftCard) => giftCard.description}
+        filterCondition={(giftCard) => giftCard.description && giftCard.visible}
       />
     </section>
   );
