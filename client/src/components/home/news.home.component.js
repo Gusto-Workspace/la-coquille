@@ -112,7 +112,7 @@ export default function NewsHomeComponent() {
               }}
             >
               <div
-                className={`h-[600px] bg-black bg-opacity-10 bg-no-repeat bg-center rounded-lg ${
+                className={`h-[400px] desktop:h-[600px] bg-black bg-opacity-10 bg-no-repeat bg-center rounded-lg ${
                   data.image ? "bg-contain" : "opacity-60"
                 }`}
                 style={{
