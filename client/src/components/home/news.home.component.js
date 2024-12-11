@@ -106,18 +106,18 @@ export default function NewsHomeComponent() {
           .map((data, i) => (
             <div
               key={i}
-              className="flex-shrink-0 flex flex-col gap-4 w-[calc((100%-35px)/1)] desktop:w-[calc((100%-64px)/3)]"
+              className="flex-shrink-0 flex flex-col gap-4 w-[calc((100%-35px)/1)] desktop:w-[calc((100%-64px)/2.5)]"
               style={{
                 fontFamily: "'Abel', sans-serif",
               }}
             >
               <div
-                className={`h-[280px] bg-black bg-opacity-10 bg-no-repeat bg-center rounded-lg ${
-                  data.image ? "bg-cover" : "opacity-60"
+                className={`h-[600px] bg-black bg-opacity-10 bg-no-repeat bg-center rounded-lg ${
+                  data.image ? "bg-contain" : "opacity-60"
                 }`}
                 style={{
                   backgroundImage: `url(${data.image || "/img/logo-noir.png"})`,
-                  backgroundSize: data.image ? "cover" : "80%",
+                  backgroundSize: data.image ? "contain" : "80%",
                   backgroundPosition: "center",
                 }}
               />
