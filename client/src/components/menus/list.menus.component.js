@@ -56,7 +56,7 @@ export default function ListMenusComponent() {
                     {menu?.name}
                   </h2>
 
-                  <p className="mb-8 pl-2 text-lg">
+                  <p className="mb-8 pl-2 text-2xl">
                     {menu?.price} {menu?.price && "€"}
                   </p>
 
@@ -127,7 +127,7 @@ export default function ListMenusComponent() {
                                 {combo.categories.join(" - ")}
                               </p>
 
-                              <p className="text-xl desktop:text-2xl">
+                              <p className="text-xl desktop:text-4xl">
                                 {combo.price} €
                               </p>
                             </div>
