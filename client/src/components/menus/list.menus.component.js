@@ -70,7 +70,7 @@ export default function ListMenusComponent() {
                 </div>
 
                 <div
-                  className="desktop:w-[60%] max-w-[100%] max-h-[60vh] desktop:max-h-full aspect-[5146/6816] py-6 px-6 rounded-md bg-contain bg-center bg-no-repeat flex flex-col"
+                  className="desktop:w-[60%] max-w-[100%] max-h-[550px] desktop:max-h-full aspect-[5146/6816] py-6 px-6 rounded-md bg-contain bg-center bg-no-repeat flex flex-col"
                   style={{ backgroundImage: "url('/img/menu-1.webp')" }}
                 >
                   <div className="pl-4 pr-3 desktop:max-w-[80%] mx-auto flex flex-col h-full justify-center desktop:py-6 text-extraWhite text-opacity-80">
