@@ -73,7 +73,7 @@ export default function NewsHomeComponent() {
   };
 
   return (
-    <section className="bg-extraWhite flex flex-col gap-12 py-24">
+    <section id="news" className="bg-extraWhite flex flex-col gap-12 py-24">
       <div className="flex flex-col items-center">
         <h3 className="text-sm tracking-wide opacity-70 uppercase">
           {t("news.subtitle")}

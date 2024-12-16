@@ -1,5 +1,6 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 // I18N
 import { i18n } from "next-i18next";
@@ -21,6 +22,20 @@ export default function HomePage(props) {
     "La Coquille est un restaurant gastronomique à Concarneau en Bretagne dans le Finistère. Le restaurant est situé sur les quais en face de la Ville Close.";
 
   const [isNavVisible, setIsNavVisible] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const hash = router.asPath.split("#")[1];
+    if (hash === "news") {
+      const newsSection = document.getElementById(hash);
+      if (newsSection) {
+        setTimeout(() => {
+          newsSection.scrollIntoView({ behavior: "smooth" });
+        }, 500);
+      }
+    }
+  }, [router.asPath]);
+  
 
   return (
     <>
