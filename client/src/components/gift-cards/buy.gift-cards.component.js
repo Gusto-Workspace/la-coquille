@@ -59,6 +59,7 @@ export default function BuyGiftCardsPage() {
             onSubmit={handleFormSubmit}
             onChange={handleFormChange}
             formData={formData}
+            giftCard={giftCard}
           />
         );
       case 2:
@@ -116,7 +117,9 @@ export default function BuyGiftCardsPage() {
               )}
 
               <p className="text-sm desktop:text-[1.2vw]">
-                <span className="text-sm desktop:text-[1vw] text-center italic">Pour :</span>{" "}
+                <span className="text-sm desktop:text-[1vw] text-center italic">
+                  Pour :
+                </span>{" "}
                 <span>
                   {formData.beneficiaryFirstName} {formData.beneficiaryLastName}
                 </span>
@@ -130,7 +133,9 @@ export default function BuyGiftCardsPage() {
 
               {formData.sender && (
                 <p className="text-sm desktop:text-[1.2vw]">
-                  <span className="text-sm desktop:text-[1vw] italic">De la part de :</span>{" "}
+                  <span className="text-sm desktop:text-[1vw] italic">
+                    De la part de :
+                  </span>{" "}
                   <span>{formData.sender}</span>
                 </p>
               )}

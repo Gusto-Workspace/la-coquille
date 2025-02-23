@@ -51,7 +51,7 @@ export async function generateGiftCardPdf({
   const smallFontSize = 26;
   const largeSpacing = 0; // Espacement sous "Carte Cadeau"
   const lineHeightReduced = fontSize - 10; // Espacement réduit
-  const topMargin = 30; // Marge au-dessus de "Carte Cadeau"
+  const topMargin = 10; // Marge au-dessus de "Carte Cadeau"
   const bottomSpacing = 20; // Espacement au-dessus de "Code :"
   const textColor = rgb(0, 0, 0); // Noir
   const maxTextWidth = effectiveWidth - 40; // Largeur maximale du texte dans les deux tiers droits
@@ -269,6 +269,34 @@ export async function generateGiftCardPdf({
     size: smallFontSize,
     font: abelFont,
     color: textColor,
+  });
+  currentY -= smallFontSize + lineHeightReduced;
+
+  // Réduire la taille du texte pour le bloc supplémentaire
+  const additionalFontSize = smallFontSize - 6; // Par exemple, on réduit de 6 points
+
+  // Ajouter le texte supplémentaire sous "Valable jusqu'au..."
+  const additionalText =
+    "Pour utiliser ce bon, réserver au 02 98 97 08 52 en indiquant le code de votre bon cadeau";
+  const wrappedAdditionalText = wrapText(
+    additionalText,
+    abelFont,
+    additionalFontSize,
+    maxTextWidth
+  );
+  wrappedAdditionalText.forEach((line) => {
+    page.drawText(line, {
+      x:
+        width / 3 +
+        (effectiveWidth -
+          abelFont.widthOfTextAtSize(line, additionalFontSize)) /
+          2,
+      y: currentY,
+      size: additionalFontSize,
+      font: abelFont,
+      color: textColor,
+    });
+    currentY -= additionalFontSize + lineHeightReduced;
   });
 
   // Sauvegarder le PDF
