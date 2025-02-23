@@ -4,6 +4,7 @@ export default function InfosFormGiftCardsComponent({
   onSubmit,
   onChange,
   formData,
+  giftCard,
 }) {
   const {
     register,
@@ -95,18 +96,20 @@ export default function InfosFormGiftCardsComponent({
       </div>
 
       {/* Checkbox Masquer le prix */}
-      <div className="flex items-center gap-2">
-        <input
-          id="hidePrice"
-          type="checkbox"
-          {...register("hidePrice")}
-          className="w-5 h-5"
-          onChange={handleFieldChange("hidePrice")}
-        />
-        <label htmlFor="hidePrice" className="desktop:text-lg">
-          Masquer le prix lors de l'envoi du bon cadeau
-        </label>
-      </div>
+      {giftCard?.description && (
+        <div className="flex items-center gap-2">
+          <input
+            id="hidePrice"
+            type="checkbox"
+            {...register("hidePrice")}
+            className="w-5 h-5"
+            onChange={handleFieldChange("hidePrice")}
+          />
+          <label htmlFor="hidePrice" className="desktop:text-lg">
+            Masquer le prix lors de l'envoi du bon cadeau
+          </label>
+        </div>
+      )}
 
       {/* Champ Votre email */}
 
