@@ -94,7 +94,7 @@ export default function ListWinesComponent() {
                 {/* Volumes affichés en haut à droite */}
                 <div className="text-right font-semibold">
                   {volumes?.map((v, idx) => (
-                    <span key={idx} className="inline-block w-24 text-center">
+                    <span key={idx} className="inline-block w-24 text-end">
                       {v}
                     </span>
                   ))}
@@ -158,7 +158,7 @@ export default function ListWinesComponent() {
                                 return (
                                   <p
                                     key={idx}
-                                    className="w-24 text-center text-base"
+                                    className="w-24 text-end text-base"
                                   >
                                     {matchingVolume
                                       ? `${matchingVolume.price.toFixed(2)} €`
@@ -246,7 +246,7 @@ export default function ListWinesComponent() {
                                   return (
                                     <p
                                       key={idx}
-                                      className="w-24 text-center text-base"
+                                      className="w-24 text-end text-base"
                                     >
                                       {matchingVolume
                                         ? `${matchingVolume.price.toFixed(2)} €`
