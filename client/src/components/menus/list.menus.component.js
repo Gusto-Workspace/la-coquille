@@ -48,7 +48,7 @@ export default function ListMenusComponent() {
                   i % 2 === 0 ? "" : "desktop:flex-row-reverse"
                 }`}
               >
-                <div className="w-full desktop:w-1/2 flex flex-col mb-12 desktop:mb-0">
+                <div className="w-full desktop:w-1/2 flex flex-col">
                   <h2
                     className="text-5xl"
                     style={{ fontFamily: "'Dancing Script', cursive" }}
@@ -60,7 +60,7 @@ export default function ListMenusComponent() {
                     {menu?.price} {menu?.price && "€"}
                   </p>
 
-                  <div className="relative desktop:ml-[40px]">
+                  <div className="relative desktop:ml-[40px] mb-12 desktop:mb-0">
                     <p className="pl-[40px] text-lg text-balance">
                       {menu?.description}
                     </p>
