@@ -60,13 +60,15 @@ export default function ListMenusComponent() {
                     {menu?.price} {menu?.price && "€"}
                   </p>
 
-                  <div className="relative desktop:ml-[40px] mb-12 desktop:mb-0">
-                    <p className="pl-[40px] text-lg text-balance">
-                      {menu?.description}
-                    </p>
+                  {menu.description && (
+                    <div className="relative desktop:ml-[40px] mb-12 desktop:mb-0">
+                      <p className="pl-[40px] text-lg text-balance">
+                        {menu?.description}
+                      </p>
 
-                    <hr className="absolute w-[1px] h-full bg-brown opacity-20 top-0 " />
-                  </div>
+                      <hr className="absolute w-[1px] h-full bg-brown opacity-20 top-0 " />
+                    </div>
+                  )}
                 </div>
 
                 <div
