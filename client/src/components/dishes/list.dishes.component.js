@@ -35,7 +35,10 @@ export default function ListDishesComponent() {
               category.dishes.some((dish) => dish.showOnWebsite)
           )
           .map((category, i) => (
-            <div key={i} className="flex flex-col gap-16 max-w-[90%] mx-auto desktop:mx-0 desktop:max-w-[100%]">
+            <div
+              key={i}
+              className="flex flex-col gap-16 max-w-[90%] mx-auto desktop:mx-0 desktop:max-w-[100%]"
+            >
               <div className="flex flex-col gap-4">
                 <h2 className="relative text-3xl font-semibold uppercase text-center bg-extraWhite px-6 w-fit mx-auto">
                   {category.name}
@@ -160,9 +163,11 @@ export default function ListDishesComponent() {
                       <hr className="flex-grow h-[1px] bg-grey opacity-20 mt-[14px] -z-10 min-w-[10px] desktop:min-w-[50px]" />
 
                       <div className="flex gap-4 bg-extraWhite pl-4">
-                        <p className="desktop:text-lg whitespace-nowrap">
-                          {dish.price.toFixed(2)} €
-                        </p>
+                        {dish.price && (
+                          <p className="desktop:text-lg whitespace-nowrap">
+                            {dish.price.toFixed(2)} €
+                          </p>
+                        )}
                       </div>
                     </div>
                   ))}
