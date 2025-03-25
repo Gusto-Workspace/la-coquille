@@ -48,7 +48,7 @@ export default function ListMenusComponent() {
                   i % 2 === 0 ? "" : "desktop:flex-row-reverse"
                 }`}
               >
-                <div className="desktop:w-1/2 flex flex-col">
+                <div className="w-full desktop:w-1/2 flex flex-col">
                   <h2
                     className="text-5xl"
                     style={{ fontFamily: "'Dancing Script', cursive" }}
