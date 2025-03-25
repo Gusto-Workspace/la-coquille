@@ -44,11 +44,11 @@ export default function ListMenusComponent() {
             return (
               <div
                 key={i}
-                className={`max-w-[80%] mx-auto desktop:min-w-full flex flex-col desktop:flex-row gap-12 desktop:gap-24 items-center ${
+                className={`max-w-[80%] mx-auto desktop:min-w-full flex flex-col desktop:flex-row gap-0 desktop:gap-24 items-center ${
                   i % 2 === 0 ? "" : "desktop:flex-row-reverse"
                 }`}
               >
-                <div className="w-full desktop:w-1/2 flex flex-col">
+                <div className="w-full desktop:w-1/2 flex flex-col mb-12 desktop:mb-0">
                   <h2
                     className="text-5xl"
                     style={{ fontFamily: "'Dancing Script', cursive" }}
