@@ -102,8 +102,16 @@ export default function FooterComponent() {
             <Link href="/policy">Politique de confidentialité</Link>•
             <Link href="/legales">Mentions légales</Link>
           </div>
-
-          <p>© 2023 Restaurant La Coquille, Tous Droits Réservés</p>
+          <p className="font-poiret text-md font-bold text-embruns-cream opacity-40">
+            &copy; 2023 La Coquille. Tous droits réservés • Propulsé par{" "}
+            <a
+              className="underline underline-offset-2"
+              target="_blank"
+              href="https://www.gusto-manager.com"
+            >
+              Gusto Manager
+            </a>
+          </p>
         </div>
       </div>
     </footer>
