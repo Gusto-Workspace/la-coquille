@@ -102,7 +102,7 @@ export default function FooterComponent() {
             <Link href="/policy">Politique de confidentialité</Link>•
             <Link href="/legales">Mentions légales</Link>
           </div>
-          <p className="font-poiret text-md font-bold text-embruns-cream opacity-40">
+          <p>
             &copy; 2023 La Coquille. Tous droits réservés • Propulsé par{" "}
             <a
               className="underline underline-offset-2"
