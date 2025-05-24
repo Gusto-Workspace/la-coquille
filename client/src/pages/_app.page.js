@@ -4,7 +4,7 @@ import "@/styles/tailwind.css";
 import "@/styles/custom/_index.scss";
 
 import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import { appWithTranslation } from "next-i18next";
 import { GlobalProvider } from "@/contexts/global.context";
@@ -14,29 +14,21 @@ function TrackVisits() {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const RESTAURANT_ID = process.env.NEXT_PUBLIC_RESTAURANT_ID;
 
-  const hasLoggedFirst = useRef(false);
-  const prevPath = useRef("");
+  // Durée de session : 5 minutes
+  const SESSION_TIMEOUT = 5 * 60 * 1000; // 5 minutes
 
   useEffect(() => {
-    if (!router.isReady) return;
+    if (!router.isReady || !RESTAURANT_ID) return;
 
-    const logVisit = () => {
-      if (!RESTAURANT_ID) return;
+    const now = Date.now();
+    const last = parseInt(localStorage.getItem("lastVisitSession") || "0", 10);
+
+    // Si pas de session ou session expirée, on logge une nouvelle session
+    if (!last || now - last > SESSION_TIMEOUT) {
+      localStorage.setItem("lastVisitSession", String(now));
       axios
         .post(`${API_URL}/restaurants/${RESTAURANT_ID}/visits`)
-        .catch((e) => console.error("log visite :", e));
-    };
-
-    if (!hasLoggedFirst.current) {
-      logVisit();
-      hasLoggedFirst.current = true;
-      prevPath.current = router.asPath;
-      return;
-    }
-
-    if (prevPath.current !== router.asPath) {
-      logVisit();
-      prevPath.current = router.asPath;
+        .catch((e) => console.error("log session :", e));
     }
   }, [router.isReady, router.asPath, API_URL, RESTAURANT_ID]);
 
