@@ -137,7 +137,7 @@ export default function InfosFormGiftCardsComponent({
         <p className="underline">Important</p>
 
         <p className="italic">
-          La carte cadeau a une durée de validité de 6 mois. Une fois le
+          La carte cadeau a une durée de validité de 3 mois. Une fois le
           paiement effectué, la carte cadeau sera envoyée par mail à l'adresse
           renseignée ci-dessus. Cet email contiendra également un code unique à
           transmettre directement au restaurant le jour d'utiliation de la carte
