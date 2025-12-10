@@ -134,10 +134,10 @@ export default function InfosFormGiftCardsComponent({
       </div>
 
       <div className="flex flex-col gap-2">
-        <p className="underline">Important</p>
+        <p className="underline uppercase">Important</p>
 
         <p className="italic">
-          La carte cadeau a une durée de validité de 3 mois. Une fois le
+          La carte cadeau est <strong className="uppercase underline">valide jusqu'au 28 février 2026</strong>. Une fois le
           paiement effectué, la carte cadeau sera envoyée par mail à l'adresse
           renseignée ci-dessus. Cet email contiendra également un code unique à
           transmettre directement au restaurant le jour d'utiliation de la carte

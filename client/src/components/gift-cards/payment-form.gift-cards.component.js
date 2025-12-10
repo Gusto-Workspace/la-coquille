@@ -29,10 +29,36 @@ export default function PaymentFormGiftCardsComponent(props) {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const restaurantId = process.env.NEXT_PUBLIC_RESTAURANT_ID;
 
+    const validityEndEnv = process.env.NEXT_PUBLIC_GIFT_VALID_UNTIL;
+    const validityMonthsEnv = process.env.NEXT_PUBLIC_GIFT_VALIDITY_MONTHS;
+
+    let validUntil;
+
+    if (validityEndEnv) {
+      // MODE 1 : date fixe (ex : 2026-02-28, valable jusqu'à la fin de journée)
+      const [year, month, day] = validityEndEnv.split("-").map(Number);
+      validUntil = new Date(year, month - 1, day, 23, 59, 59, 999);
+    } else {
+      // MODE 2 : durée en mois à partir de la date d'achat
+      const monthsToAdd = validityMonthsEnv
+        ? parseInt(validityMonthsEnv, 10) || 6
+        : 6; // fallback 6 mois
+
+      validUntil = new Date();
+      validUntil.setMonth(validUntil.getMonth() + monthsToAdd);
+
+      validUntil.setHours(23, 59, 59, 999);
+    }
+
+    const payload = {
+      ...props.formData,
+      validUntil: validUntil.toISOString(),
+    };
+
     try {
       const response = await axios.post(
         `${apiUrl}/restaurants/${restaurantId}/gifts/${props.giftId}/purchase`,
-        props.formData
+        payload
       );
 
       return response.data;
@@ -67,7 +93,6 @@ export default function PaymentFormGiftCardsComponent(props) {
         validUntil: data.validUntil,
         attachment: pdfContent,
         hidePrice: props.formData.hidePrice,
-       
       };
 
       const response = await fetch("/api/send-gift-card-email", {

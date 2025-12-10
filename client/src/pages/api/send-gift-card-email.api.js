@@ -1,7 +1,7 @@
 export const config = {
   api: {
     bodyParser: {
-      sizeLimit: "10mb", // Augmente la limite de la taille du corps à 10 Mo
+      sizeLimit: "10mb",
     },
   },
 };
@@ -15,7 +15,7 @@ async function sendTransactionalEmail(params) {
   apiKey.apiKey = process.env.BREVO_API_KEY;
   const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
-  // Formatage de la date
+  // Formatage de la date (JJ/MM/AAAA, sans heure)
   const formattedValidUntil = new Date(params.validUntil).toLocaleDateString(
     "fr-FR",
     {
@@ -41,10 +41,10 @@ async function sendTransactionalEmail(params) {
         <p><strong>Comment utiliser la carte cadeau ?</strong></p>
         <ul>
           <li>Lors de la réservation, précisez que vous bénéficiez d'une carte cadeau.</li>
-          <li>Rendez-vous au Restaurant La Coquille pour profiter d'un instant savoureux !</li>
+          <li>Rendez-vous au Restaurant La Coquille pour profiter d'un instant savoureux&nbsp;!</li>
           <li>Lors du paiement, donnez le code suivant : <strong>${params.code}</strong></li>
         </ul>
-        <p><em>⚠️ Si la carte est utilisée après cette date, une majoration de 15 € sera appliquée au montant de la carte cadeau.</em></p>
+        <p><em><strong>⚠️ À PARTIR DU ${formattedValidUntil}, LA CARTE CADEAU NE POURRA PLUS ÊTRE UTILISÉE.</strong></em></p>
         <hr>
         <p><strong>Informations pratiques :</strong></p>
         <p>📍 Adresse : 1 Rue du Moros, 29900 Concarneau</p>
@@ -73,7 +73,7 @@ async function sendTransactionalEmail(params) {
     attachment: [
       {
         name: "Carte_Cadeau.pdf",
-        content: params.attachment, 
+        content: params.attachment,
       },
     ],
   };
