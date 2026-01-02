@@ -3,6 +3,6 @@ export const navItemsData = [
   { href: "/dishes", label: "nav.dishes" },
   { href: "/wines-drinks", label: "nav.drinks" },
   { href: "/", label: "nav.news" },
-  { href: "/gift-cards", label: "nav.gifts" },
+  // { href: "/gift-cards", label: "nav.gifts" },
   { href: "/contact", label: "nav.contact" },
 ];
