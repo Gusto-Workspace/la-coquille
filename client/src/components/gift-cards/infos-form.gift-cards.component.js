@@ -1,4 +1,5 @@
-import { useForm, Controller } from "react-hook-form";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 export default function InfosFormGiftCardsComponent({
   onSubmit,
@@ -9,10 +10,16 @@ export default function InfosFormGiftCardsComponent({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: formData,
   });
+
+  // ✅ IMPORTANT: quand formData change (restore localStorage), on reset le form RHF
+  useEffect(() => {
+    reset(formData);
+  }, [formData, reset]);
 
   const handleFieldChange = (fieldName) => (e) => {
     onChange({
@@ -21,12 +28,19 @@ export default function InfosFormGiftCardsComponent({
     });
   };
 
+  // ✅ onSubmit reçoit les valeurs RHF (plus fiable)
+  const submit = (values) => {
+    // sync parent (au cas où)
+    onChange(values);
+    onSubmit(values);
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(submit)} className="space-y-4">
       {/* Champ Bénéficiaire */}
       <div>
         <label
-          htmlFor="beneficiary"
+          htmlFor="beneficiaryFirstName"
           className="block desktop:text-lg font-semibold mb-2"
         >
           Bénéficiaire
@@ -34,7 +48,7 @@ export default function InfosFormGiftCardsComponent({
 
         <div className="flex gap-4">
           <input
-            id="beneficiary"
+            id="beneficiaryFirstName"
             type="text"
             placeholder="Prénom du bénéficiaire"
             {...register("beneficiaryFirstName", { required: true })}
@@ -44,7 +58,7 @@ export default function InfosFormGiftCardsComponent({
             onChange={handleFieldChange("beneficiaryFirstName")}
           />
           <input
-            id="beneficiary"
+            id="beneficiaryLastName"
             type="text"
             placeholder="Nom du bénéficiaire"
             {...register("beneficiaryLastName", { required: true })}
@@ -58,14 +72,14 @@ export default function InfosFormGiftCardsComponent({
 
       <div>
         <label
-          htmlFor="beneficiary"
+          htmlFor="sender"
           className="block desktop:text-lg font-semibold mb-2"
         >
           De la part de{" "}
         </label>
 
         <input
-          id="beneficiary"
+          id="sender"
           type="text"
           placeholder="Écrire ..."
           {...register("sender", { required: true })}
@@ -83,7 +97,7 @@ export default function InfosFormGiftCardsComponent({
           className="block desktop:text-lg font-semibold mb-2"
         >
           Ajouter un commentaire sur la carte{" "}
-          <span className="text-sm italic opacity-30">(falcultatif)</span>
+          <span className="text-sm italic opacity-30">(facultatif)</span>
         </label>
         <textarea
           id="comment"
@@ -112,7 +126,6 @@ export default function InfosFormGiftCardsComponent({
       )}
 
       {/* Champ Votre email */}
-
       <div>
         <label
           htmlFor="sendEmail"
@@ -137,11 +150,14 @@ export default function InfosFormGiftCardsComponent({
         <p className="underline uppercase">Important</p>
 
         <p className="italic">
-          La carte cadeau est <strong className="uppercase underline">valide jusqu'au 28 février 2026</strong>. Une fois le
-          paiement effectué, la carte cadeau sera envoyée par mail à l'adresse
-          renseignée ci-dessus. Cet email contiendra également un code unique à
-          transmettre directement au restaurant le jour d'utiliation de la carte
-          cadeau
+          La carte cadeau est{" "}
+          <strong className="uppercase underline">
+            valide jusqu'au 28 février 2026
+          </strong>
+          . Une fois le paiement effectué, la carte cadeau sera envoyée par mail
+          à l'adresse renseignée ci-dessus. Cet email contiendra également un
+          code unique à transmettre directement au restaurant le jour
+          d'utilisation de la carte cadeau.
         </p>
       </div>
 

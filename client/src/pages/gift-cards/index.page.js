@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { useEffect } from "react";
 
 // I18N
 import { i18n } from "next-i18next";
@@ -14,6 +15,47 @@ export default function GiftCardsPage(props) {
   const title = "La Coquille - Restaurant";
   const description =
     "La Coquille est un restaurant gastronomique à Concarneau en Bretagne dans le Finistère. Le restaurant est situé sur les quais en face de la Ville Close.";
+
+  function safeJsonParse(v, fallback = null) {
+    try {
+      return JSON.parse(v);
+    } catch {
+      return fallback;
+    }
+  }
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const restaurantId = process.env.NEXT_PUBLIC_RESTAURANT_ID;
+
+    const prefix = restaurantId
+      ? `gm_gift_checkout:${restaurantId}:`
+      : "gm_gift_checkout:";
+
+    const now = Date.now();
+    const keepConfirmingMs = 2 * 60 * 1000; 
+
+    const keysToRemove = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (!key || !key.startsWith(prefix)) continue;
+
+      const checkout = safeJsonParse(localStorage.getItem(key), null);
+
+      const isConfirmingRecent =
+        checkout?.state === "confirming" &&
+        checkout?.createdAt &&
+        now - checkout.createdAt < keepConfirmingMs;
+
+      // ✅ si paiement en cours de finalisation, on garde
+      if (isConfirmingRecent) continue;
+
+      keysToRemove.push(key);
+    }
+
+    keysToRemove.forEach((key) => localStorage.removeItem(key));
+  }, []);
 
   return (
     <>
