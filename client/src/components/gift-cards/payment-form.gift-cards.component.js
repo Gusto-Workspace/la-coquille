@@ -42,7 +42,7 @@ export default function PaymentFormGiftCardsComponent(props) {
   });
 
   const restaurantId = process.env.NEXT_PUBLIC_RESTAURANT_ID;
-  const amountCents = props.amount * 100;
+  const amountCents = Math.round(Number(props.amount) * 100);
 
   // clé unique par "commande"
   const LS_KEY = `gm_gift_checkout:${restaurantId}:${props.giftId}:${amountCents}`;
