@@ -24,24 +24,34 @@ export default async function handler(req, res) {
 
   // ---------------- CREATE ----------------
   if (action === "create") {
-    const { amount, restaurantId, giftId } = req.body;
+    const { amount, restaurantId, giftId, checkoutId } = req.body;
 
     const amt = Number(amount);
-    if (!Number.isFinite(amt) || amt <= 0 || !restaurantId || !giftId) {
-      return res
-        .status(400)
-        .json({ error: "amount (>0), restaurantId and giftId are required" });
+    if (
+      !checkoutId ||
+      !Number.isFinite(amt) ||
+      amt <= 0 ||
+      !restaurantId ||
+      !giftId
+    ) {
+      return res.status(400).json({
+        error: "checkoutId, amount (>0), restaurantId and giftId are required",
+      });
     }
 
     try {
-      const paymentIntent = await stripe.paymentIntents.create({
-        amount: amt,
-        currency: "eur",
-        metadata: {
-          restaurantId: String(restaurantId),
-          giftId: String(giftId),
+      const paymentIntent = await stripe.paymentIntents.create(
+        {
+          amount: amt,
+          currency: "eur",
+          metadata: {
+            restaurantId: String(restaurantId),
+            giftId: String(giftId),
+            checkoutId: String(checkoutId),
+          },
         },
-      });
+        { idempotencyKey: String(checkoutId) }
+      );
 
       return res.status(200).json({
         clientSecret: paymentIntent.client_secret,
@@ -91,7 +101,7 @@ export default async function handler(req, res) {
 
       const timestamp = Date.now().toString();
 
-      // ⚠️ Important: on signe l'amount NORMALISÉ (number), pour matcher le middleware Gusto
+      // ✅ on signe amount normalisé (number)
       const payload = {
         paymentIntentId,
         amount: amt,

@@ -10,6 +10,21 @@ import PaymentFormGiftCardsComponent from "./payment-form.gift-cards.component";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
 
+// --- helpers localStorage (minimal) ---
+function safeJsonParse(v, fallback = null) {
+  try {
+    return JSON.parse(v);
+  } catch {
+    return fallback;
+  }
+}
+
+function makeCheckoutId() {
+  if (typeof crypto !== "undefined" && crypto.randomUUID)
+    return crypto.randomUUID();
+  return `chk_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+}
+
 export default function BuyGiftCardsPage() {
   const router = useRouter();
   const { id } = router.query;
@@ -26,6 +41,9 @@ export default function BuyGiftCardsPage() {
     hidePrice: false,
   });
 
+  const restaurantId = process.env.NEXT_PUBLIC_RESTAURANT_ID;
+
+  // ✅ Charge la gift card
   useEffect(() => {
     if (restaurantContext?.restaurantData) {
       const foundGiftCard = restaurantContext.restaurantData.giftCards.find(
@@ -39,11 +57,50 @@ export default function BuyGiftCardsPage() {
     }
   }, [id, restaurantContext, router]);
 
+  // ✅ Récupération checkout en localStorage + restore form + step 2 si process pas fini
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!giftCard || !restaurantId) return;
+
+    const amountCents = Number(giftCard.value) * 100;
+    const LS_KEY = `gm_gift_checkout:${restaurantId}:${giftCard._id}:${amountCents}`;
+
+    const checkout = safeJsonParse(localStorage.getItem(LS_KEY), null);
+    if (!checkout) return;
+
+    // restore form data si on l'a en snapshot
+    if (checkout.formDataSnapshot) {
+      setFormData((prev) => ({ ...prev, ...checkout.formDataSnapshot }));
+    }
+
+    // si l'utilisateur était en paiement ou en confirming -> afficher direct step 2
+    if (checkout.state === "payment" || checkout.state === "confirming") {
+      setCurrentStep(2);
+    }
+  }, [giftCard, restaurantId]);
+
   if (!giftCard) {
     return <p className="p-12">Chargement des données...</p>;
   }
 
   function handleFormSubmit() {
+    // ✅ Quand on passe à l'étape paiement, on persiste l'état + snapshot
+    if (typeof window !== "undefined" && restaurantId) {
+      const amountCents = Number(giftCard.value) * 100;
+      const LS_KEY = `gm_gift_checkout:${restaurantId}:${giftCard._id}:${amountCents}`;
+
+      const existing = safeJsonParse(localStorage.getItem(LS_KEY), null);
+
+      const next = {
+        ...(existing || { checkoutId: makeCheckoutId() }),
+        state: "payment", // on est sur l'étape paiement
+        createdAt: existing?.createdAt || Date.now(),
+        formDataSnapshot: formData,
+      };
+
+      localStorage.setItem(LS_KEY, JSON.stringify(next));
+    }
+
     setCurrentStep(2);
   }
 
@@ -91,14 +148,12 @@ export default function BuyGiftCardsPage() {
   return (
     <div
       className="flex flex-col desktop:flex-row items-center justify-between gap-12 py-24 max-w-[90%] mx-auto"
-      style={{
-        fontFamily: "'Abel', sans-serif",
-      }}
+      style={{ fontFamily: "'Abel', sans-serif" }}
     >
       <div className="w-[100%] h-auto flex-grow flex items-center">
         <div
           className="rounded-md flex flex-col items-end aspect-[16/9] w-[100%] mx-auto bg-center bg-cover bg-no-repeat shadow-2xl"
-          style={{ backgroundImage: "url(/img/assets/bg-gift-card.png" }}
+          style={{ backgroundImage: "url(/img/assets/bg-gift-card.png)" }} // ✅ (petite correction parenthèse)
         >
           <div className="w-2/3 flex flex-col desktop:gap-2 items-center justify-center my-auto">
             <h1 className="text-2xl desktop:text-[2vw] font-bold desktop:mb-4">
