@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // AXIOS
 import axios from "axios";
@@ -18,54 +18,145 @@ import { generateGiftCardPdf } from "@/_assets/utils/generate-gift-card-pdf.util
 export default function PaymentFormGiftCardsComponent(props) {
   const stripe = useStripe();
   const elements = useElements();
+
+  const submitLockRef = useRef(false);
+
   const [isLoading, setIsLoading] = useState(false);
+  const [isPreparingPayment, setIsPreparingPayment] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const [clientSecret, setClientSecret] = useState(null);
+
   const [formDetails, setFormDetails] = useState({
     firstName: "",
     lastName: "",
   });
 
-  const sendPurchaseData = async () => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const restaurantId = process.env.NEXT_PUBLIC_RESTAURANT_ID;
+  // ✅ Create the PaymentIntent ONLY ONCE (or when amount / gift changes)
+  useEffect(() => {
+    let cancelled = false;
 
+    async function createPaymentIntentOnce() {
+      try {
+        setIsPreparingPayment(true);
+        setErrorMessage("");
+        setClientSecret(null);
+
+        const response = await fetch("/api/payment-intent", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "create",
+            amount: props.amount * 100,
+            restaurantId: process.env.NEXT_PUBLIC_RESTAURANT_ID,
+            giftId: props.giftId,
+          }),
+        });
+
+        const json = await response.json();
+
+        if (cancelled) return;
+
+        if (!response.ok || json.error) {
+          setErrorMessage(
+            json.error || "Erreur lors de la préparation du paiement."
+          );
+          setClientSecret(null);
+          return;
+        }
+
+        setClientSecret(json.clientSecret);
+      } catch (e) {
+        if (!cancelled) {
+          setErrorMessage("Erreur lors de la préparation du paiement.");
+          setClientSecret(null);
+        }
+      } finally {
+        if (!cancelled) setIsPreparingPayment(false);
+      }
+    }
+
+    createPaymentIntentOnce();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [props.amount, props.giftId]);
+
+  const computeValidUntil = () => {
     const validityEndEnv = process.env.NEXT_PUBLIC_GIFT_VALID_UNTIL;
     const validityMonthsEnv = process.env.NEXT_PUBLIC_GIFT_VALIDITY_MONTHS;
 
     let validUntil;
 
     if (validityEndEnv) {
-      // MODE 1 : date fixe (ex : 2026-02-28, valable jusqu'à la fin de journée)
       const [year, month, day] = validityEndEnv.split("-").map(Number);
       validUntil = new Date(year, month - 1, day, 23, 59, 59, 999);
     } else {
-      // MODE 2 : durée en mois à partir de la date d'achat
       const monthsToAdd = validityMonthsEnv
         ? parseInt(validityMonthsEnv, 10) || 6
-        : 6; // fallback 6 mois
+        : 6;
 
       validUntil = new Date();
       validUntil.setMonth(validUntil.getMonth() + monthsToAdd);
-
       validUntil.setHours(23, 59, 59, 999);
     }
+
+    return validUntil;
+  };
+
+  const verifyPaymentProof = async (paymentIntentId) => {
+    const response = await fetch("/api/payment-intent", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        action: "verify",
+        paymentIntentId,
+        amount: props.amount * 100,
+        restaurantId: process.env.NEXT_PUBLIC_RESTAURANT_ID,
+        giftId: props.giftId,
+      }),
+    });
+
+    const json = await response.json();
+
+    if (!response.ok || json.error) {
+      throw new Error(json.error || "Paiement non vérifié.");
+    }
+
+    // attendu : { timestamp, signature, payload }
+    if (!json.timestamp || !json.signature) {
+      throw new Error("Preuve de paiement invalide.");
+    }
+
+    return json;
+  };
+
+  const sendPurchaseData = async (piIdFromConfirm, proof) => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const restaurantId = process.env.NEXT_PUBLIC_RESTAURANT_ID;
+
+    const validUntil = computeValidUntil();
 
     const payload = {
       ...props.formData,
       validUntil: validUntil.toISOString(),
+      paymentIntentId: piIdFromConfirm,
+      amount: props.amount * 100,
     };
 
-    try {
-      const response = await axios.post(
-        `${apiUrl}/restaurants/${restaurantId}/gifts/${props.giftId}/purchase`,
-        payload
-      );
+    const response = await axios.post(
+      `${apiUrl}/restaurants/${restaurantId}/gifts/${props.giftId}/purchase`,
+      payload,
+      {
+        headers: {
+          "x-gusto-timestamp": proof.timestamp,
+          "x-gusto-signature": proof.signature,
+        },
+      }
+    );
 
-      return response.data;
-    } catch (error) {
-      console.error("Erreur lors de l'envoi des données au backend :", error);
-      throw error;
-    }
+    return response.data;
   };
 
   const sendGiftCardEmail = async (data) => {
@@ -112,24 +203,19 @@ export default function PaymentFormGiftCardsComponent(props) {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!stripe || !elements) {
-      return;
-    }
+    if (!stripe || !elements) return;
+
+    if (submitLockRef.current) return;
+    submitLockRef.current = true;
 
     setIsLoading(true);
+    setErrorMessage("");
 
     try {
-      const response = await fetch("/api/payment-intent", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: props.amount * 100 }),
-      });
-
-      const { clientSecret, error } = await response.json();
-
-      if (error) {
-        setErrorMessage(error);
-        setIsLoading(false);
+      if (!clientSecret) {
+        setErrorMessage(
+          "Paiement non prêt. Veuillez réessayer dans quelques secondes."
+        );
         return;
       }
 
@@ -144,9 +230,19 @@ export default function PaymentFormGiftCardsComponent(props) {
 
       if (result.error) {
         setErrorMessage(result.error.message);
-      } else if (result.paymentIntent.status === "succeeded") {
-        const purchaseData = await sendPurchaseData();
+        return;
+      }
 
+      if (result.paymentIntent?.status === "succeeded") {
+        const confirmedPiId = result.paymentIntent.id;
+
+        // ✅ 1) Demande une preuve serveur (Stripe vérifié côté site client)
+        const proof = await verifyPaymentProof(confirmedPiId);
+
+        // ✅ 2) Envoie la purchase avec preuve (headers) vers Gusto
+        const purchaseData = await sendPurchaseData(confirmedPiId, proof);
+
+        // ✅ 3) Email + success UI
         await sendGiftCardEmail({
           beneficiaryFirstName: props.formData.beneficiaryFirstName,
           beneficiaryLastName: props.formData.beneficiaryLastName,
@@ -158,12 +254,16 @@ export default function PaymentFormGiftCardsComponent(props) {
           sendEmail: props.formData.sendEmail,
           senderName: props.formData.sender,
         });
+
         props.onPaymentSuccess();
       }
     } catch (error) {
-      setErrorMessage("Une erreur est survenue, veuillez réessayer.");
+      setErrorMessage(
+        error?.message || "Une erreur est survenue, veuillez réessayer."
+      );
     } finally {
       setIsLoading(false);
+      submitLockRef.current = false;
     }
   };
 
@@ -179,20 +279,17 @@ export default function PaymentFormGiftCardsComponent(props) {
         fontFamily: "'Abel', sans-serif",
         fontSmoothing: "antialiased",
         fontSize: "14px",
-        "::placeholder": {
-          color: "#9da3ae",
-        },
+        "::placeholder": { color: "#9da3ae" },
       },
-      invalid: {
-        color: "#fa755a",
-        iconColor: "#fa755a",
-      },
+      invalid: { color: "#fa755a", iconColor: "#fa755a" },
     },
   };
 
+  const disablePayButton =
+    !stripe || isLoading || isPreparingPayment || !clientSecret;
+
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-      {/* Prénom et Nom */}
       <div className="flex gap-4">
         <div className="w-full">
           <input
@@ -221,12 +318,10 @@ export default function PaymentFormGiftCardsComponent(props) {
         </div>
       </div>
 
-      {/* Numéro de carte */}
       <div className="border rounded-md bg-extraWhite p-3 box-border">
         <CardNumberElement id="cardNumber" options={stripeElementStyle} />
       </div>
 
-      {/* Date d'expiration et CVC */}
       <div className="flex gap-4">
         <div className="border rounded-md bg-extraWhite p-3 box-border w-24">
           <CardExpiryElement id="cardExpiry" options={stripeElementStyle} />
@@ -237,12 +332,16 @@ export default function PaymentFormGiftCardsComponent(props) {
         </div>
       </div>
 
+      {isPreparingPayment && (
+        <p className="text-grey text-sm">Préparation du paiement…</p>
+      )}
+
       {errorMessage && <p className="text-red-500">{errorMessage}</p>}
 
       <button
         type="submit"
-        disabled={!stripe || isLoading}
-        className="w-full py-2 px-4 rounded-lg text-white text-lg bg-grey"
+        disabled={disablePayButton}
+        className="w-full py-2 px-4 rounded-lg text-white text-lg bg-grey disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {isLoading ? "Traitement..." : "Payer"}
       </button>
