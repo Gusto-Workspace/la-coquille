@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import axios from "axios";
 import {
   CardNumberElement,
@@ -44,7 +44,6 @@ export default function PaymentFormGiftCardsComponent(props) {
   const restaurantId = process.env.NEXT_PUBLIC_RESTAURANT_ID;
   const amountCents = Math.round(Number(props.amount) * 100);
 
-  // clé unique par "commande"
   const LS_KEY = `gm_gift_checkout:${restaurantId}:${props.giftId}:${amountCents}`;
 
   const readCheckout = () => {
@@ -62,7 +61,7 @@ export default function PaymentFormGiftCardsComponent(props) {
     localStorage.removeItem(LS_KEY);
   };
 
-  // ✅ lock UI si on refresh pendant "confirming"
+  // 🔒 “finalizing” = reprise après refresh pendant confirming
   const [isFinalizing, setIsFinalizing] = useState(() => {
     if (typeof window === "undefined") return false;
     const c = safeJsonParse(localStorage.getItem(LS_KEY), null);
@@ -109,7 +108,6 @@ export default function PaymentFormGiftCardsComponent(props) {
     if (!response.ok || json.error) {
       throw new Error(json.error || "Paiement non vérifié.");
     }
-
     if (!json.timestamp || !json.signature) {
       throw new Error("Preuve de paiement invalide.");
     }
@@ -119,7 +117,6 @@ export default function PaymentFormGiftCardsComponent(props) {
 
   const sendPurchaseData = async (piId, proof, formDataOverride) => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
     const validUntil = computeValidUntil();
 
     const payload = {
@@ -143,6 +140,7 @@ export default function PaymentFormGiftCardsComponent(props) {
     return response.data;
   };
 
+  // ✅ utilise data.hidePrice (pas props.formData.hidePrice)
   const sendGiftCardEmail = async (data) => {
     const pdfContent = await generateGiftCardPdf({
       value: data.value,
@@ -151,7 +149,7 @@ export default function PaymentFormGiftCardsComponent(props) {
       description: data.description,
       message: data.message,
       senderName: data.senderName,
-      hidePrice: props.formData.hidePrice,
+      hidePrice: data.hidePrice,
       beneficiaryName: `${data.beneficiaryFirstName} ${data.beneficiaryLastName}`,
     });
 
@@ -166,7 +164,7 @@ export default function PaymentFormGiftCardsComponent(props) {
       message: data.message,
       validUntil: data.validUntil,
       attachment: pdfContent,
-      hidePrice: props.formData.hidePrice,
+      hidePrice: data.hidePrice,
     };
 
     const response = await fetch("/api/send-gift-card-email", {
@@ -179,6 +177,27 @@ export default function PaymentFormGiftCardsComponent(props) {
       throw new Error("Email non envoyé");
     }
   };
+
+  // ✅ OPTIONS Stripe STABLES (ne changent jamais)
+  const stripeElementOptions = useMemo(
+    () => ({
+      style: {
+        base: {
+          color: "#32325d",
+          fontFamily: "'Abel', sans-serif",
+          fontSmoothing: "antialiased",
+          fontSize: "14px",
+          "::placeholder": { color: "#9da3ae" },
+        },
+        invalid: { color: "#fa755a", iconColor: "#fa755a" },
+      },
+    }),
+    []
+  );
+
+  // ⚠️ on bloque l’UI via CSS (pas via options.disabled Stripe)
+  const disableInputs =
+    isFinalizing || isLoading || isPreparingPayment || !clientSecret;
 
   useEffect(() => {
     let cancelled = false;
@@ -193,11 +212,20 @@ export default function PaymentFormGiftCardsComponent(props) {
         if (!checkout?.checkoutId) {
           checkout = {
             checkoutId: makeCheckoutId(),
-            state: "idle", // idle | confirming | done
+            state: "idle", // idle | confirming
             createdAt: Date.now(),
             formDataSnapshot: null,
+            payerSnapshot: null,
           };
           writeCheckout(checkout);
+        }
+
+        // ✅ restore prénom/nom si on a refresh pendant confirming
+        if (checkout?.payerSnapshot) {
+          setFormDetails({
+            firstName: checkout.payerSnapshot.firstName || "",
+            lastName: checkout.payerSnapshot.lastName || "",
+          });
         }
 
         // 2) créer (idempotent) le PI
@@ -226,7 +254,6 @@ export default function PaymentFormGiftCardsComponent(props) {
         setClientSecret(json.clientSecret);
         setPaymentIntentId(json.paymentIntentId);
 
-        // stocker PI dans le checkout
         checkout = {
           ...checkout,
           paymentIntentId: json.paymentIntentId,
@@ -234,39 +261,38 @@ export default function PaymentFormGiftCardsComponent(props) {
         };
         writeCheckout(checkout);
 
-        // 3) Reprise après refresh : si on était en "confirming", on tente de finaliser
+        // 3) Reprise après refresh : confirming => finaliser sans Stripe Elements
         if (checkout.state === "confirming" && checkout.paymentIntentId) {
-          setIsFinalizing(true); // ✅ lock UI dès le refresh
+          setIsFinalizing(true);
 
           try {
+            const restoredFormData =
+              checkout.formDataSnapshot || props.formData;
+
             const proof = await verifyPaymentProof(checkout.paymentIntentId);
             const purchaseData = await sendPurchaseData(
               checkout.paymentIntentId,
               proof,
-              checkout.formDataSnapshot || props.formData
+              restoredFormData
             );
 
             await sendGiftCardEmail({
-              beneficiaryFirstName: (
-                checkout.formDataSnapshot || props.formData
-              ).beneficiaryFirstName,
-              beneficiaryLastName: (checkout.formDataSnapshot || props.formData)
-                .beneficiaryLastName,
+              beneficiaryFirstName: restoredFormData.beneficiaryFirstName,
+              beneficiaryLastName: restoredFormData.beneficiaryLastName,
               code: purchaseData.purchaseCode,
-              message: (checkout.formDataSnapshot || props.formData).comment,
+              message: restoredFormData.comment,
               description: props.giftCard.description,
               validUntil: purchaseData.validUntil,
               value: props.amount,
-              sendEmail: (checkout.formDataSnapshot || props.formData)
-                .sendEmail,
-              senderName: (checkout.formDataSnapshot || props.formData).sender,
+              sendEmail: restoredFormData.sendEmail,
+              senderName: restoredFormData.sender,
+              hidePrice: restoredFormData.hidePrice,
             });
 
-            // terminé -> cleanup
             clearCheckout();
             props.onPaymentSuccess();
           } catch (e) {
-            // paiement pas terminé / échec => on repasse idle + unlock
+            // pas encore prêt => idle
             writeCheckout({ ...checkout, state: "idle" });
             setIsFinalizing(false);
           }
@@ -287,7 +313,7 @@ export default function PaymentFormGiftCardsComponent(props) {
     return () => {
       cancelled = true;
     };
-  }, [props.amount, props.giftId]);
+  }, [props.amount, props.giftId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -307,6 +333,14 @@ export default function PaymentFormGiftCardsComponent(props) {
         return;
       }
 
+      // ⚠️ IMPORTANT: récupérer l'Element avant tout (et vérifier qu'il existe)
+      const cardNumberEl = elements.getElement(CardNumberElement);
+      if (!cardNumberEl) {
+        throw new Error(
+          "Le champ carte bancaire n’est pas prêt. Réessayez dans quelques secondes."
+        );
+      }
+
       const checkout = readCheckout() || {
         checkoutId: makeCheckoutId(),
         createdAt: Date.now(),
@@ -319,14 +353,16 @@ export default function PaymentFormGiftCardsComponent(props) {
         paymentIntentId: paymentIntentId || checkout.paymentIntentId || null,
         clientSecret,
         formDataSnapshot: props.formData,
+        payerSnapshot: {
+          firstName: formDetails.firstName,
+          lastName: formDetails.lastName,
+        },
         emailSent: false,
       });
 
-      setIsFinalizing(true); // ✅ lock UI pendant le process
-
       const result = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
-          card: elements.getElement(CardNumberElement),
+          card: cardNumberEl,
           billing_details: {
             name: `${formDetails.firstName} ${formDetails.lastName}`,
           },
@@ -337,7 +373,6 @@ export default function PaymentFormGiftCardsComponent(props) {
         setErrorMessage(result.error.message || "Paiement refusé.");
         const c = readCheckout();
         if (c) writeCheckout({ ...c, state: "idle" });
-        setIsFinalizing(false); // ✅ unlock
         return;
       }
 
@@ -359,6 +394,7 @@ export default function PaymentFormGiftCardsComponent(props) {
           value: props.amount,
           sendEmail: props.formData.sendEmail,
           senderName: props.formData.sender,
+          hidePrice: props.formData.hidePrice,
         });
 
         const c2 = readCheckout();
@@ -371,7 +407,7 @@ export default function PaymentFormGiftCardsComponent(props) {
 
       const c = readCheckout();
       if (c) writeCheckout({ ...c, state: "idle" });
-      setIsFinalizing(false); // ✅ unlock
+
       setErrorMessage(
         "Le paiement n’a pas pu être finalisé. Veuillez réessayer."
       );
@@ -390,7 +426,7 @@ export default function PaymentFormGiftCardsComponent(props) {
           msg.toLowerCase().includes("rafraîchissez");
 
         writeCheckout({ ...c, state: keepConfirming ? "confirming" : "idle" });
-        setIsFinalizing(keepConfirming); // ✅ lock si confirming, sinon unlock
+        setIsFinalizing(keepConfirming);
       } else {
         setIsFinalizing(false);
       }
@@ -405,27 +441,6 @@ export default function PaymentFormGiftCardsComponent(props) {
     setFormDetails((prev) => ({ ...prev, [name]: value }));
   }
 
-  const stripeElementStyle = {
-    style: {
-      base: {
-        color: "#32325d",
-        fontFamily: "'Abel', sans-serif",
-        fontSmoothing: "antialiased",
-        fontSize: "14px",
-        "::placeholder": { color: "#9da3ae" },
-      },
-      invalid: { color: "#fa755a", iconColor: "#fa755a" },
-    },
-  };
-
-  const disableInputs =
-    isFinalizing || isLoading || isPreparingPayment || !clientSecret;
-
-  const stripeElementOptions = {
-    ...stripeElementStyle,
-    disabled: disableInputs,
-  };
-
   const disablePayButton = !stripe || disableInputs;
 
   return (
@@ -439,7 +454,7 @@ export default function PaymentFormGiftCardsComponent(props) {
             placeholder="Votre prénom"
             value={formDetails.firstName}
             onChange={handleInputChange}
-            className="border rounded-md w-full py-2 px-3 leading-[1.5] disabled:opacity-90 disabled:cursor-not-allowed"
+            className="border rounded-md w-full py-2 px-3 leading-[1.5] disabled:bg-extraWhite disabled:opacity-90 disabled:cursor-not-allowed"
             required
             disabled={disableInputs}
           />
@@ -453,30 +468,70 @@ export default function PaymentFormGiftCardsComponent(props) {
             placeholder="Votre nom"
             value={formDetails.lastName}
             onChange={handleInputChange}
-            className="border rounded-md w-full py-2 px-3 leading-[1.5] disabled:opacity-90 disabled:cursor-not-allowed"
+            className="border rounded-md w-full py-2 px-3 leading-[1.5] disabled:bg-extraWhite disabled:opacity-90 disabled:cursor-not-allowed"
             required
             disabled={disableInputs}
           />
         </div>
       </div>
 
-      <div className="border rounded-md bg-extraWhite p-3 box-border">
-        <CardNumberElement id="cardNumber" options={stripeElementOptions} />
-      </div>
+      {/* ✅ Stripe Elements TOUJOURS montés.
+          On bloque l’interaction via wrapper CSS, et si refresh-confirming on overlay des "***" */}
+      <div className="relative">
+        <div
+          className={`flex flex-col gap-4 ${
+            disableInputs ? "pointer-events-none opacity-60" : ""
+          }`}
+        >
+          <div className="border rounded-md bg-extraWhite p-3 box-border">
+            <CardNumberElement id="cardNumber" options={stripeElementOptions} />
+          </div>
 
-      <div className="flex gap-4">
-        <div className="border rounded-md bg-extraWhite p-3 box-border w-24">
-          <CardExpiryElement id="cardExpiry" options={stripeElementOptions} />
+          <div className="flex gap-4">
+            <div className="border rounded-md bg-extraWhite p-3 box-border w-24">
+              <CardExpiryElement
+                id="cardExpiry"
+                options={stripeElementOptions}
+              />
+            </div>
+
+            <div className="border rounded-md bg-extraWhite p-3 box-border w-24">
+              <CardCvcElement id="cardCvc" options={stripeElementOptions} />
+            </div>
+          </div>
         </div>
 
-        <div className="border rounded-md bg-extraWhite p-3 box-border w-24">
-          <CardCvcElement id="cardCvc" options={stripeElementOptions} />
-        </div>
-      </div>
+        {/* overlay visuel quand refresh pendant confirming (Inputs vides sinon) */}
+        {isFinalizing && (
+          <div className="absolute inset-0 flex flex-col gap-4">
+            <div className="border rounded-md bg-extraWhite h-[42.8px] flex items-center px-3 box-border">
+              <input
+                value="•••• •••• •••• ••••"
+                disabled
+                className="w-full bg-transparent outline-none cursor-not-allowed"
+              />
+            </div>
 
-      {isPreparingPayment && (
-        <p className="text-grey text-sm">Préparation du paiement…</p>
-      )}
+            <div className="flex gap-4">
+              <div className="border rounded-md bg-extraWhite h-[42.8px] flex items-center px-3 box-border w-24">
+                <input
+                  value="••/••"
+                  disabled
+                  className="w-full bg-transparent outline-none cursor-not-allowed"
+                />
+              </div>
+
+              <div className="border rounded-md bg-extraWhite h-[42.8px] flex items-center px-3 box-border w-24">
+                <input
+                  value="•••"
+                  disabled
+                  className="w-full bg-transparent outline-none cursor-not-allowed"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
 
       {errorMessage && <p className="text-red">{errorMessage}</p>}
 
@@ -485,7 +540,7 @@ export default function PaymentFormGiftCardsComponent(props) {
         disabled={disablePayButton}
         className="w-full py-2 px-4 rounded-lg text-white text-lg bg-grey disabled:opacity-60 disabled:cursor-not-allowed"
       >
-        {isLoading || isFinalizing ? "Traitement..." : "Payer"}
+        {isLoading || isFinalizing ? "Paiement en cours..." : "Payer"}
       </button>
     </form>
   );

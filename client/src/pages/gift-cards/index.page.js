@@ -34,7 +34,7 @@ export default function GiftCardsPage(props) {
       : "gm_gift_checkout:";
 
     const now = Date.now();
-    const keepConfirmingMs = 2 * 60 * 1000; 
+    const keepConfirmingMs = 2 * 60 * 1000;
 
     const keysToRemove = [];
     for (let i = 0; i < localStorage.length; i++) {
@@ -48,7 +48,6 @@ export default function GiftCardsPage(props) {
         checkout?.createdAt &&
         now - checkout.createdAt < keepConfirmingMs;
 
-      // ✅ si paiement en cours de finalisation, on garde
       if (isConfirmingRecent) continue;
 
       keysToRemove.push(key);
