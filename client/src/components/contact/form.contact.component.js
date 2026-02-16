@@ -183,6 +183,7 @@ export default function FormContactCompnent() {
           <input
             {...register("name", { required: true })}
             placeholder={t("form.labels.name")}
+            disabled
             className={`p-3 rounded-md ${
               errors.name ? "border-red border" : "border-grey border"
             }`}
@@ -197,6 +198,7 @@ export default function FormContactCompnent() {
               pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
             })}
             placeholder={t("form.labels.email")}
+            disabled
             className={`p-3 rounded-md ${
               errors.email ? "border-red border" : "border-grey border"
             }`}
@@ -208,6 +210,7 @@ export default function FormContactCompnent() {
           <input
             {...register("phone", { required: true })}
             placeholder={t("form.labels.phone")}
+            disabled
             className={`p-3 rounded-md ${
               errors.phone ? "border-red border" : "border-grey border"
             }`}
@@ -219,6 +222,7 @@ export default function FormContactCompnent() {
           <textarea
             {...register("message", { required: true })}
             placeholder={t("form.labels.message")}
+            disabled
             className={`p-3 rounded-md h-32 text-darkBlue resize-none ${
               errors.message ? "border-red border" : "border-grey border"
             }`}
