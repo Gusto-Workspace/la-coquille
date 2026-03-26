@@ -33,12 +33,18 @@ export default function BuyGiftCardsPage() {
   const [giftCard, setGiftCard] = useState(null);
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
+    // Bloc "Information carte cadeau"
     beneficiaryFirstName: "",
     beneficiaryLastName: "",
     sender: "",
-    sendEmail: "",
     comment: "",
     hidePrice: false,
+
+    // Bloc "Vos informations" (CRM)
+    sendEmail: "",
+    buyerFirstName: "",
+    buyerLastName: "",
+    buyerPhone: "",
   });
 
   const restaurantId = process.env.NEXT_PUBLIC_RESTAURANT_ID;
@@ -47,7 +53,7 @@ export default function BuyGiftCardsPage() {
   useEffect(() => {
     if (restaurantContext?.restaurantData) {
       const foundGiftCard = restaurantContext.restaurantData.giftCards.find(
-        (card) => card._id === id
+        (card) => card._id === id,
       );
       if (foundGiftCard) {
         setGiftCard(foundGiftCard);
@@ -117,6 +123,7 @@ export default function BuyGiftCardsPage() {
             onChange={handleFormChange}
             formData={formData}
             giftCard={giftCard}
+            giftCardSettings={restaurantContext?.restaurantData?.giftCardSettings}
           />
         );
       case 2:
@@ -147,10 +154,10 @@ export default function BuyGiftCardsPage() {
 
   return (
     <div
-      className="flex flex-col desktop:flex-row items-center justify-between gap-12 py-24 max-w-[90%] mx-auto"
+      className="flex flex-col desktop:flex-row items-start justify-between gap-12 py-24 max-w-[90%] mx-auto"
       style={{ fontFamily: "'Abel', sans-serif" }}
     >
-      <div className="w-[100%] h-auto flex-grow flex items-center">
+      <div className="w-[100%] desktop:sticky top-24 h-auto flex-grow flex items-center">
         <div
           className="rounded-md flex flex-col items-end aspect-[16/9] w-[100%] mx-auto bg-center bg-cover bg-no-repeat shadow-2xl"
           style={{ backgroundImage: "url(/img/assets/bg-gift-card.png)" }} // ✅ (petite correction parenthèse)
@@ -200,7 +207,7 @@ export default function BuyGiftCardsPage() {
       </div>
 
       {/* Étapes */}
-      <div className="w-full rounded-lg p-4 desktop:p-12 bg-white shadow-md">
+      <div className="w-full rounded-lg p-4 desktop:py-12 bg-white shadow-md">
         <div className="flex items-center mb-6 mx-auto text-center">
           {["Informations", "Paiement", "Validation"].map((step, index) => (
             <div

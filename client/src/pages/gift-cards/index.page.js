@@ -87,7 +87,7 @@ export default function GiftCardsPage(props) {
             description="gifts:descriptions.main"
             imgUrl="gifts.webp"
           />
-          {/* <ListGiftCardsComponent /> */}
+          <ListGiftCardsComponent />
           <FooterComponent />
         </div>
       </div>

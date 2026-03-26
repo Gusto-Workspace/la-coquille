@@ -68,28 +68,6 @@ export default function PaymentFormGiftCardsComponent(props) {
     return c?.state === "confirming";
   });
 
-  const computeValidUntil = () => {
-    const validityEndEnv = process.env.NEXT_PUBLIC_GIFT_VALID_UNTIL;
-    const validityMonthsEnv = process.env.NEXT_PUBLIC_GIFT_VALIDITY_MONTHS;
-
-    let validUntil;
-
-    if (validityEndEnv) {
-      const [year, month, day] = validityEndEnv.split("-").map(Number);
-      validUntil = new Date(year, month - 1, day, 23, 59, 59, 999);
-    } else {
-      const monthsToAdd = validityMonthsEnv
-        ? parseInt(validityMonthsEnv, 10) || 6
-        : 6;
-
-      validUntil = new Date();
-      validUntil.setMonth(validUntil.getMonth() + monthsToAdd);
-      validUntil.setHours(23, 59, 59, 999);
-    }
-
-    return validUntil;
-  };
-
   const verifyPaymentProof = async (piId) => {
     const response = await fetch("/api/payment-intent", {
       method: "POST",
@@ -117,11 +95,9 @@ export default function PaymentFormGiftCardsComponent(props) {
 
   const sendPurchaseData = async (piId, proof, formDataOverride) => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const validUntil = computeValidUntil();
 
     const payload = {
       ...(formDataOverride || props.formData),
-      validUntil: validUntil.toISOString(),
       paymentIntentId: piId,
       amount: amountCents,
     };

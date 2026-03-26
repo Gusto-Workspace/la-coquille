@@ -46,7 +46,7 @@ export default function BuyGiftCardsPage(props) {
             description="gifts:descriptions.main"
             imgUrl="gifts.webp"
           />
-          {/* <BuyGiftCardsComponent /> */}
+          <BuyGiftCardsComponent />
           <FooterComponent />
         </div>
       </div>
