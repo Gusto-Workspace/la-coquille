@@ -31,26 +31,39 @@ function clampInteger(value, fallback, min, max) {
   return Math.min(Math.max(parsed, min), max);
 }
 
-function normalizeGiftCardSettings(settings) {
+function hasGiftCardValidityConfig(source) {
+  return (
+    source?.validity_mode !== undefined ||
+    source?.validity_fixed_months !== undefined ||
+    source?.validity_until_day !== undefined ||
+    source?.validity_until_month !== undefined
+  );
+}
+
+function normalizeGiftCardSettings(settings, fallbackSettings) {
+  const source = hasGiftCardValidityConfig(settings)
+    ? settings
+    : fallbackSettings;
+
   return {
     validity_mode:
-      settings?.validity_mode === "until_date"
+      source?.validity_mode === "until_date"
         ? "until_date"
         : DEFAULT_GIFT_CARD_SETTINGS.validity_mode,
     validity_fixed_months: clampInteger(
-      settings?.validity_fixed_months,
+      source?.validity_fixed_months,
       DEFAULT_GIFT_CARD_SETTINGS.validity_fixed_months,
       1,
       60,
     ),
     validity_until_day: clampInteger(
-      settings?.validity_until_day,
+      source?.validity_until_day,
       DEFAULT_GIFT_CARD_SETTINGS.validity_until_day,
       1,
       31,
     ),
     validity_until_month: clampInteger(
-      settings?.validity_until_month,
+      source?.validity_until_month,
       DEFAULT_GIFT_CARD_SETTINGS.validity_until_month,
       1,
       12,
@@ -58,8 +71,8 @@ function normalizeGiftCardSettings(settings) {
   };
 }
 
-function buildGiftCardValidityLabel(settings) {
-  const nextSettings = normalizeGiftCardSettings(settings);
+function buildGiftCardValidityLabel(giftCard, giftCardSettings) {
+  const nextSettings = normalizeGiftCardSettings(giftCard, giftCardSettings);
 
   if (nextSettings.validity_mode === "until_date") {
     const monthLabel =
@@ -106,7 +119,7 @@ export default function InfosFormGiftCardsComponent({
     onSubmit(values);
   };
 
-  const validityLabel = buildGiftCardValidityLabel(giftCardSettings);
+  const validityLabel = buildGiftCardValidityLabel(giftCard, giftCardSettings);
 
   return (
     <form onSubmit={handleSubmit(submit)} className="space-y-6">

@@ -7,6 +7,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { GlobalContext } from "@/contexts/global.context";
 import InfosFormGiftCardsComponent from "./infos-form.gift-cards.component";
 import PaymentFormGiftCardsComponent from "./payment-form.gift-cards.component";
+import GiftCardVisualPreview from "./visual-preview.gift-cards.component";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
 
@@ -158,52 +159,15 @@ export default function BuyGiftCardsPage() {
       style={{ fontFamily: "'Abel', sans-serif" }}
     >
       <div className="w-[100%] desktop:sticky top-24 h-auto flex-grow flex items-center">
-        <div
-          className="rounded-md flex flex-col items-end aspect-[16/9] w-[100%] mx-auto bg-center bg-cover bg-no-repeat shadow-2xl"
-          style={{ backgroundImage: "url(/img/assets/bg-gift-card.png)" }} // ✅ (petite correction parenthèse)
-        >
-          <div className="w-2/3 flex flex-col desktop:gap-2 items-center justify-center my-auto">
-            <h1 className="text-2xl desktop:text-[2vw] font-bold desktop:mb-4">
-              Carte cadeau
-            </h1>
-
-            <div className="flex flex-col desktop:gap-3 items-center">
-              {!formData.hidePrice && (
-                <p className="text-xl desktop:text-[1.5vw]">{`${giftCard.value} €`}</p>
-              )}
-
-              {giftCard.description && (
-                <p className="text-sm desktop:text-[1.2vw] text-center px-4 leading-7">
-                  {giftCard.description}
-                </p>
-              )}
-
-              <p className="text-sm desktop:text-[1.2vw]">
-                <span className="text-sm desktop:text-[1vw] text-center italic">
-                  Pour :
-                </span>{" "}
-                <span>
-                  {formData.beneficiaryFirstName} {formData.beneficiaryLastName}
-                </span>
-              </p>
-
-              {formData.comment && (
-                <p className="text-sm desktop:text-[1.2vw] text-center px-2">
-                  <span>"{formData.comment}"</span>
-                </p>
-              )}
-
-              {formData.sender && (
-                <p className="text-sm desktop:text-[1.2vw]">
-                  <span className="text-sm desktop:text-[1vw] italic">
-                    De la part de :
-                  </span>{" "}
-                  <span>{formData.sender}</span>
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
+        <GiftCardVisualPreview
+          giftCard={giftCard}
+          giftCardSettings={restaurantContext?.restaurantData?.giftCardSettings}
+          value={giftCard.value}
+          description={giftCard.description}
+          formData={formData}
+          hidePrice={formData.hidePrice}
+          className="w-full mx-auto shadow-2xl"
+        />
       </div>
 
       {/* Étapes */}

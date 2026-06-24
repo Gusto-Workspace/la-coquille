@@ -7,7 +7,6 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { generateGiftCardPdf } from "@/_assets/utils/generate-gift-card-pdf.utils";
 
 function safeJsonParse(v, fallback = null) {
   try {
@@ -21,6 +20,25 @@ function makeCheckoutId() {
   if (typeof crypto !== "undefined" && crypto.randomUUID)
     return crypto.randomUUID();
   return `chk_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+}
+
+function getPaymentFlowErrorMessage(error) {
+  return (
+    error?.response?.data?.emailError ||
+    error?.response?.data?.error ||
+    error?.response?.data?.message ||
+    error?.message ||
+    "Une erreur est survenue. Si le paiement a été validé, rafraîchissez la page pour relancer l’envoi de l’email."
+  );
+}
+
+function shouldKeepConfirmingAfterError(message) {
+  const lowerMessage = String(message || "").toLowerCase();
+  return (
+    lowerMessage.includes("email") ||
+    lowerMessage.includes("mail") ||
+    lowerMessage.includes("rafraîchissez")
+  );
 }
 
 export default function PaymentFormGiftCardsComponent(props) {
@@ -100,6 +118,10 @@ export default function PaymentFormGiftCardsComponent(props) {
       ...(formDataOverride || props.formData),
       paymentIntentId: piId,
       amount: amountCents,
+      fallbackGiftCardBackgroundUrl:
+        typeof window !== "undefined"
+          ? `${window.location.origin}/img/assets/bg-gift-card.png`
+          : "",
     };
 
     const response = await axios.post(
@@ -114,44 +136,6 @@ export default function PaymentFormGiftCardsComponent(props) {
     );
 
     return response.data;
-  };
-
-  // ✅ utilise data.hidePrice (pas props.formData.hidePrice)
-  const sendGiftCardEmail = async (data) => {
-    const pdfContent = await generateGiftCardPdf({
-      value: data.value,
-      code: data.code,
-      validUntil: data.validUntil,
-      description: data.description,
-      message: data.message,
-      senderName: data.senderName,
-      hidePrice: data.hidePrice,
-      beneficiaryName: `${data.beneficiaryFirstName} ${data.beneficiaryLastName}`,
-    });
-
-    const emailData = {
-      beneficiaryFirstName: data.beneficiaryFirstName,
-      beneficiaryLastName: data.beneficiaryLastName,
-      sendEmail: data.sendEmail,
-      senderName: data.senderName,
-      value: data.value,
-      description: data.description,
-      code: data.code,
-      message: data.message,
-      validUntil: data.validUntil,
-      attachment: pdfContent,
-      hidePrice: data.hidePrice,
-    };
-
-    const response = await fetch("/api/send-gift-card-email", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(emailData),
-    });
-
-    if (!response.ok) {
-      throw new Error("Email non envoyé");
-    }
   };
 
   // ✅ OPTIONS Stripe STABLES (ne changent jamais)
@@ -246,31 +230,23 @@ export default function PaymentFormGiftCardsComponent(props) {
               checkout.formDataSnapshot || props.formData;
 
             const proof = await verifyPaymentProof(checkout.paymentIntentId);
-            const purchaseData = await sendPurchaseData(
+            await sendPurchaseData(
               checkout.paymentIntentId,
               proof,
               restoredFormData
             );
 
-            await sendGiftCardEmail({
-              beneficiaryFirstName: restoredFormData.beneficiaryFirstName,
-              beneficiaryLastName: restoredFormData.beneficiaryLastName,
-              code: purchaseData.purchaseCode,
-              message: restoredFormData.comment,
-              description: props.giftCard.description,
-              validUntil: purchaseData.validUntil,
-              value: props.amount,
-              sendEmail: restoredFormData.sendEmail,
-              senderName: restoredFormData.sender,
-              hidePrice: restoredFormData.hidePrice,
-            });
-
             clearCheckout();
             props.onPaymentSuccess();
           } catch (e) {
-            // pas encore prêt => idle
-            writeCheckout({ ...checkout, state: "idle" });
-            setIsFinalizing(false);
+            const msg = getPaymentFlowErrorMessage(e);
+            const keepConfirming = shouldKeepConfirmingAfterError(msg);
+            writeCheckout({
+              ...checkout,
+              state: keepConfirming ? "confirming" : "idle",
+            });
+            setErrorMessage(msg);
+            setIsFinalizing(keepConfirming);
           }
         } else {
           setIsFinalizing(false);
@@ -358,20 +334,7 @@ export default function PaymentFormGiftCardsComponent(props) {
         const confirmedPiId = pi.id;
 
         const proof = await verifyPaymentProof(confirmedPiId);
-        const purchaseData = await sendPurchaseData(confirmedPiId, proof);
-
-        await sendGiftCardEmail({
-          beneficiaryFirstName: props.formData.beneficiaryFirstName,
-          beneficiaryLastName: props.formData.beneficiaryLastName,
-          code: purchaseData.purchaseCode,
-          message: props.formData.comment,
-          description: props.giftCard.description,
-          validUntil: purchaseData.validUntil,
-          value: props.amount,
-          sendEmail: props.formData.sendEmail,
-          senderName: props.formData.sender,
-          hidePrice: props.formData.hidePrice,
-        });
+        await sendPurchaseData(confirmedPiId, proof);
 
         const c2 = readCheckout();
         if (c2) writeCheckout({ ...c2, emailSent: true });
@@ -388,18 +351,14 @@ export default function PaymentFormGiftCardsComponent(props) {
         "Le paiement n’a pas pu être finalisé. Veuillez réessayer."
       );
     } catch (error) {
-      const msg =
-        error?.message ||
-        "Une erreur est survenue. Si le paiement a été validé, rafraîchissez la page pour relancer l’envoi de l’email.";
+      const msg = getPaymentFlowErrorMessage(error);
 
       setErrorMessage(msg);
 
       const c = readCheckout();
       if (c) {
         const keepConfirming =
-          c.state === "confirming" ||
-          msg.toLowerCase().includes("email") ||
-          msg.toLowerCase().includes("rafraîchissez");
+          c.state === "confirming" || shouldKeepConfirmingAfterError(msg);
 
         writeCheckout({ ...c, state: keepConfirming ? "confirming" : "idle" });
         setIsFinalizing(keepConfirming);
